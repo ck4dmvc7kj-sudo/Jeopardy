@@ -1,0 +1,2029 @@
+<title>Mathe-Jeopardy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Big+Shoulders+Display:wght@700;800;900&display=swap">
+<style>
+:root{
+  color-scheme: dark;
+  --ground:#18221f;
+  --ground-2:#1d2a26;
+  --panel:#223029;
+  --cell:#27382f;
+  --cell-hi:#314639;
+  --line:rgba(236,240,230,.13);
+  --line-strong:rgba(236,240,230,.28);
+  --chalk:#eef1e8;
+  --chalk-dim:#a7b6ac;
+  --chalk-faint:#6f8177;
+  --amber:#f2c14e;
+  --amber-hi:#f7cf6c;
+  --amber-ink:#1a1606;
+  --ok:#8ee39a;
+  --bad:#ff806f;
+  --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",system-ui,-apple-system,sans-serif;
+  --r:8px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;background-color:var(--ground);color:var(--chalk);
+  font-family:var(--body);font-size:16px;line-height:1.45;
+  background-image:
+    radial-gradient(1200px 600px at 12% -10%, rgba(238,241,232,.055), transparent 60%),
+    radial-gradient(900px 500px at 100% 110%, rgba(242,193,78,.045), transparent 60%);
+  background-attachment:fixed;
+}
+body.lock{overflow:hidden}
+button,select{font:inherit}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+
+#app{min-height:100%;display:flex;flex-direction:column;gap:14px;padding-block:14px;padding-inline:clamp(16px,2.4vw,40px)}
+#app.is-board{height:100%}
+
+/* ---------- top bar ---------- */
+.top{display:flex;align-items:center;gap:10px 20px;flex-wrap:wrap}
+.brand{display:flex;flex-direction:column;line-height:1;min-width:0}
+.brand-mark{font-family:var(--display);font-weight:900;font-size:clamp(26px,2.4vw,38px);letter-spacing:.02em;text-transform:uppercase}
+.brand-mark em{font-style:normal;color:var(--amber)}
+.brand-sub{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--chalk-dim);margin-top:5px;max-width:42ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top-mid{flex:1;min-width:220px;font-size:clamp(15px,1.35vw,21px)}
+.top-actions{display:flex;gap:6px;flex-wrap:wrap}
+.turn-line{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap}
+.muted{color:var(--chalk-dim)}
+.hint{color:var(--chalk-dim);font-size:14px;margin:0}
+.kicker{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);font-weight:700;margin:0}
+
+/* ---------- buttons & fields ---------- */
+.btn{font:700 15px/1.1 var(--body);color:var(--chalk);background:var(--panel);border:1px solid var(--line-strong);border-radius:var(--r);padding:12px 18px;cursor:pointer;transition:background .15s,transform .1s,color .15s}
+.btn:hover{background:var(--cell-hi)}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.primary{background:var(--amber);color:var(--amber-ink);border-color:transparent}
+.btn.primary:hover{background:var(--amber-hi)}
+.btn.ghost{background:transparent;border-color:var(--line)}
+.btn.ghost:hover{background:var(--panel)}
+.btn.sm{padding:8px 12px;font-size:13px}
+.btn.lg{padding:16px 24px;font-size:clamp(16px,1.3vw,20px)}
+.btn.armed,.btn.armed:hover{background:var(--bad);color:#240b06;border-color:transparent}
+.field{font:inherit;font-size:18px;color:var(--chalk);background:var(--ground-2);border:1px solid var(--line-strong);border-radius:var(--r);padding:10px 12px;width:100%;min-width:0}
+.field::placeholder{color:var(--chalk-faint)}
+.field:focus{border-color:var(--amber);outline:none;box-shadow:0 0 0 3px rgba(242,193,78,.25)}
+.field.sm{font-size:15px;padding:8px 10px}
+select.field{cursor:pointer}
+textarea.field{resize:vertical;min-height:64px;font-size:15px;line-height:1.35}
+.dot{display:inline-block;flex:none;width:.8em;height:.8em;border-radius:50%;background:var(--tc,var(--chalk));box-shadow:0 0 0 2px rgba(0,0,0,.25)}
+
+/* ---------- library ---------- */
+.lib{max-width:1200px;width:100%;margin-inline:auto;display:flex;flex-direction:column;gap:22px;padding-top:clamp(8px,3vh,36px)}
+.lib-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.lib h1{font-family:var(--display);font-weight:900;font-size:clamp(44px,6vw,88px);line-height:.88;text-transform:uppercase;margin:6px 0 0;text-wrap:balance}
+.resume{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 18px;border:2px dashed var(--amber);border-radius:12px;font-size:17px}
+.sets{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.set{display:flex;flex-direction:column;gap:10px;padding:18px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.set h2{font-family:var(--display);font-weight:800;font-size:30px;line-height:1;margin:0;text-transform:uppercase;letter-spacing:.01em;overflow-wrap:anywhere}
+.set-meta{margin:0;color:var(--chalk-dim);font-size:14px;font-variant-numeric:tabular-nums}
+.set-topics{margin:0;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:14px}
+.set-topics b{font-family:var(--display);font-size:18px;color:var(--amber);margin-right:4px}
+.set-warn{margin:0;color:var(--amber);font-size:13px;font-weight:700}
+.set-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:6px}
+.lib-sub{font-family:var(--display);font-weight:800;font-size:28px;text-transform:uppercase;margin:10px 0 0;color:var(--chalk-dim)}
+label.btn{display:inline-block}
+.empty{padding:28px;border:1px dashed var(--line-strong);border-radius:12px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.empty p{margin:0}
+
+/* ---------- setup ---------- */
+.setup{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(20px,4vw,64px);align-items:start;max-width:1200px;width:100%;margin-inline:auto;padding-top:clamp(8px,4vh,48px)}
+@media (max-width:820px){.setup{grid-template-columns:1fr}}
+.setup-teams{display:flex;flex-direction:column;gap:16px}
+.setup h1{font-family:var(--display);font-weight:900;font-size:clamp(44px,6vw,92px);line-height:.88;text-transform:uppercase;margin:0;text-wrap:balance}
+.setup-game{margin:0;font-size:17px}
+.setup-game b{color:var(--amber)}
+.team-list{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.team-list li{display:flex;gap:10px;align-items:flex-start}
+.team-list .swatch{margin-top:4px}
+.team-fields{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.class-row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.class-row .lbl{min-width:220px;flex:0 1 320px}
+.present{display:flex;flex-direction:column;gap:8px;padding:12px;border:1px dashed var(--line-strong);border-radius:var(--r)}
+.present-chips{display:flex;flex-wrap:wrap;gap:6px}
+.pchip{font:700 14px/1 var(--body);padding:8px 12px;border-radius:999px;border:1px solid var(--line-strong);background:var(--cell-hi);color:var(--chalk);cursor:pointer}
+.pchip.absent{background:transparent;color:var(--chalk-faint);text-decoration:line-through;border-style:dashed}
+/* Runden in der Bibliothek */
+.rounds{display:flex;flex-direction:column;gap:10px}
+.rnd-list{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.rnd{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.rnd-main{display:flex;flex-direction:column;gap:4px;min-width:0}
+.rnd-name{font-size:19px}
+.rnd-meta{font-size:13px}
+.rnd-teams{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:14px}
+.rnd-team{display:inline-flex;align-items:center;gap:6px}
+.rnd-team.out{opacity:.5;text-decoration:line-through}
+.rnd-actions{display:flex;gap:6px;flex-wrap:wrap}
+.rounds-done summary{cursor:pointer;font-weight:700;color:var(--chalk-dim);padding-block:6px}
+.rounds-done .rnd-list{margin-top:8px}
+/* Klassen */
+.pop-card.wide{width:min(860px,100%);max-height:calc(100vh - 32px);overflow:auto}
+.cls-layout{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:16px}
+@media (max-width:640px){.cls-layout{grid-template-columns:1fr}}
+.cls-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.cls-item{width:100%;text-align:left;padding:10px 12px;border-radius:var(--r);border:1px solid var(--line);background:transparent;color:var(--chalk);cursor:pointer;display:flex;flex-direction:column;gap:2px}
+.cls-item[aria-current="true"]{background:var(--cell-hi);border-color:var(--amber)}
+.cls-item small{color:var(--chalk-dim)}
+.cls-edit{display:flex;flex-direction:column;gap:10px}
+/* Rückmeldung */
+.fb{display:flex;flex-direction:column;gap:14px;padding-top:10px;border-top:1px solid var(--line)}
+.fb-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.fb-head h2{font-family:var(--display);font-weight:800;font-size:clamp(26px,3vw,38px);text-transform:uppercase;margin:0}
+.fb-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.fb-tab{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:var(--r);border:1px solid var(--line);background:transparent;color:var(--chalk-dim);font-weight:700;cursor:pointer}
+.fb-tab[aria-selected="true"]{background:var(--cell-hi);border-color:var(--tc);color:var(--chalk)}
+.fb-panel{display:flex;flex-direction:column;gap:14px;padding:18px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.fb-members{margin:0;color:var(--chalk-dim)}
+.fb-summary{margin:0;font-size:clamp(17px,1.6vw,22px)}
+.fb-topics{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.fb-topics li{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(80px,1fr) auto auto;align-items:center;gap:12px}
+.fb-topic{font-weight:700;overflow-wrap:anywhere}
+.fb-topic b{font-family:var(--display);color:var(--amber);font-size:20px;margin-right:6px}
+.meter{height:10px;border-radius:999px;background:var(--ground-2);overflow:hidden;border:1px solid var(--line)}
+.meter i{display:block;height:100%;background:var(--chalk-dim)}
+.fb-count{font-variant-numeric:tabular-nums;color:var(--chalk-dim);font-size:14px;white-space:nowrap}
+.pill{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.pill.ok{color:var(--ok)} .pill.mid{color:var(--amber)} .pill.bad{color:var(--bad)} .pill.none{color:var(--chalk-faint)}
+.meter.ok i{background:var(--ok)} .meter.mid i{background:var(--amber)} .meter.bad i{background:var(--bad)}
+.fb-panel h3{margin:6px 0 0;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--chalk-dim)}
+.fb-missed{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.fb-missed li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;padding:10px 12px;border:1px dashed var(--line-strong);border-radius:var(--r)}
+.fb-missed .code{font-family:var(--display);font-weight:900;color:var(--amber);font-size:22px;line-height:1.1;grid-row:span 2}
+.fb-missed .mq{white-space:pre-wrap}
+.fb-missed .ma{color:var(--chalk-dim);font-size:14px}
+.fb-missed .ma b{color:var(--amber)}
+@media (max-width:640px){.fb-topics li{grid-template-columns:minmax(0,1fr) auto;}.fb-topics .meter{grid-column:1/-1;order:3}}
+.swatch{flex:none;width:38px;height:38px;border-radius:50%;border:3px solid var(--ground);background:var(--tc);box-shadow:0 0 0 1px var(--line-strong);cursor:pointer;padding:0}
+.swatch:hover{transform:scale(1.08)}
+.setup-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.rules{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:clamp(18px,2.4vw,30px);display:flex;flex-direction:column;gap:14px}
+.rules h2{font-family:var(--display);font-weight:800;font-size:26px;text-transform:uppercase;letter-spacing:.02em;margin:0}
+.rules ol{list-style:none;counter-reset:s;padding:0;margin:0;display:grid;gap:12px}
+.rules ol li{counter-increment:s;display:grid;grid-template-columns:1.6em 1fr;gap:10px;align-items:baseline}
+.rules ol li::before{content:counter(s);font-family:var(--display);font-weight:900;font-size:26px;color:var(--amber);line-height:1}
+.topics{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+.topics li{display:flex;gap:10px;align-items:baseline}
+.topics b{font-family:var(--display);font-size:22px;color:var(--amber);width:1.1em}
+
+/* ---------- scores ---------- */
+.scores{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.chip{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:2px 8px;text-align:left;padding:10px 14px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);color:var(--chalk);cursor:pointer}
+.chip:hover{background:var(--cell-hi)}
+.chip .name{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip .score{grid-column:1/-1;font-family:var(--display);font-weight:800;font-size:clamp(28px,2.7vw,44px);line-height:1;font-variant-numeric:tabular-nums;transform-origin:left center}
+.chip .tag{grid-column:1/-1;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--chalk-dim);min-height:1.2em;font-weight:700}
+.chip.turn{background:var(--cell-hi);border-color:var(--tc);box-shadow:inset 0 0 0 1px var(--tc)}
+.chip.turn .tag{color:var(--tc)}
+.chip.out{opacity:.45}
+.chip.out .score{text-decoration:line-through;text-decoration-thickness:3px}
+.chip.bump-up .score{animation:bumpUp 1s ease-out}
+.chip.bump-down .score{animation:bumpDown 1s ease-out}
+@keyframes bumpUp{0%{color:var(--ok);transform:scale(1.2)}100%{color:var(--chalk);transform:none}}
+@keyframes bumpDown{0%{color:var(--bad);transform:scale(.9)}100%{color:var(--chalk);transform:none}}
+
+/* ---------- board ---------- */
+.grid{--cols:5;--rows:10;flex:1;min-height:0;display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));grid-template-rows:auto repeat(var(--rows),minmax(28px,1fr));gap:clamp(4px,.55vw,8px)}
+.colhead{display:flex;align-items:baseline;gap:10px;padding:2px 4px 8px;border-bottom:2px solid var(--line-strong);min-width:0}
+.colhead .letter{font-family:var(--display);font-weight:900;font-size:clamp(28px,3vw,48px);color:var(--amber);line-height:.9}
+.colhead .cat{font-weight:700;font-size:clamp(12px,1.1vw,19px);color:var(--chalk-dim);line-height:1.15;overflow-wrap:anywhere}
+.cell{--lvl:0;position:relative;display:flex;align-items:center;justify-content:center;padding:0;min-width:0;
+  background:color-mix(in oklab, var(--cell), var(--amber) calc(var(--lvl) * 17%));
+  border:1px solid var(--line);border-radius:6px;color:var(--chalk);
+  font-family:var(--display);font-weight:800;font-size:clamp(16px,calc(31vh / var(--rows)),64px);line-height:1;font-variant-numeric:tabular-nums;
+  cursor:pointer;transition:background .15s,color .15s,transform .12s}
+button.cell:hover{background:var(--cell-hi);color:var(--amber);transform:translateY(-1px)}
+.cell.used{background:transparent;border-style:dashed;color:var(--chalk-faint);padding:4px 6px}
+.cell.used:hover{background:var(--panel)}
+.cell.used .val{position:absolute;top:3px;left:6px;font-size:clamp(10px,1.5vh,15px);text-decoration:line-through;opacity:.7}
+.cell.used .sol{font-family:var(--body);font-weight:700;color:var(--chalk-dim);font-size:clamp(11px,calc(19vh / var(--rows)),30px);line-height:1.1;text-align:center;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;padding-top:.5em}
+.mark{position:absolute;top:3px;right:5px;display:flex;gap:3px;align-items:center;font-family:var(--body);font-size:clamp(10px,1.5vh,15px);font-weight:700}
+.mark .dot{width:.75em;height:.75em;box-shadow:none}
+.res-ok{color:var(--ok)}
+.res-bad{color:var(--bad)}
+@media (max-width:760px),(max-height:560px){
+  #app.is-board{height:auto}
+  .grid{flex:none;grid-template-rows:auto repeat(var(--rows),48px)}
+  .cell{font-size:20px}
+}
+
+/* ---------- question overlay ---------- */
+#round{position:fixed;inset:0;z-index:20;overflow:auto;background-color:var(--ground);
+  background-image:radial-gradient(1200px 600px at 12% -10%, rgba(238,241,232,.055), transparent 60%),radial-gradient(900px 500px at 100% 110%, rgba(242,193,78,.045), transparent 60%);
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.q-wrap{min-height:100%;display:flex;flex-direction:column;gap:clamp(12px,2.2vh,28px);padding-block:clamp(14px,2.5vh,32px);padding-inline:clamp(16px,4vw,72px);max-width:1500px;margin-inline:auto;animation:qIn .28s ease-out}
+@keyframes qIn{from{transform:translateY(10px);opacity:.3}to{transform:none;opacity:1}}
+.q-head{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px}
+.q-id{display:flex;align-items:baseline;gap:14px}
+.q-code{font-family:var(--display);font-weight:900;font-size:clamp(38px,4.6vw,76px);color:var(--amber);line-height:.9}
+.q-cat{font-weight:700;color:var(--chalk-dim);font-size:clamp(14px,1.3vw,20px)}
+.q-team{display:flex;align-items:center;gap:10px;font-weight:700;font-size:clamp(16px,1.6vw,24px);margin-left:auto;flex-wrap:wrap}
+.q-speaker{color:var(--amber)}
+.steps{list-style:none;display:flex;gap:6px;padding:0;margin:0;flex-wrap:wrap}
+.steps li{font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:6px 11px;border-radius:999px;border:1px solid var(--line);color:var(--chalk-faint);font-weight:700}
+.steps li.past{color:var(--chalk-dim);border-color:var(--line-strong)}
+.steps li.now{color:var(--amber-ink);background:var(--amber);border-color:transparent}
+.q-main{flex:1;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(16px,3vw,56px);align-items:center}
+@media (max-width:820px){.q-main{grid-template-columns:1fr}.q-timer{align-items:flex-start}}
+.q-text{margin:0;font-weight:700;font-size:clamp(26px,calc(3.2vw + .8vh),68px);line-height:1.2;white-space:pre-wrap;text-wrap:balance;max-width:30ch}
+.q-timer{display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-width:0}
+.t-label{font-size:clamp(13px,1.1vw,18px);letter-spacing:.14em;text-transform:uppercase;color:var(--chalk-dim);font-weight:700;text-align:right}
+.phase-submit .t-label,.phase-inherit .t-label{color:var(--amber)}
+.t-digits{font-family:var(--display);font-weight:900;font-size:clamp(76px,11vw,200px);line-height:.85;font-variant-numeric:tabular-nums;transition:color .2s}
+.t-bar{height:clamp(10px,1.5vh,18px);background:var(--panel);border-radius:999px;overflow:hidden;border:1px solid var(--line)}
+.t-bar i{display:block;height:100%;background:var(--amber);transform-origin:left center;transition:transform .1s linear,background .2s}
+#round.low .t-digits{color:var(--bad)}
+#round.low .t-bar i{background:var(--bad)}
+#round.paused .t-digits{opacity:.4}
+.q-panel{display:flex;flex-direction:column;gap:14px}
+.q-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.answer-form{display:flex;flex-direction:column;gap:8px}
+.answer-form label{font-size:clamp(15px,1.3vw,20px);color:var(--chalk-dim)}
+.answer-form label b{color:var(--chalk)}
+.answer-row{display:flex;gap:10px;flex-wrap:wrap}
+.answer-row .field{flex:1;min-width:200px;font-size:clamp(22px,2.4vw,38px);font-weight:700;padding:12px 16px}
+.verdict{display:flex;align-items:baseline;gap:10px 28px;flex-wrap:wrap}
+.v-word{font-family:var(--display);font-weight:900;font-size:clamp(58px,8vw,132px);line-height:.88;text-transform:uppercase}
+.v-pts{font-family:var(--display);font-weight:800;font-size:clamp(40px,5vw,86px);line-height:.9}
+.verdict.ok .v-word,.verdict.ok .v-pts{color:var(--ok)}
+.verdict.bad .v-word,.verdict.bad .v-pts{color:var(--bad)}
+.v-answer{margin:0;font-size:clamp(16px,1.5vw,22px);color:var(--chalk-dim)}
+.v-answer b{color:var(--chalk)}
+.warn{color:var(--bad);font-weight:700;margin:0;font-size:clamp(16px,1.4vw,20px)}
+.lead{margin:0;font-size:clamp(16px,1.4vw,20px)}
+.solution{display:inline-flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding:12px 18px;border:2px dashed var(--amber);border-radius:var(--r);align-self:flex-start}
+.solution span{font-size:13px;text-transform:uppercase;letter-spacing:.14em;color:var(--chalk-dim);font-weight:700}
+.solution b{font-size:clamp(26px,3vw,50px);color:var(--amber)}
+.heir-form{display:flex;flex-direction:column;gap:14px}
+.heir-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.heir{display:flex;flex-direction:column;gap:8px;padding:12px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
+.heir-name{display:flex;align-items:center;gap:8px;font-weight:700}
+.heir .field{font-size:24px;font-weight:700}
+.heir-res{display:flex;flex-direction:column;gap:6px;text-align:left;padding:12px 14px;border-radius:var(--r);background:var(--panel);border:2px solid var(--line);color:var(--chalk);cursor:pointer}
+.heir-res .ans{font-size:24px;font-weight:700}
+.heir-res .res{font-weight:700}
+.heir-res.ok{border-color:var(--ok)}
+.heir-res.ok .res{color:var(--ok)}
+.heir-res.bad .res{color:var(--bad)}
+.heir-res.bad{opacity:.75}
+
+/* ---------- popover ---------- */
+#pop{position:fixed;inset:0;z-index:40;background:rgba(8,12,10,.65);display:grid;place-items:center;padding:16px}
+.pop-card{background:var(--panel);border:1px solid var(--line-strong);border-radius:12px;padding:22px;width:min(420px,100%);display:flex;flex-direction:column;gap:14px}
+.pop-card h3{margin:0;font-family:var(--display);font-weight:800;font-size:28px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.pop-card.review{width:min(820px,100%)}
+.pop-card.review h3{align-items:baseline}
+.rv-code{color:var(--amber);font-size:40px;line-height:1}
+.rv-cat{font-family:var(--body);font-size:16px;text-transform:none;color:var(--chalk-dim);font-weight:700}
+.rv-q{margin:0;font-weight:700;font-size:clamp(20px,2.4vw,34px);line-height:1.25;white-space:pre-wrap;text-wrap:balance}
+.rv-list{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+.rv-list li{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:17px}
+.lbl{display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--chalk-dim);font-weight:700}
+.lbl .hint{font-weight:400;font-size:12px}
+
+/* ---------- editor ---------- */
+#editor{position:fixed;inset:0;z-index:30;overflow:auto;background:var(--ground);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.ed{max-width:1120px;margin-inline:auto;padding-bottom:60px;padding-inline:clamp(16px,3vw,40px)}
+.ed-head{position:sticky;top:0;z-index:2;background:var(--ground);display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;padding-block:16px;border-bottom:1px solid var(--line)}
+.ed-head h2{font-family:var(--display);font-weight:900;font-size:clamp(28px,3vw,38px);text-transform:uppercase;margin:0;flex:1;min-width:200px}
+.ed-status{font-size:13px;color:var(--chalk-dim)}
+.ed-status.dirty{color:var(--amber);font-weight:700}
+.ed section{padding-block:22px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:14px}
+.ed h3{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--chalk-dim);margin:0}
+.ed p{margin:0;max-width:70ch}
+.title-field{font-size:clamp(20px,2vw,28px);font-weight:700}
+.size-row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+.size-row .lbl{width:200px}
+.size-total{font-family:var(--display);font-weight:800;font-size:28px;color:var(--amber);line-height:1;padding-bottom:6px}
+.rowset{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.rowset-item{display:grid;grid-template-columns:1fr 1fr;gap:6px 8px;padding:10px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
+.rowset-item .rs-label{grid-column:1/-1;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--chalk-dim);font-weight:700}
+.settings-row{display:flex;gap:12px;flex-wrap:wrap}
+.settings-row .lbl{width:190px}
+.ed-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.ed-tab{display:flex;gap:8px;align-items:baseline;padding:8px 14px;border-radius:var(--r);border:1px solid var(--line);background:transparent;color:var(--chalk-dim);cursor:pointer;font-weight:700}
+.ed-tab b{font-family:var(--display);font-size:24px;color:var(--amber);line-height:1}
+.ed-tab[aria-selected="true"]{background:var(--cell-hi);border-color:var(--amber);color:var(--chalk)}
+.ed-rows{display:flex;flex-direction:column}
+.ed-row{display:grid;grid-template-columns:78px minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);gap:10px;align-items:start;padding-block:12px;border-bottom:1px dashed var(--line)}
+.ed-val{font-family:var(--display);font-weight:900;font-size:28px;color:var(--amber);line-height:1;padding-top:22px;white-space:nowrap}
+@media (max-width:760px){.ed-row{grid-template-columns:1fr}.ed-val{padding-top:0}}
+.cat-lbl{max-width:420px}
+.ed section.ai{background:var(--panel);border:1px solid var(--line-strong);border-radius:12px;padding:20px;margin-block:18px}
+.ai-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:10px}
+@media (max-width:640px){.ai-grid{grid-template-columns:1fr}}
+.ai-status{margin:0;font-weight:700;color:var(--amber);white-space:pre-wrap}
+.ai-paste summary{cursor:pointer;font-weight:700;color:var(--chalk)}
+.ai-paste > * + *{margin-top:10px}
+
+/* ---------- end ---------- */
+.end{max-width:900px;margin-inline:auto;width:100%;padding-top:clamp(12px,5vh,60px);display:flex;flex-direction:column;gap:22px}
+.end h1{font-family:var(--display);font-weight:900;font-size:clamp(52px,8vw,124px);color:var(--tc,var(--amber));line-height:.88;margin:0;text-transform:uppercase;text-wrap:balance}
+.end .lead{color:var(--chalk-dim)}
+.rank{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.rank li{display:grid;grid-template-columns:2.2em auto minmax(0,1fr) auto;align-items:center;gap:12px;padding:12px 16px;background:var(--panel);border-radius:var(--r);border:1px solid var(--line)}
+.rank li.first{border-color:var(--tc);background:var(--cell-hi)}
+.rank .pos{font-family:var(--display);font-weight:900;font-size:28px;color:var(--chalk-dim);line-height:1}
+.rank .nm{font-weight:700;font-size:20px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rank .pts{font-family:var(--display);font-weight:800;font-size:34px;font-variant-numeric:tabular-nums;line-height:1}
+.rank .outnote{font-size:12px;color:var(--chalk-dim);text-transform:uppercase;letter-spacing:.1em;margin-left:8px;font-weight:400}
+
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--chalk);color:var(--ground);padding:11px 16px;border-radius:var(--r);font-weight:700;z-index:60;max-width:calc(100% - 32px);box-shadow:0 8px 30px rgba(0,0,0,.35)}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+<div id="app"></div>
+<div id="round" hidden></div>
+<div id="editor" hidden></div>
+<div id="pop" hidden></div>
+<div id="toast" hidden role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* =========================================================
+   Grunddaten
+   ========================================================= */
+const MAX_C = 6, MAX_R = 10;
+const LETTERS = ['A','B','C','D','E','F'];
+const GRACE = 3;   // Nachfrist in Sekunden nach Abgabe- und Erbzeit
+const COLORS  = [
+  {name:'Gelb',    c:'#f2c14e'},
+  {name:'Blau',    c:'#6cc4ff'},
+  {name:'Rosa',    c:'#ff93b0'},
+  {name:'Grün',    c:'#8fe28f'},
+  {name:'Violett', c:'#c7a4ff'},
+  {name:'Orange',  c:'#ffa760'}
+];
+const EXAMPLE_TITLE = 'Mathe 1. Sek – Grundlagen';
+
+const Q = (q,a,alt) => ({q, a, alt: alt || ''});
+const EXAMPLE_SET = {
+  title: EXAMPLE_TITLE,
+  cols: 5, rows: 10,
+  values: [10,20,30,40,50,60,70,80,90,100],
+  times: [10,20,30,40,50,60,70,80,90,100],
+  startCapital: 200, answerSecs: 10, inheritSecs: 10,
+  categories: [
+    { name: 'Zahlen & Rechnen', qs: [
+      Q('7 · 8 = ?', '56'),
+      Q('144 : 12 = ?', '12'),
+      Q('Rechne geschickt:\n25 · 17 · 4 = ?', '1700'),
+      Q('Welches ist die kleinste Primzahl, die grösser als 30 ist?', '31'),
+      Q('3 + 4 · (12 − 7) = ?', '23'),
+      Q('2⁵ + 3³ = ?', '59'),
+      Q('Bestimme das kleinste gemeinsame Vielfache (kgV) von 12 und 18.', '36'),
+      Q('Bestimme den grössten gemeinsamen Teiler (ggT) von 84 und 126.', '42'),
+      Q('(−8) · 3 − (−15) : 5 = ?', '−21'),
+      Q('Wie viele Teiler hat die Zahl 72?\n(1 und 72 zählen mit.)', '12')
+    ]},
+    { name: 'Brüche & Dezimalzahlen', qs: [
+      Q('0.5 + 0.25 = ?', '0.75', '3/4'),
+      Q('Kürze den Bruch 18/24 so weit wie möglich.', '3/4'),
+      Q('2.4 · 3 = ?', '7.2'),
+      Q('1/3 + 1/4 = ?', '7/12'),
+      Q('0.6 · 0.4 = ?', '0.24'),
+      Q('Wie viel sind 2/3 von 45?', '30'),
+      Q('5/6 − 3/8 = ?', '11/24'),
+      Q('3/4 : 3/8 = ?', '2'),
+      Q('Welche Zahl ist am grössten?\n5/8   |   0.6   |   2/3   |   0.66', '2/3'),
+      Q('1⅔ · 1⅕ = ?', '2')
+    ]},
+    { name: 'Geometrie', qs: [
+      Q('Wie viele Grad hat ein rechter Winkel?', '90°'),
+      Q('Ein Quadrat hat die Seitenlänge 7 cm.\nWie gross ist sein Umfang?', '28 cm'),
+      Q('Wie gross ist die Fläche eines Rechtecks mit den Seiten 8 cm und 6 cm?', '48 cm²'),
+      Q('In einem Dreieck ist α = 50° und β = 70°.\nWie gross ist γ?', '60°'),
+      Q('Ein rechtwinkliges Dreieck hat die Katheten 6 cm und 9 cm.\nWie gross ist seine Fläche?', '27 cm²'),
+      Q('Wie viele Symmetrieachsen hat ein regelmässiges Sechseck?', '6'),
+      Q('Wie gross ist das Volumen eines Quaders mit den Kanten 5 cm, 4 cm und 3 cm?', '60 cm³'),
+      Q('Ein Rechteck hat den Umfang 30 cm. Eine Seite ist 9 cm lang.\nWie gross ist die Fläche?', '54 cm²'),
+      Q('Wie gross ist die Summe der Innenwinkel in einem Fünfeck?', '540°'),
+      Q('Ein Würfel hat das Volumen 64 cm³.\nWie gross ist seine Oberfläche?', '96 cm²')
+    ]},
+    { name: 'Grössen & Einheiten', qs: [
+      Q('3 m = ? cm', '300 cm'),
+      Q('2.5 kg = ? g', '2500 g'),
+      Q('90 min = ? h', '1.5 h'),
+      Q('4.2 km = ? m', '4200 m'),
+      Q('3 h 45 min = ? min', '225 min'),
+      Q('1 m² = ? cm²', '10000 cm²'),
+      Q('2.5 dl + 0.4 l = ? dl', '6.5 dl'),
+      Q('1 Liter = ? cm³', '1000 cm³'),
+      Q('72 km/h = ? m/s', '20 m/s'),
+      Q('0.35 ha = ? m²', '3500 m²')
+    ]},
+    { name: 'Sachrechnen', qs: [
+      Q('Ein Gipfeli kostet Fr. 1.20.\nWie viel kosten 5 Gipfeli?', 'Fr. 6.00'),
+      Q('Der Zug fährt um 14:37 Uhr ab und kommt um 15:22 Uhr an.\nWie viele Minuten dauert die Fahrt?', '45 min'),
+      Q('3 Hefte kosten Fr. 7.50.\nWie viel kosten 7 Hefte?', 'Fr. 17.50'),
+      Q('Wie viel sind 25 % von 360?', '90'),
+      Q('Lara ist 3 Jahre älter als ihr Bruder. Zusammen sind sie 27 Jahre alt.\nWie alt ist Lara?', '15 Jahre'),
+      Q('Ein Velo kostet Fr. 480.–. Im Ausverkauf gibt es 15 % Rabatt.\nWie viel kostet das Velo jetzt?', 'Fr. 408.–'),
+      Q('4 Maler brauchen für eine Arbeit 6 Tage.\nWie viele Tage brauchen 3 gleich schnelle Maler?', '8 Tage'),
+      Q('Auf einer Karte im Massstab 1 : 25 000 misst eine Strecke 8 cm.\nWie lang ist sie in Wirklichkeit (in km)?', '2 km'),
+      Q('Mia hat nach 4 Prüfungen den Notenschnitt 4.5.\nWelche Note braucht sie in der 5. Prüfung für einen Schnitt von 4.7?', '5.5'),
+      Q('Pumpe A füllt ein Becken allein in 6 Stunden, Pumpe B allein in 3 Stunden.\nWie lange brauchen beide zusammen?', '2 h')
+    ]}
+  ]
+};
+
+/* =========================================================
+   Hilfsfunktionen
+   ========================================================= */
+const $ = (s, r) => (r || document).querySelector(s);
+const clone = o => JSON.parse(JSON.stringify(o));
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const colorOf = t => COLORS[((t && t.color) || 0) % COLORS.length].c;
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const newId = () => 's-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 7);
+function fmtClock(s){ s = Math.max(0, s); return s >= 60 ? Math.floor(s/60) + ':' + String(s % 60).padStart(2,'0') : String(s); }
+function fmtLong(s){ if (s < 60) return s + ' s'; const m = Math.floor(s/60), r = s % 60; return r ? m + ' min ' + r + ' s' : m + ' min'; }
+const autoTime = v => Math.min(900, Math.max(5, Math.round(Number(v) || 10)));   // Standard: Sekunden = Punkte
+
+/* Ein Spiel (Aufgabensammlung) in sichere Form bringen.
+   Intern immer 6 × 10 Felder, damit beim Verkleinern nichts verloren geht. */
+function normalizeSet(b){
+  const n = (v, def, min, max) => { v = Math.round(Number(v)); return Number.isFinite(v) ? Math.min(max, Math.max(min, v)) : def; };
+  b = b || {};
+  const values = Array.from({length:MAX_R}, (_, r) => n(b.values && b.values[r], (r + 1) * 10, 1, 10000));
+  return {
+    id: b.id || '',
+    title: String(b.title != null ? b.title : 'Ohne Titel').slice(0, 80),
+    cols: n(b.cols, 5, 1, MAX_C),
+    rows: n(b.rows, 10, 1, MAX_R),
+    values,
+    times:  Array.from({length:MAX_R}, (_, r) => n(b.times && b.times[r], autoTime(values[r]), 5, 900)),
+    startCapital: n(b.startCapital, 200, 10, 100000),
+    answerSecs:   n(b.answerSecs, 10, 3, 300),
+    inheritSecs:  n(b.inheritSecs, 10, 3, 300),
+    updatedAt: Number(b.updatedAt) || 0,
+    createdBy: typeof b.createdBy === 'string' ? b.createdBy : null,
+    categories: Array.from({length:MAX_C}, (_, c) => {
+      const bc = (b.categories && b.categories[c]) || {};
+      return {
+        name: String(bc.name != null ? bc.name : 'Thema ' + LETTERS[c]).slice(0, 60),
+        qs: Array.from({length:MAX_R}, (_, r) => {
+          const q = (bc.qs && bc.qs[r]) || {};
+          return { q: String(q.q != null ? q.q : ''), a: String(q.a != null ? q.a : ''), alt: String(q.alt != null ? q.alt : '') };
+        })
+      };
+    })
+  };
+}
+function makeExampleSet(legacyBoard){
+  const s = normalizeSet(Object.assign({}, EXAMPLE_SET, legacyBoard || {}, { title: EXAMPLE_TITLE, cols: 5, rows: 10 }));
+  s.id = newId(); s.updatedAt = Date.now(); s.createdBy = Store.uid;
+  return s;
+}
+/* Ein Spiel gehört mir, wenn ich es erstellt habe (ohne Angabe: der Besitzerin/dem Besitzer der Seite). */
+const isMine = s => s.createdBy ? s.createdBy === Store.uid : Store.isOwner;
+
+/* Spiel für Datei / Weitergabe (ohne interne Angaben) */
+function exportSet(s){
+  const o = normalizeSet(s);
+  delete o.id; delete o.updatedAt; delete o.createdBy;
+  return Object.assign({ format: 'mathe-jeopardy', version: 1 }, o);
+}
+/* Text aus Datei oder KI-Antwort in ein Spiel umwandeln. Versteht das
+   Export-Format und das kompakte KI-Format {titel, spalten:[{thema, aufgaben:[{frage, loesung, alternativen}]}]}. */
+function parseGameText(text){
+  let t = String(text || '').trim(), obj = null;
+  const tries = [t];
+  const fence = t.match(/```(?:json)?\s*([\s\S]*?)```/i); if (fence) tries.push(fence[1]);
+  const a = t.indexOf('{'), b = t.lastIndexOf('}'); if (a >= 0 && b > a) tries.push(t.slice(a, b + 1));
+  for (const x of tries){ try { obj = JSON.parse(x); break; } catch(e){} }
+  return gameFromObject(obj);
+}
+function gameFromObject(obj){
+  if (!obj || typeof obj !== 'object') return null;
+  if (Array.isArray(obj.categories)) return normalizeSet(obj);
+  const sp = obj.spalten || obj.columns;
+  if (!Array.isArray(sp) || !sp.length) return null;
+  const cols = Math.min(MAX_C, sp.length);
+  const lists = sp.slice(0, cols).map(s => (s && (s.aufgaben || s.questions)) || []);
+  const rows = Math.max(1, Math.min(MAX_R, Math.max.apply(null, lists.map(l => l.length))));
+  return normalizeSet({
+    title: obj.titel || obj.title || '',
+    cols, rows,
+    categories: sp.slice(0, cols).map((s, c) => ({
+      name: (s && (s.thema || s.name)) || 'Thema ' + LETTERS[c],
+      qs: lists[c].slice(0, MAX_R).map(q => {
+        q = q || {};
+        const alt = q.alternativen || q.alternatives || '';
+        return { q: String(q.frage || q.question || ''), a: String(q.loesung != null ? q.loesung : q.answer != null ? q.answer : ''), alt: Array.isArray(alt) ? alt.join('; ') : String(alt) };
+      })
+    }))
+  });
+}
+const safeFileName = s => (String(s || '').replace(/[\\/:*?"<>|\u0000-\u001f]+/g, '-').replace(/\s+/g, ' ').trim().slice(0, 80) || 'Jeopardy-Spiel');
+function normalizeSets(m){
+  const out = {};
+  Object.keys(m || {}).forEach(id => { const s = normalizeSet(m[id]); s.id = id; out[id] = s; });
+  return out;
+}
+/* Eine Runde = ein gespieltes (oder laufendes) Spiel mit Gruppen, Punkten und gespielten Feldern. */
+function fixGame(g, legacyBoard){
+  if (!(g && Array.isArray(g.teams) && g.teams.length && g.used && typeof g.used === 'object')) return null;
+  g.board = g.board ? normalizeSet(g.board) : normalizeSet(Object.assign({}, EXAMPLE_SET, legacyBoard || {}, { title: EXAMPLE_TITLE, cols: 5, rows: 10 }));
+  if (typeof g.turn !== 'number') g.turn = 0;
+  if (!g.id) g.id = newId().replace(/^s-/, 'r-');
+  if (!g.name) g.name = g.board.title;
+  if (!g.updatedAt) g.updatedAt = g.started || Date.now();
+  g.teams.forEach(t => {
+    if (!Array.isArray(t.members)) t.members = [];
+    if (typeof t.next !== 'number') t.next = 0;
+  });
+  return g;
+}
+function normalizeRounds(m){
+  const out = {};
+  Object.keys(m || {}).forEach(id => { const g = fixGame(m[id]); if (g){ g.id = id; out[id] = g; } });
+  return out;
+}
+const splitNames = s => String(s || '').split(/[,;\n]+/).map(x => x.trim()).filter(Boolean).slice(0, 40);
+const speakerOf = t => t && t.members && t.members.length ? t.members[t.next % t.members.length] : '';
+function normalizeClasses(list){
+  return (Array.isArray(list) ? list : []).map(k => ({
+    id: String(k.id || 'k-' + Math.random().toString(36).slice(2, 9)),
+    name: String(k.name || 'Klasse').slice(0, 40),
+    students: Array.from(new Set((Array.isArray(k.students) ? k.students : splitNames(k.students)).map(x => String(x).trim().slice(0, 30)).filter(Boolean))).slice(0, 60)
+  }));
+}
+const fmtDate = ts => { try { return new Date(ts).toLocaleDateString('de-CH', { day: 'numeric', month: 'short' }); } catch(e){ return ''; } };
+
+/* ---------- Rückmeldung pro Gruppe ---------- */
+function teamFeedback(g, i){
+  const b = g.board;
+  const topics = Array.from({length:b.cols}, (_, c) => ({ c, name: b.categories[c].name, right: 0, total: 0 }));
+  const missed = [];
+  Object.keys(g.used).forEach(key => {
+    const [c, r] = key.split('-').map(Number), u = g.used[key];
+    if (c >= b.cols || r >= b.rows) return;
+    let res = null, how = '';
+    if (u.by === i){ res = !!u.ok; how = 'gewählt'; }
+    else if (u.att && Object.prototype.hasOwnProperty.call(u.att, i)){ res = !!u.att[i]; how = 'beim Erben'; }
+    else if ((u.heirs || []).includes(i)){ res = true; how = 'beim Erben'; }
+    if (res === null) return;
+    topics[c].total++;
+    if (res) topics[c].right++;
+    else missed.push({ c, r, q: b.categories[c].qs[r].q, a: b.categories[c].qs[r].a, how });
+  });
+  topics.forEach(t => {
+    t.rate = t.total ? t.right / t.total : null;
+    t.level = t.total === 0 ? 'none' : t.rate >= .75 ? 'ok' : t.rate >= .5 ? 'mid' : 'bad';
+    t.label = { none: 'nicht geübt', ok: 'stark', mid: 'solide', bad: 'noch üben' }[t.level];
+  });
+  missed.sort((x, y) => x.c - y.c || x.r - y.r);
+  return { topics, missed,
+    strong: topics.filter(t => t.level === 'ok').map(t => t.name),
+    weak: topics.filter(t => t.level === 'bad').map(t => t.name) };
+}
+const openFields = s => { let n = 0; for (let c = 0; c < s.cols; c++) for (let r = 0; r < s.rows; r++) if (!s.categories[c].qs[r].q.trim()) n++; return n; };
+function valueRange(s){ const v = s.values.slice(0, s.rows); return [Math.min.apply(null, v), Math.max.apply(null, v)]; }
+
+/* ---------- Antwortprüfung ---------- */
+const UNIT_ALIAS = {
+  'grad':'°', 'minuten':'min', 'minute':'min', 'stunden':'h', 'stunde':'h', 'std':'h',
+  'tag':'tage', 'franken':'fr', 'chf':'fr', 'liter':'l', 'meter':'m', 'zentimeter':'cm',
+  'kilometer':'km', 'gramm':'g', 'kilogramm':'kg', 'jahr':'jahre'
+};
+function lite(s){
+  let t = String(s == null ? '' : s).normalize('NFKC').toLowerCase();
+  t = t.replace(/[⁄∕]/g, '/').replace(/[−–—]/g, '-').replace(/,/g, '.');
+  t = t.replace(/\s+/g, ' ').trim();
+  t = t.replace(/(\d)['’`´ ](?=\d{3}(?!\d))/g, '$1');
+  t = t.replace(/['’`´]/g, '');
+  t = t.replace(/^=\s*/, '').replace(/^(fr\.?|chf)\s*/, '').replace(/\.-$/, '');
+  t = t.replace(/\s*\/\s*/g, '/');
+  return t.trim();
+}
+function parseNum(t){
+  const m = t.match(/^(-?)(\d+(?:\.\d+)?)(?: (\d+)\/(\d+)|\/(\d+(?:\.\d+)?))?\s*(.*)$/);
+  if (!m) return null;
+  let v = parseFloat(m[2]);
+  if (m[3] !== undefined) { if (+m[4] === 0) return null; v += (+m[3]) / (+m[4]); }
+  else if (m[5] !== undefined) { if (+m[5] === 0) return null; v /= (+m[5]); }
+  if (m[1]) v = -v;
+  let u = m[6].replace(/\s+/g, '').replace(/\.$/, '');
+  if (UNIT_ALIAS[u] !== undefined) u = UNIT_ALIAS[u];
+  return { v, u, frac: m[5] !== undefined || m[3] !== undefined };
+}
+function isCorrect(input, q){
+  const A = lite(input);
+  if (!A) return false;
+  const An = parseNum(A);
+  const cands = [q.a].concat(String(q.alt || '').split(';')).map(s => s.trim()).filter(Boolean);
+  for (const c of cands){
+    const C = lite(c);
+    if (A.replace(/\s/g,'') === C.replace(/\s/g,'')) return true;
+    const Cn = parseNum(C);
+    if (!An || !Cn) continue;
+    if (Cn.frac) continue; // Bruch als Lösung: nur exakte Schreibweise zählt
+    const same = Math.abs(An.v - Cn.v) <= 1e-9 * Math.max(1, Math.abs(Cn.v));
+    if (same && (!An.u || !Cn.u || An.u === Cn.u)) return true;
+  }
+  return false;
+}
+
+/* =========================================================
+   Speicher: db-Capability, sonst Browser
+   ========================================================= */
+const Local = {
+  get(k){ try { const t = localStorage.getItem('mj-' + k); return t ? JSON.parse(t) : null; } catch(e){ return null; } },
+  set(k, v){ try { localStorage.setItem('mj-' + k, JSON.stringify(v)); } catch(e){} }
+};
+const Store = {
+  db: null, user: null, uid: null, isOwner: true, queue: {}, busy: {},
+  /* Runden und Klassenlisten sind privat pro Person; die Spielbibliothek ist gemeinsam. */
+  get gamePath(){ return this.uid ? 'data/users/' + this.uid + '/game' : null; },          // alt: eine einzige Runde
+  get roundsCol(){ return this.uid ? 'data/users/' + this.uid + '/rounds/items' : null; },
+  get classesPath(){ return this.uid ? 'data/users/' + this.uid + '/classes' : null; },
+  async listCol(path){
+    if (!this.db || !path) return null;
+    for (let i = 0; i < 2; i++){
+      try { const s = await this.db.collection(path).get(); const m = {}; s.docs.forEach(d => { m[d.id] = clone(d.data()); }); return m; }
+      catch(e){ if (e && e.code === 'unavailable' && i === 0){ await wait(600 + Math.random()*600); continue; } return null; }
+    }
+    return null;
+  },
+  async init(){
+    const use = n => (window.claude && window.claude.use) ? window.claude.use(n).catch(() => null) : Promise.resolve(null);
+    const [db, user] = await Promise.all([use('db'), use('user')]);
+    this.db = db; this.user = user;
+    if (user){
+      const [uid, owner] = await Promise.all([user.id(), user.isOwner()]);
+      this.uid = uid; this.isOwner = owner;
+    }
+  },
+  pending(path){ return !!(this.queue[path] || this.busy[path]); },
+  async getDoc(path){
+    if (!this.db) return null;
+    for (let i = 0; i < 2; i++){
+      try { const s = await this.db.doc(path).get(); return s.exists ? clone(s.data()) : null; }
+      catch(e){ if (e && e.code === 'unavailable' && i === 0){ await wait(600 + Math.random()*600); continue; } return null; }
+    }
+    return null;
+  },
+  async listSets(){
+    if (!this.db) return null;
+    for (let i = 0; i < 2; i++){
+      try { const s = await this.db.collection('sets').get(); const m = {}; s.docs.forEach(d => { m[d.id] = clone(d.data()); }); return m; }
+      catch(e){ if (e && e.code === 'unavailable' && i === 0){ await wait(600 + Math.random()*600); continue; } return null; }
+    }
+    return null;
+  },
+  write(path, body){ if (!this.db) return; this.queue[path] = { body: clone(body) }; if (!this.busy[path]) this.flush(path); },
+  remove(path){ if (!this.db) return; this.queue[path] = { del: true }; if (!this.busy[path]) this.flush(path); },
+  async flush(path){
+    this.busy[path] = true;
+    while (this.queue[path]){
+      const job = this.queue[path]; this.queue[path] = null;
+      const run = () => job.del ? this.db.doc(path).delete() : this.db.doc(path).set(job.body);
+      try { await run(); }
+      catch(e){
+        if (e && e.code === 'unavailable'){ await wait(800 + Math.random()*800); try { await run(); } catch(e2){ saveFailed(e2); } }
+        else saveFailed(e);
+      }
+    }
+    this.busy[path] = false;
+  }
+};
+let saveWarned = false;
+function saveFailed(e){
+  if (saveWarned) return; saveWarned = true;
+  const c = e && e.code;
+  toast(c === 'invalid_argument' ? 'Speichern nicht möglich: Dir fehlen die Bearbeitungsrechte. Änderungen bleiben nur in diesem Browser.'
+      : c === 'quota_exceeded' ? 'Der Speicher ist voll. Lösche alte Spiele, damit neue gespeichert werden können.'
+      : 'Online-Speichern fehlgeschlagen. Änderungen bleiben vorerst in diesem Browser.', 6500);
+}
+function saveSet(s){ S.sets[s.id] = s; Local.set('sets', S.sets); Store.write('sets/' + s.id, s); }
+const deletedIds = new Set();
+function deleteSet(id){ deletedIds.add(id); delete S.sets[id]; Local.set('sets', S.sets); Store.remove('sets/' + id); }
+function saveRound(g){
+  g.updatedAt = Date.now();
+  S.rounds[g.id] = g; Local.set('rounds', S.rounds);
+  if (Store.roundsCol) Store.write(Store.roundsCol + '/' + g.id, g);
+}
+function deleteRound(id){
+  delete S.rounds[id]; Local.set('rounds', S.rounds);
+  if (S.game && S.game.id === id) S.game = null;
+  if (Store.roundsCol) Store.remove(Store.roundsCol + '/' + id);
+}
+function saveGame(){ if (S.game) saveRound(S.game); }
+function saveClasses(){
+  Local.set('classes', S.classes);
+  if (Store.classesPath) Store.write(Store.classesPath, { list: S.classes });
+}
+/* Bibliothek neu laden (Spiele anderer Personen erscheinen), ohne eigene ungespeicherte Schreibvorgänge zu verlieren. */
+async function refreshSets(){
+  const m = await Store.listSets();
+  if (m === null) return false;
+  const next = normalizeSets(m);
+  Object.keys(S.sets).forEach(id => { if (Store.pending('sets/' + id)) next[id] = S.sets[id]; });
+  deletedIds.forEach(id => { delete next[id]; });
+  S.sets = next; Local.set('sets', S.sets);
+  return true;
+}
+
+/* =========================================================
+   Ton (Web Audio)
+   ========================================================= */
+const Sound = {
+  ac: null,
+  ctx(){
+    if (!this.ac){ const A = window.AudioContext || window.webkitAudioContext; if (!A) return null; this.ac = new A(); }
+    if (this.ac.state === 'suspended') this.ac.resume();
+    return this.ac;
+  },
+  unlock(){ try { this.ctx(); } catch(e){} },
+  tone(f, t0, dur, type, vol){
+    if (!S.sound) return;
+    try {
+      const ac = this.ctx(); if (!ac) return;
+      const o = ac.createOscillator(), g = ac.createGain(), t = ac.currentTime + t0;
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(vol || .2, t + .02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g); g.connect(ac.destination);
+      o.start(t); o.stop(t + dur + .05);
+    } catch(e){}
+  },
+  thinkOver(){ this.tone(784,0,.55,'triangle',.4); this.tone(523,.32,.9,'triangle',.4); this.tone(392,.66,1.4,'triangle',.35); },
+  answerOver(){ [0,.17,.34].forEach(t => this.tone(988,t,.13,'square',.12)); this.tone(1319,.52,.55,'square',.12); },
+  tick(){ this.tone(1500,0,.06,'sine',.12); },
+  right(){ [523,659,784,1047].forEach((f,i) => this.tone(f, i*.09, .4, 'triangle', .28)); },
+  wrong(){ this.tone(196,0,.4,'sawtooth',.13); this.tone(147,.3,.7,'sawtooth',.13); }
+};
+
+/* =========================================================
+   Countdown
+   ========================================================= */
+const Timer = {
+  total: 0, left: 0, endAt: 0, running: false, iv: 0, onEnd: null, lastSec: null,
+  start(sec, onEnd){
+    this.stop();
+    this.total = sec * 1000; this.left = this.total; this.onEnd = onEnd; this.lastSec = null;
+    this.resume();
+  },
+  resume(){
+    if (this.left <= 0 || this.running) return;
+    this.endAt = performance.now() + this.left; this.running = true;
+    this.iv = setInterval(() => this.step(), 100);
+    this.step();
+  },
+  pause(){
+    if (!this.running) return;
+    this.left = Math.max(0, this.endAt - performance.now());
+    this.running = false; clearInterval(this.iv); this.draw();
+  },
+  stop(){ this.running = false; clearInterval(this.iv); this.onEnd = null; },
+  step(){
+    this.left = Math.max(0, this.endAt - performance.now());
+    const sec = Math.ceil(this.left / 1000);
+    if (this.lastSec !== null && sec !== this.lastSec && sec > 0 && sec <= 5) Sound.tick();
+    this.lastSec = sec;
+    this.draw();
+    if (this.left <= 0){
+      this.running = false; clearInterval(this.iv);
+      const f = this.onEnd; this.onEnd = null; if (f) f();
+    }
+  },
+  draw(){
+    const d = $('.t-digits'), b = $('.t-bar i'), ov = $('#round');
+    if (!d) return;
+    const s = Math.ceil(this.left / 1000);
+    d.textContent = fmtClock(s);
+    if (b) b.style.transform = 'scaleX(' + (this.total ? this.left / this.total : 0) + ')';
+    ov.classList.toggle('low', s <= 5 && this.left > 0);
+    ov.classList.toggle('paused', !this.running && this.left > 0);
+  }
+};
+
+/* =========================================================
+   Zustand
+   ========================================================= */
+const S = {
+  sets: {},
+  rounds: {},
+  classes: [],
+  game: null,          // die gerade gespielte Runde (Verweis in S.rounds)
+  view: 'library',
+  setup: null,         // {mode:'new'|'edit', setId, roundId, name, nameTouched, classId, present, teams:[{name,color,members}]}
+  classEd: null,
+  fbTeam: 0,
+  round: null,
+  editor: null,
+  teamPop: null,
+  review: null,
+  sample: null,
+  sound: true,
+  prevScores: null,
+  confirm: null, confirmBtn: null, confirmT: 0
+};
+const defaultTeams = n => Array.from({length:n}, (_, i) => ({ name: 'Team ' + COLORS[i].name, color: i, members: '' }));
+const gb = () => S.game.board;
+
+function nextTurn(from){
+  const t = S.game.teams, n = t.length;
+  for (let i = 1; i <= n; i++){ const j = (from + i) % n; if (!t[j].out) return j; }
+  return from;
+}
+const usedCount = () => Object.keys(S.game.used).length;
+const totalFields = () => gb().cols * gb().rows;
+function checkOver(){
+  const g = S.game, active = g.teams.filter(t => !t.out).length;
+  if (active <= 1 || usedCount() >= totalFields()){ g.over = true; S.view = 'end'; }
+}
+
+/* ---------- Doppelklick-Bestätigung (statt confirm()) ---------- */
+function armed(key, btn, label){
+  if (S.confirm === key){ S.confirm = null; clearTimeout(S.confirmT); return true; }
+  resetArmed();
+  S.confirm = key; S.confirmBtn = btn;
+  btn.dataset.orig = btn.textContent; btn.textContent = label; btn.classList.add('armed');
+  S.confirmT = setTimeout(resetArmed, 4000);
+  return false;
+}
+function resetArmed(){
+  const b = S.confirmBtn;
+  if (b && b.isConnected && b.dataset.orig){ b.textContent = b.dataset.orig; b.classList.remove('armed'); }
+  S.confirm = null; S.confirmBtn = null; clearTimeout(S.confirmT);
+}
+
+let toastT = 0;
+function toast(msg, ms){
+  const t = $('#toast'); t.textContent = msg; t.hidden = false;
+  clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, ms || 3200);
+}
+
+let wakeLock = null;
+async function keepAwake(){
+  try { if (navigator.wakeLock && !wakeLock){ wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', () => { wakeLock = null; }); } } catch(e){}
+}
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && S.view === 'board') keepAwake(); });
+
+/* =========================================================
+   Ansichten
+   ========================================================= */
+function topbar(mid, sub){
+  return `<header class="top">
+    <div class="brand"><span class="brand-mark">Mathe-<em>Jeopardy</em></span><span class="brand-sub">${esc(sub || 'Quiz-Tafel für die Klasse')}</span></div>
+    <div class="top-mid">${mid || ''}</div>
+    <div class="top-actions">
+      <button class="btn ghost sm" data-act="toggleSound" aria-pressed="${S.sound}">${S.sound ? 'Ton an' : 'Ton aus'}</button>
+      <button class="btn ghost sm" data-act="fullscreen">Vollbild</button>
+      ${S.view !== 'library' ? '<button class="btn ghost sm" data-act="toLibrary">Meine Spiele</button>' : ''}
+    </div>
+  </header>`;
+}
+
+function viewLibrary(){
+  const list = Object.values(S.sets).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+  const rounds = Object.values(S.rounds).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+  const running = rounds.filter(r => !r.over), done = rounds.filter(r => r.over);
+  const roundItem = g => {
+    const open = g.board.cols * g.board.rows - Object.keys(g.used).length, id = esc(g.id);
+    return `<li class="rnd">
+      <div class="rnd-main">
+        <b class="rnd-name">${esc(g.name)}</b>
+        <span class="muted rnd-meta">${esc(g.board.title)} · ${g.over ? 'beendet' : 'noch ' + open + ' Felder offen'} · ${fmtDate(g.updatedAt)}</span>
+        <span class="rnd-teams">${g.teams.map(t => `<span class="rnd-team${t.out ? ' out' : ''}"><span class="dot" style="--tc:${colorOf(t)}"></span>${esc(t.name)} <b>${t.score}</b></span>`).join('')}</span>
+      </div>
+      <div class="rnd-actions">
+        ${g.over
+          ? `<button class="btn primary sm" data-act="showFeedback" data-id="${id}">Rückmeldung</button>`
+          : `<button class="btn primary sm" data-act="resumeGame" data-id="${id}">Fortsetzen</button>
+             <button class="btn sm" data-act="editRound" data-id="${id}">Gruppen anpassen</button>`}
+        <button class="btn ghost sm" data-act="delRound" data-id="${id}">Löschen</button>
+      </div>
+    </li>`;
+  };
+  const resume = (running.length ? `<section class="rounds" aria-label="Laufende Runden">
+      <h2 class="lib-sub">Laufende Runden</h2>
+      <ul class="rnd-list">${running.map(roundItem).join('')}</ul>
+    </section>` : '')
+    + (done.length ? `<details class="rounds-done"><summary>Abgeschlossene Runden (${done.length})</summary><ul class="rnd-list">${done.map(roundItem).join('')}</ul></details>` : '');
+  const card = s => {
+    const [lo, hi] = valueRange(s), miss = openFields(s), mine = isMine(s), id = esc(s.id);
+    return `<li class="set">
+      <h2>${esc(s.title) || 'Ohne Titel'}</h2>
+      <p class="set-meta">${s.cols} × ${s.rows} · ${s.cols * s.rows} Aufgaben · ${lo}–${hi} Punkte${!mine && s.createdBy ? ` · von <span data-author="${esc(s.createdBy)}">jemand anderem</span>` : ''}</p>
+      <p class="set-topics">${s.categories.slice(0, s.cols).map((c, i) => `<span><b>${LETTERS[i]}</b>${esc(c.name)}</span>`).join('')}</p>
+      ${miss ? `<p class="set-warn">${miss} ${miss === 1 ? 'Feld' : 'Felder'} noch ohne Aufgabe</p>` : ''}
+      <div class="set-actions">
+        <button class="btn primary" data-act="playSet" data-id="${id}">Spielen</button>
+        ${mine ? `<button class="btn" data-act="editSet" data-id="${id}">Bearbeiten</button>` : ''}
+        <button class="btn ghost sm" data-act="dupSet" data-id="${id}">${mine ? 'Duplizieren' : 'Kopie für mich'}</button>
+        <button class="btn ghost sm" data-act="downloadSet" data-id="${id}">Herunterladen</button>
+        ${mine ? `<button class="btn ghost sm" data-act="delSet" data-id="${id}">Löschen</button>` : ''}
+      </div>
+    </li>`;
+  };
+  const mineList = list.filter(isMine), others = list.filter(s => !isMine(s));
+  return topbar('') + `<main class="lib">
+    <div class="lib-head">
+      <div><p class="kicker">Meine Spiele</p><h1>Was spielen wir heute?</h1></div>
+      <div class="q-actions">
+        <button class="btn primary lg" data-act="newSet">+ Neues Spiel erstellen</button>
+        <button class="btn lg" data-act="newSetAi">Mit KI erstellen</button>
+        <label class="btn ghost lg" for="file-in">Spiel-Datei laden</label>
+        <button class="btn ghost lg" data-act="manageClasses">Klassen</button>
+        <input type="file" id="file-in" accept=".json,application/json,text/plain" multiple hidden>
+      </div>
+    </div>
+    ${resume}
+    ${rounds.length ? '<h2 class="lib-sub">Spiele</h2>' : ''}
+    ${mineList.length ? `<ul class="sets">${mineList.map(card).join('')}</ul>` : ''}
+    ${others.length ? `<h2 class="lib-sub">Geteilt von anderen</h2><ul class="sets">${others.map(card).join('')}</ul>` : ''}
+    ${list.length ? '' : `<div class="empty">
+      <p><b>Noch keine Spiele gespeichert.</b></p>
+      <p class="muted">Erstelle ein eigenes Spiel oder hole das Beispiel mit 50 Matheaufgaben für die 1. Sek zurück.</p>
+      <div class="q-actions"><button class="btn primary" data-act="newSet">Neues Spiel erstellen</button><button class="btn" data-act="addExample">Mathe-Beispiel hinzufügen</button></div>
+    </div>`}
+  </main>`;
+}
+
+function viewSetup(){
+  const U = S.setup, edit = U.mode === 'edit';
+  const g = edit ? S.rounds[U.roundId] : null;
+  const s = edit ? g.board : S.sets[U.setId];
+  const [lo, hi] = valueRange(s);
+  const tLo = s.times[s.values.slice(0, s.rows).indexOf(lo)], tHi = s.times[s.values.slice(0, s.rows).indexOf(hi)];
+  const miss = openFields(s);
+  const cls = S.classes.find(k => k.id === U.classId);
+  const presentCount = cls ? cls.students.filter(n => U.present[n] !== false).length : 0;
+  return topbar('', s.title) + `<main class="setup">
+    <section class="setup-teams">
+      <p class="kicker">${edit ? 'Runde anpassen' : 'Runde vorbereiten'}</p>
+      <h1>${edit ? 'Gruppen anpassen' : 'Wer spielt mit?'}</h1>
+      <p class="setup-game">Spiel: <b>${esc(s.title) || 'Ohne Titel'}</b> <span class="muted">· ${s.cols} × ${s.rows} = ${s.cols * s.rows} Aufgaben</span></p>
+      ${miss ? `<p class="warn" style="font-size:15px">${miss} ${miss === 1 ? 'Feld hat' : 'Felder haben'} noch keine Aufgabe.</p>` : ''}
+      <label class="lbl" for="setup-roundname">Name der Runde <span class="hint">damit du sie in der nächsten Lektion wiederfindest</span>
+        <input class="field" id="setup-roundname" data-setup-field="name" value="${esc(U.name)}" maxlength="60" placeholder="z. B. 2b – Brüche"></label>
+      <div class="class-row">
+        <label class="lbl" for="setup-class">Klasse
+          <select class="field sm" id="setup-class" data-setup-class>
+            <option value="">Ohne Klassenliste</option>
+            ${S.classes.map(k => `<option value="${esc(k.id)}"${k.id === U.classId ? ' selected' : ''}>${esc(k.name)} (${k.students.length})</option>`).join('')}
+          </select></label>
+        <button class="btn ghost sm" data-act="manageClasses">${S.classes.length ? 'Klassen bearbeiten' : 'Klasse erfassen'}</button>
+      </div>
+      ${cls ? `<div class="present">
+        <p class="hint">Heute dabei (${presentCount} von ${cls.students.length}) – antippen, wer fehlt:</p>
+        <div class="present-chips">${cls.students.map(n => `<button class="pchip${U.present[n] === false ? ' absent' : ''}" data-act="togglePresent" data-n="${esc(n)}" aria-pressed="${U.present[n] !== false}">${esc(n)}</button>`).join('')}</div>
+        <div><button class="btn sm" data-act="shuffleGroups">Zufällig auf ${U.teams.length} Gruppen verteilen</button></div>
+      </div>` : ''}
+      <p class="muted" style="margin:0">${edit ? 'Punkte und gespielte Felder bleiben erhalten.' : `2 bis 6 Gruppen. Jede Gruppe startet mit <b style="color:var(--chalk)">${s.startCapital} Punkten</b>. Tippe auf den Farbpunkt, um die Farbe zu wechseln.`}</p>
+      <ol class="team-list">${U.teams.map((tm, i) => `<li>
+        <button class="swatch" data-act="cycleColor" data-i="${i}" style="--tc:${COLORS[tm.color].c}" aria-label="Farbe von ${esc(tm.name)} wechseln"></button>
+        <div class="team-fields">
+          <input class="field" id="team-name-${i}" data-setup-name="${i}" value="${esc(tm.name)}" maxlength="24" aria-label="Name der Gruppe ${i+1}">
+          <input class="field sm" id="team-members-${i}" data-setup-members="${i}" value="${esc(tm.members)}" placeholder="Mitglieder, mit Komma getrennt (optional)" aria-label="Mitglieder der Gruppe ${i+1}">
+          ${edit && g.teams[i] ? `<span class="hint">${g.teams[i].score} Punkte${g.teams[i].out ? ' · ausgeschieden' : ''}</span>` : ''}
+        </div>
+        ${edit ? '' : `<button class="btn ghost sm" data-act="removeTeam" data-i="${i}" ${U.teams.length <= 2 ? 'disabled' : ''}>Entfernen</button>`}
+      </li>`).join('')}</ol>
+      ${!edit && U.teams.length < 6 ? '<div><button class="btn ghost" data-act="addTeam">+ Gruppe hinzufügen</button></div>' : ''}
+      <p class="hint">Mit Mitgliedern zeigt das Spiel bei jeder Aufgabe, wer aus der Gruppe antwortet – reihum.</p>
+      <div class="setup-actions">
+        ${edit
+          ? `<button class="btn primary lg" data-act="applyEdit">Übernehmen und weiterspielen</button>
+             <button class="btn ghost lg" data-act="toLibrary">Abbrechen</button>`
+          : `<button class="btn primary lg" data-act="startGame">Spiel starten</button>
+             ${isMine(s) ? `<button class="btn lg" data-act="editSet" data-id="${esc(s.id)}">Aufgaben bearbeiten</button>` : ''}
+             <button class="btn ghost lg" data-act="toLibrary">Anderes Spiel wählen</button>`}
+      </div>
+    </section>
+    <section class="rules" aria-label="Spielregeln">
+      <h2>So läuft's</h2>
+      <ol>
+        <li><span>Die Gruppe am Zug wählt ein Feld, z. B. <b>A ${s.values[Math.min(2, s.rows - 1)]}</b>. Die Gruppen sind reihum dran.</span></li>
+        <li><span>Denkzeit: je schwieriger, desto länger – ${lo === hi ? fmtLong(tLo) : `von ${fmtLong(tLo)} (${lo} Punkte) bis ${fmtLong(tHi)} (${hi} Punkte)`}.</span></li>
+        <li><span>Nach dem Signal: ${s.answerSecs} Sekunden, um der Lehrperson die Lösung zu sagen – dann noch 3 – 2 – 1. Liegt bis dahin keine Lösung vor, gilt sie als falsch.</span></li>
+        <li><span>Richtig: Punkte dazu. Falsch: Punkte weg.</span></li>
+        <li><span>Bei falscher Lösung haben alle anderen Gruppen ${s.inheritSecs} Sekunden – wer richtig liegt, <b>erbt</b> die Punkte. Also immer mitrechnen!</span></li>
+        <li><span>Wer keinen Kredit mehr hat, scheidet aus.</span></li>
+      </ol>
+      <h2>Themen</h2>
+      <ul class="topics">${s.categories.slice(0, s.cols).map((c, i) => `<li><b>${LETTERS[i]}</b><span>${esc(c.name)}</span></li>`).join('')}</ul>
+    </section>
+  </main>`;
+}
+
+function viewBoard(){
+  const g = S.game, b = g.board;
+  const cur = g.teams[g.turn] || g.teams[0];
+  const open = totalFields() - usedCount();
+  const sp = speakerOf(cur);
+  const mid = g.over
+    ? `<span class="turn-line"><b>Spiel beendet</b><button class="btn sm" data-act="showEnd">Rangliste & Rückmeldung</button></span>`
+    : `<span class="turn-line">Am Zug: <span class="dot" style="--tc:${colorOf(cur)}"></span><b>${esc(cur.name)}</b>${sp ? `<span>– <b>${esc(sp)}</b> antwortet</span>` : ''}<span class="muted">· noch ${open} offen</span><button class="btn ghost sm" data-act="showEnd">Zwischenstand</button></span>`;
+
+  const chips = g.teams.map((t, i) => {
+    const prev = S.prevScores ? S.prevScores[i] : null;
+    const bump = prev == null ? '' : t.score > prev ? ' bump-up' : t.score < prev ? ' bump-down' : '';
+    const turn = !g.over && i === g.turn && !t.out;
+    return `<button class="chip${turn ? ' turn' : ''}${t.out ? ' out' : ''}${bump}" style="--tc:${colorOf(t)}" data-act="teamPop" data-i="${i}" aria-label="${esc(t.name)}: ${t.score} Punkte. Bearbeiten">
+      <span class="dot"></span><span class="name">${esc(t.name)}</span>
+      <span class="score">${t.score}</span>
+      <span class="tag">${t.out ? 'ausgeschieden' : turn ? 'am Zug' + (speakerOf(t) ? ' · ' + esc(speakerOf(t)) : '') : (speakerOf(t) ? 'als Nächstes: ' + esc(speakerOf(t)) : '')}</span>
+    </button>`;
+  }).join('');
+
+  let cells = b.categories.slice(0, b.cols).map((c, i) => `<div class="colhead"><span class="letter">${LETTERS[i]}</span><span class="cat">${esc(c.name)}</span></div>`).join('');
+  for (let r = 0; r < b.rows; r++){
+    const lvl = b.rows > 1 ? (r / (b.rows - 1)).toFixed(3) : 0;
+    for (let c = 0; c < b.cols; c++){
+      const v = b.values[r], u = g.used[c + '-' + r];
+      if (u){
+        const by = g.teams[u.by];
+        const heirs = (u.heirs || []).map(h => `<span class="dot" style="--tc:${colorOf(g.teams[h])}"></span>`).join('');
+        const who = by ? by.name : '';
+        const title = (u.ok ? `${who}: richtig` : `${who}: falsch`) + ((u.heirs || []).length ? ' – geerbt von ' + u.heirs.map(h => g.teams[h] && g.teams[h].name).join(', ') : '');
+        const sol = b.categories[c].qs[r].a;
+        cells += `<button class="cell used" style="--lvl:${lvl}" data-act="review" data-c="${c}" data-r="${r}" title="${esc(title)}" aria-label="${LETTERS[c]} ${v}, gespielt, Lösung ${esc(sol)}. ${esc(title)}. Details anzeigen">
+          <span class="val">${v}</span>
+          <span class="sol">${esc(sol) || '–'}</span>
+          <span class="mark"><span class="dot" style="--tc:${colorOf(by)}"></span><span class="${u.ok ? 'res-ok' : 'res-bad'}">${u.ok ? '✓' : '✗'}</span>${heirs}</span>
+        </button>`;
+      } else {
+        cells += `<button class="cell" style="--lvl:${lvl}" data-act="pick" data-c="${c}" data-r="${r}" ${g.over ? 'disabled' : ''} aria-label="${LETTERS[c]} ${v}: ${esc(b.categories[c].name)}"><span class="val">${v}</span></button>`;
+      }
+    }
+  }
+  return topbar(mid, g.name) + `<section class="scores" aria-label="Punktestand">${chips}</section>
+    <section class="grid" style="--cols:${b.cols};--rows:${b.rows}" aria-label="Spieltafel">${cells}</section>`;
+}
+
+function viewFeedback(g){
+  if (!g.teams.length) return '';
+  if (S.fbTeam >= g.teams.length) S.fbTeam = 0;
+  const i = S.fbTeam, t = g.teams[i], F = teamFeedback(g, i);
+  const summary = [
+    F.strong.length ? 'Stark in: <b>' + F.strong.map(esc).join(', ') + '</b>.' : '',
+    F.weak.length ? 'Noch üben: <b>' + F.weak.map(esc).join(', ') + '</b>.' : '',
+    !F.strong.length && !F.weak.length ? (F.topics.some(x => x.total) ? 'Solide Leistung – weiter so!' : 'Diese Gruppe hat noch keine Aufgabe bearbeitet.') : ''
+  ].filter(Boolean).join(' ');
+  return `<section class="fb" aria-label="Rückmeldung für die Gruppen">
+    <div class="fb-head">
+      <h2>Rückmeldung für die Gruppen</h2>
+      <button class="btn" data-act="downloadFeedback">Alle Rückmeldungen herunterladen</button>
+    </div>
+    <p class="hint">Gezählt werden die selbst gewählten Aufgaben und die Antworten beim Erben.</p>
+    <div class="fb-tabs" role="tablist">${g.teams.map((x, k) => `<button class="fb-tab" role="tab" style="--tc:${colorOf(x)}" aria-selected="${k === i}" data-act="fbTab" data-i="${k}"><span class="dot"></span>${esc(x.name)}</button>`).join('')}</div>
+    <div class="fb-panel" role="tabpanel" style="--tc:${colorOf(t)}">
+      ${t.members.length ? `<p class="fb-members">${t.members.map(esc).join(', ')}</p>` : ''}
+      <p class="fb-summary">${summary}</p>
+      <ul class="fb-topics">${F.topics.map(x => `<li>
+        <span class="fb-topic"><b>${LETTERS[x.c]}</b>${esc(x.name)}</span>
+        <span class="meter ${x.level}" aria-hidden="true"><i style="width:${x.total ? Math.round(x.rate * 100) : 0}%"></i></span>
+        <span class="fb-count">${x.total ? x.right + ' von ' + x.total + ' richtig' : '–'}</span>
+        <span class="pill ${x.level}">${x.label}</span>
+      </li>`).join('')}</ul>
+      <h3>Nochmals anschauen</h3>
+      ${F.missed.length ? `<ol class="fb-missed">${F.missed.map(m => `<li>
+        <span class="code">${LETTERS[m.c]} ${g.board.values[m.r]}</span>
+        <span class="mq">${esc(m.q)}</span>
+        <span class="ma">Lösung: <b>${esc(m.a) || '–'}</b> · falsch ${m.how}</span>
+      </li>`).join('')}</ol>` : '<p class="muted" style="margin:0">Nichts – alle bearbeiteten Aufgaben waren richtig.</p>'}
+    </div>
+  </section>`;
+}
+
+function viewEnd(){
+  const g = S.game;
+  const ranked = g.teams.map((t, i) => Object.assign({}, t, {i})).sort((a, b) => (a.out - b.out) || (b.score - a.score));
+  const top = ranked[0];
+  const tied = ranked.filter(t => !t.out && t.score === top.score);
+  const reason = usedCount() >= totalFields() ? `Alle ${totalFields()} Aufgaben sind gespielt.` : 'Nur noch eine Gruppe hat Kredit.';
+  const heading = !g.over ? 'Zwischenstand' : tied.length > 1 ? 'Unentschieden!' : esc(top.name) + ' gewinnt!';
+  const lead = !g.over
+    ? `${usedCount()} von ${totalFields()} Aufgaben gespielt. Die Runde «${esc(g.name)}» ist gespeichert und kann jederzeit fortgesetzt werden.`
+    : `${reason} ${tied.length > 1 ? tied.map(t => esc(t.name)).join(' und ') + ' haben je ' + top.score + ' Punkte.' : 'Mit ' + top.score + ' Punkten.'}`;
+  return topbar('', g.name) + `<main class="end" style="--tc:${!g.over || tied.length > 1 ? 'var(--amber)' : colorOf(top)}">
+    <p class="kicker">${g.over ? 'Spiel beendet' : esc(g.name)}</p>
+    <h1>${heading}</h1>
+    <p class="lead">${lead}</p>
+    <ol class="rank">${ranked.map((t, k) => `<li class="${g.over && k === 0 && tied.length === 1 ? 'first' : ''}" style="--tc:${colorOf(t)}">
+      <span class="pos">${k + 1}.</span><span class="dot"></span>
+      <span class="nm">${esc(t.name)}${t.out ? '<span class="outnote">ausgeschieden</span>' : ''}</span>
+      <span class="pts">${t.score}</span></li>`).join('')}</ol>
+    <div class="q-actions">
+      ${g.over
+        ? `<button class="btn primary lg" data-act="playAgain">Nochmals spielen</button>
+           <button class="btn lg" data-act="showBoard">Tafel ansehen</button>`
+        : `<button class="btn primary lg" data-act="showBoard">Weiterspielen</button>`}
+      <button class="btn ghost lg" data-act="toLibrary">Meine Spiele</button>
+    </div>
+    ${viewFeedback(g)}
+  </main>`;
+}
+
+/* Rückmeldungen als druckbare Datei (hell, eine Seite pro Gruppe) */
+function feedbackDocument(g){
+  const b = g.board;
+  const css = `body{font-family:"Atkinson Hyperlegible",Arial,sans-serif;color:#1b2420;margin:0;padding:24px;line-height:1.45}
+  .team{max-width:760px;margin:0 auto 40px;page-break-after:always}
+  h1{font-size:28px;margin:0 0 4px} .meta{color:#5b6b62;margin:0 0 14px;font-size:14px}
+  .members{margin:0 0 10px} .sum{font-size:18px;margin:0 0 14px}
+  table{border-collapse:collapse;width:100%;margin-bottom:18px} th,td{text-align:left;padding:8px;border-bottom:1px solid #d9e0db}
+  th{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#5b6b62}
+  .ok{color:#1d7a33;font-weight:700} .mid{color:#9a6a00;font-weight:700} .bad{color:#b3261e;font-weight:700} .none{color:#8a978f}
+  h2{font-size:16px;margin:18px 0 8px} ol{padding-left:20px} li{margin-bottom:10px} .q{white-space:pre-wrap} .a{color:#5b6b62}`;
+  const parts = g.teams.map((t, i) => {
+    const F = teamFeedback(g, i);
+    return `<section class="team">
+      <h1>Rückmeldung: ${esc(t.name)}</h1>
+      <p class="meta">${esc(g.name)} · ${esc(b.title)} · ${fmtDate(g.updatedAt)} · ${t.score} Punkte</p>
+      ${t.members.length ? `<p class="members"><b>Gruppe:</b> ${t.members.map(esc).join(', ')}</p>` : ''}
+      <p class="sum">${F.strong.length ? 'Stark in: <b>' + F.strong.map(esc).join(', ') + '</b>. ' : ''}${F.weak.length ? 'Noch üben: <b>' + F.weak.map(esc).join(', ') + '</b>.' : ''}</p>
+      <table><thead><tr><th>Thema</th><th>Richtig</th><th>Einschätzung</th></tr></thead><tbody>
+      ${F.topics.map(x => `<tr><td>${LETTERS[x.c]} · ${esc(x.name)}</td><td>${x.total ? x.right + ' von ' + x.total : '–'}</td><td class="${x.level}">${x.label}</td></tr>`).join('')}
+      </tbody></table>
+      <h2>Nochmals anschauen</h2>
+      ${F.missed.length ? `<ol>${F.missed.map(m => `<li><div class="q"><b>${LETTERS[m.c]} ${b.values[m.r]}:</b> ${esc(m.q)}</div><div class="a">Lösung: <b>${esc(m.a)}</b></div></li>`).join('')}</ol>` : '<p>Alle bearbeiteten Aufgaben waren richtig.</p>'}
+    </section>`;
+  }).join('');
+  return `<!doctype html><html lang="de-CH"><head><meta charset="utf-8"><title>Rückmeldung – ${esc(g.name)}</title><style>${css}</style></head><body>${parts}</body></html>`;
+}
+
+/* Datei anbieten: in claude.ai über die Download-Freigabe, sonst direkt im Browser */
+async function offerFile(filename, data, mime){
+  const dl = (window.claude && window.claude.use) ? await window.claude.use('downloads').catch(() => null) : null;
+  if (dl){
+    try { await dl.save({ filename, data }); toast('Datei «' + filename + '» gespeichert'); }
+    catch(e){ if (e && e.code !== 'declined') toast('Herunterladen ist hier gerade nicht möglich.'); }
+    return;
+  }
+  try {
+    const url = URL.createObjectURL(new Blob([data], { type: mime }));
+    const a = document.createElement('a'); a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 1500);
+  } catch(e){ toast('Herunterladen ist hier nicht möglich.'); }
+}
+
+function render(){
+  const app = $('#app');
+  if ((S.view === 'board' || S.view === 'end') && !S.game) S.view = 'library';
+  if (S.view === 'setup' && !(S.setup && (S.setup.mode === 'edit' ? S.rounds[S.setup.roundId] : S.sets[S.setup.setId]))) S.view = 'library';
+  app.className = 'is-' + S.view;
+  app.innerHTML = S.view === 'library' ? viewLibrary() : S.view === 'setup' ? viewSetup() : S.view === 'board' ? viewBoard() : viewEnd();
+  S.prevScores = S.game ? S.game.teams.map(t => t.score) : null;
+  if (S.view === 'library') resolveAuthors();
+}
+
+/* ---------- Aufgabe (Overlay) ---------- */
+function timerLabel(R){
+  if (R.phase === 'think') return 'Denkzeit';
+  if (R.phase === 'submit') return R.timeUp ? 'Nachfrist – dann wird geprüft' : 'Jetzt Lösung abgeben!';
+  return R.timeUp ? 'Zeit um – Antworten eintippen' : 'Erben: alle anderen Gruppen';
+}
+
+function panel(R, q, team, val){
+  const b = gb(), g = S.game;
+  const pauseBtn = `<button type="button" class="btn" data-act="pause" ${R.timeUp ? 'disabled' : ''}>${R.paused ? 'Weiter' : 'Pause'}</button>`;
+  const abort = `<button type="button" class="btn ghost" data-act="abortRound">Abbrechen</button>`;
+  const sol = `<div class="solution"><span>Lösung</span><b>${esc(q.a) || '–'}</b></div>`;
+  switch (R.phase){
+    case 'think':
+      return `<div class="q-actions">${pauseBtn}<button class="btn primary" data-act="endThink">Denkzeit beenden</button>${abort}</div>`;
+    case 'submit':
+      return `<form class="answer-form" data-form="main" autocomplete="off">
+        <label for="answer-main">Antwort von <b>${esc(team.name)}</b>${R.speaker ? ' (' + esc(R.speaker) + ')' : ''}</label>
+        <div class="answer-row"><input class="field" id="answer-main" value="${esc(R.answer)}" placeholder="Lösung eintippen" autocomplete="off" spellcheck="false"><button class="btn primary lg" type="submit">Prüfen</button></div>
+      </form>
+      <div class="q-actions">${pauseBtn}${abort}</div>`;
+    case 'judged': {
+      const ok = R.verdict, after = team.score + (ok ? val : -val);
+      const heirsAvail = g.teams.some((t, i) => i !== R.team && !t.out);
+      return `<div class="verdict ${ok ? 'ok' : 'bad'}"><span class="v-word">${ok ? 'Richtig!' : 'Falsch!'}</span><span class="v-pts">${ok ? '+' : '−'}${val}</span></div>
+        <p class="v-answer">Antwort von ${esc(team.name)}: <b>${esc(R.answer) || '(keine Antwort)'}</b></p>
+        ${ok ? sol : ''}
+        ${!ok && after <= 0 ? `<p class="warn">${esc(team.name)} hat danach keinen Kredit mehr und scheidet aus.</p>` : ''}
+        ${!ok && heirsAvail ? `<p class="lead">Jetzt können alle anderen Gruppen die ${val} Punkte erben – sie haben ${b.inheritSecs} Sekunden.</p>` : ''}
+        <div class="q-actions">
+          ${ok
+            ? `<button class="btn primary lg" data-act="continueMain">+${val} vergeben – zurück zur Tafel</button>`
+            : `<button class="btn primary lg" data-act="continueMain">${heirsAvail ? 'Erben starten (' + b.inheritSecs + ' s)' : 'Lösung zeigen'}</button>`}
+          <button class="btn ghost" data-act="flipVerdict">${ok ? 'Doch falsch' : 'Doch richtig'}</button>
+        </div>`;
+    }
+    case 'inherit':
+      return `<form class="heir-form" data-form="inherit" autocomplete="off">
+        <div class="heir-grid">${R.heirList.map(i => { const t = g.teams[i]; return `<label class="heir" for="heir-${i}">
+          <span class="heir-name"><span class="dot" style="--tc:${colorOf(t)}"></span>${esc(t.name)}</span>
+          <input class="field" id="heir-${i}" data-heir="${i}" value="${esc(R.heirs[i] || '')}" placeholder="Lösung" autocomplete="off" spellcheck="false">
+        </label>`; }).join('')}</div>
+        <div class="q-actions"><button class="btn primary lg" type="submit">Auswerten</button>${pauseBtn}</div>
+      </form>`;
+    case 'inheritJudged': {
+      const winners = R.heirList.filter(i => R.heirOk[i]).length;
+      return `${sol}
+        <div class="heir-grid">${R.heirList.map(i => { const t = g.teams[i], ok = !!R.heirOk[i]; return `<button type="button" class="heir-res ${ok ? 'ok' : 'bad'}" data-act="toggleHeir" data-i="${i}" aria-pressed="${ok}">
+          <span class="heir-name"><span class="dot" style="--tc:${colorOf(t)}"></span>${esc(t.name)}</span>
+          <span class="ans">${esc(R.heirs[i] || '') || '—'}</span>
+          <span class="res">${ok ? '✓ erbt +' + val : '✗ nichts geerbt'}</span>
+        </button>`; }).join('')}</div>
+        <p class="hint">Tippe auf eine Gruppe, um die Bewertung zu ändern.</p>
+        <div class="q-actions"><button class="btn primary lg" data-act="finishInherit">${winners ? 'Punkte vergeben – zurück zur Tafel' : 'Zurück zur Tafel'}</button></div>`;
+    }
+    case 'done':
+      return `${sol}<p class="lead muted">Keine andere Gruppe ist mehr im Spiel, die erben könnte.</p>
+        <div class="q-actions"><button class="btn primary lg" data-act="closeRound">Zurück zur Tafel</button></div>`;
+  }
+  return '';
+}
+
+function renderRound(){
+  const ov = $('#round'), R = S.round;
+  if (!R){ ov.hidden = true; ov.innerHTML = ''; ov.className = ''; document.body.classList.remove('lock'); return; }
+  const g = S.game, b = g.board, cat = b.categories[R.c], q = cat.qs[R.r], team = g.teams[R.team], val = b.values[R.r];
+  const steps = ['Denkzeit', 'Abgabe', 'Korrektur', 'Erben'];
+  const now = {think:0, submit:1, judged:2, inherit:3, inheritJudged:3, done:2}[R.phase];
+  const timed = R.phase === 'think' || R.phase === 'submit' || R.phase === 'inherit';
+  ov.hidden = false; document.body.classList.add('lock');
+  ov.className = 'phase-' + R.phase;
+  ov.innerHTML = `<div class="q-wrap" role="dialog" aria-label="Aufgabe ${LETTERS[R.c]} ${val}">
+    <header class="q-head">
+      <div class="q-id"><span class="q-code">${LETTERS[R.c]} ${val}</span><span class="q-cat">${esc(cat.name)}</span></div>
+      <ol class="steps" aria-label="Ablauf">${steps.map((s, i) => `<li class="${i < now ? 'past' : i === now ? 'now' : ''}"${i === now ? ' aria-current="step"' : ''}>${s}</li>`).join('')}</ol>
+      <div class="q-team"><span class="dot" style="--tc:${colorOf(team)}"></span>${esc(team.name)}${R.speaker ? ` – <span class="q-speaker">${esc(R.speaker)} antwortet</span>` : ''}<span class="muted">· ${team.score} Pkt.</span></div>
+    </header>
+    <div class="q-main">
+      <p class="q-text">${esc(q.q) || '<span class="muted">(Für dieses Feld ist noch keine Aufgabe hinterlegt.)</span>'}</p>
+      ${timed ? `<div class="q-timer"><div class="t-label">${timerLabel(R)}</div><div class="t-digits">${fmtClock(Math.ceil(Timer.left/1000))}</div></div>` : ''}
+    </div>
+    ${timed ? '<div class="t-bar" aria-hidden="true"><i></i></div>' : ''}
+    <div class="q-panel">${panel(R, q, team, val)}</div>
+  </div>`;
+  ov.scrollTop = 0;
+  if (timed) Timer.draw();
+}
+
+function startPhase(phase, secs, onEnd){
+  const R = S.round;
+  R.phase = phase; R.timeUp = false; R.paused = false;
+  Timer.total = secs * 1000; Timer.left = Timer.total;
+  renderRound();
+  Timer.start(secs, onEnd);
+}
+/* Abgabe- bzw. Erbzeit vorbei: Signal.
+   Bei der Abgabe folgt 3 – 2 – 1 Nachfrist, danach wird automatisch geprüft (leeres Feld = falsch).
+   Beim Erben wartet das Spiel, bis die Lehrperson alle Antworten eingetippt hat. */
+function timeUp(){
+  const R = S.round; if (!R) return;
+  Sound.answerOver();
+  R.timeUp = true;
+  const l = $('.t-label'); if (l) l.textContent = timerLabel(R);
+  document.querySelectorAll('[data-act="pause"]').forEach(b => { b.disabled = true; });
+  if (R.phase !== 'submit') return;
+  Timer.start(GRACE, () => { if (S.round === R && R.phase === 'submit') checkMain(); });
+}
+function thinkEnded(){
+  Sound.thinkOver();
+  startPhase('submit', gb().answerSecs, timeUp);
+  const inp = $('#answer-main'); if (inp) inp.focus();
+}
+function checkMain(){
+  const R = S.round; if (!R || R.phase !== 'submit') return;
+  const inp = $('#answer-main'); if (inp) R.answer = inp.value;
+  Timer.stop();
+  R.verdict = isCorrect(R.answer, gb().categories[R.c].qs[R.r]);
+  R.phase = 'judged';
+  R.verdict ? Sound.right() : Sound.wrong();
+  renderRound();
+}
+function applyMain(){
+  const R = S.round, g = S.game, t = g.teams[R.team], val = g.board.values[R.r];
+  if (R.applied) return; R.applied = true;
+  t.score += R.verdict ? val : -val;
+  if (t.score <= 0) t.out = true;
+  if (t.members && t.members.length) t.next = (t.next + 1) % t.members.length;   // nächste Person antwortet
+  g.used[R.c + '-' + R.r] = { by: R.team, ok: !!R.verdict, ans: String(R.answer || '').slice(0, 200), heirs: [] };
+  saveGame();
+}
+function evalInherit(){
+  const R = S.round; if (!R || R.phase !== 'inherit') return;
+  Timer.stop();
+  document.querySelectorAll('[data-heir]').forEach(inp => { R.heirs[inp.dataset.heir] = inp.value; });
+  const q = gb().categories[R.c].qs[R.r];
+  R.heirOk = {};
+  R.heirList.forEach(i => { R.heirOk[i] = isCorrect(R.heirs[i] || '', q); });
+  R.phase = 'inheritJudged';
+  if (R.heirList.some(i => R.heirOk[i])) Sound.right();
+  renderRound();
+}
+function finishRound(){
+  const R = S.round, g = S.game;
+  Timer.stop();
+  g.turn = nextTurn(R.team);
+  S.round = null;
+  checkOver();
+  saveGame();
+  renderRound();
+  render();
+}
+
+/* ---------- Gruppe bearbeiten ---------- */
+function renderReview(){
+  const p = $('#pop'), g = S.game, b = g.board, { c, r } = S.review;
+  const q = b.categories[c].qs[r], u = g.used[c + '-' + r] || {}, val = b.values[r];
+  const by = g.teams[u.by];
+  const heirs = (u.heirs || []).map(h => g.teams[h]).filter(Boolean);
+  p.hidden = false;
+  p.innerHTML = `<div class="pop-card review" role="dialog" aria-label="Gespielte Aufgabe ${LETTERS[c]} ${val}">
+    <h3><span class="rv-code">${LETTERS[c]} ${val}</span><span class="rv-cat">${esc(b.categories[c].name)}</span></h3>
+    <p class="rv-q">${esc(q.q) || '<span class="muted">(keine Aufgabe hinterlegt)</span>'}</p>
+    <div class="solution"><span>Lösung</span><b>${esc(q.a) || '–'}</b></div>
+    <ul class="rv-list">
+      ${by ? `<li><span class="dot" style="--tc:${colorOf(by)}"></span><b>${esc(by.name)}</b>
+        <span class="muted">${u.ans != null ? 'antwortete «' + (esc(u.ans) || '–') + '»' : 'hat gewählt'}</span>
+        <span class="${u.ok ? 'res-ok' : 'res-bad'}">${u.ok ? '✓ +' + val : '✗ −' + val}</span></li>` : ''}
+      ${heirs.map(t => `<li><span class="dot" style="--tc:${colorOf(t)}"></span><b>${esc(t.name)}</b><span class="muted">hat geerbt</span><span class="res-ok">+${val}</span></li>`).join('')}
+    </ul>
+    <div class="q-actions"><button class="btn primary" data-act="popClose">Schliessen</button></div>
+  </div>`;
+  const btn = p.querySelector('[data-act="popClose"]'); if (btn) btn.focus();
+}
+function renderClasses(){
+  const p = $('#pop'), C = S.classEd;
+  if (C.sel >= C.list.length) C.sel = Math.max(0, C.list.length - 1);
+  const k = C.list[C.sel];
+  const where = Store.db
+    ? 'Gespeichert in deinem privaten Bereich auf claude.ai – Personen, mit denen du die Seite teilst, sehen die Namen nicht.'
+    : 'Gespeichert nur in diesem Browser auf diesem Gerät.';
+  const studentsText = k ? (Array.isArray(k.students) ? k.students.join('\n') : String(k.students || '')) : '';
+  p.hidden = false;
+  p.innerHTML = `<div class="pop-card wide" role="dialog" aria-label="Klassen verwalten">
+    <h3>Klassen</h3>
+    <p class="hint">Bitte nur Vornamen oder Kürzel eintragen. ${where}</p>
+    <div class="cls-layout">
+      <div>
+        <ul class="cls-list">${C.list.map((x, i) => `<li><button class="cls-item" data-act="clsSelect" data-i="${i}" aria-current="${i === C.sel}">
+          <b>${esc(x.name) || 'Neue Klasse'}</b><small>${(Array.isArray(x.students) ? x.students : splitNames(x.students)).length} Namen</small></button></li>`).join('')}</ul>
+        <div style="margin-top:8px"><button class="btn ghost sm" data-act="clsNew">+ Neue Klasse</button></div>
+      </div>
+      ${k ? `<div class="cls-edit">
+        <label class="lbl" for="cls-name">Name der Klasse<input class="field" id="cls-name" data-cls="name" value="${esc(k.name)}" maxlength="40" placeholder="z. B. 2b"></label>
+        <label class="lbl" for="cls-students">Namen <span class="hint">eine Person pro Zeile (oder mit Komma getrennt)</span>
+          <textarea class="field" id="cls-students" data-cls="students" rows="10" placeholder="Lea&#10;Tim K.&#10;Noah">${esc(studentsText)}</textarea></label>
+        <div><button class="btn ghost sm" data-act="clsDelete">Diese Klasse löschen</button></div>
+      </div>` : '<p class="muted">Noch keine Klasse erfasst.</p>'}
+    </div>
+    <div class="q-actions">
+      <button class="btn primary" data-act="clsSave">Speichern</button>
+      <button class="btn ghost" data-act="popClose">Schliessen ohne Speichern</button>
+    </div>
+  </div>`;
+}
+function renderPop(){
+  const p = $('#pop');
+  if (S.classEd){ renderClasses(); return; }
+  if (S.review && S.game){ renderReview(); return; }
+  if (S.teamPop == null || !S.game){ p.hidden = true; p.innerHTML = ''; return; }
+  const i = S.teamPop, t = S.game.teams[i];
+  p.hidden = false;
+  p.innerHTML = `<div class="pop-card" role="dialog" aria-label="Gruppe bearbeiten">
+    <h3><span class="dot" style="--tc:${colorOf(t)}"></span>Gruppe bearbeiten</h3>
+    <label class="lbl" for="pop-name">Name<input class="field" id="pop-name" value="${esc(t.name)}" maxlength="24"></label>
+    <label class="lbl" for="pop-score">Punkte<input class="field" id="pop-score" type="number" step="10" value="${t.score}"></label>
+    <p class="hint">Für Korrekturen. Mit 0 Punkten oder weniger ist eine Gruppe ausgeschieden, mit mehr ist sie wieder dabei.</p>
+    <div class="q-actions">
+      <button class="btn primary" data-act="popSave">Übernehmen</button>
+      ${!t.out && !S.game.over && S.game.turn !== i ? '<button class="btn" data-act="popTurn">Ist jetzt am Zug</button>' : ''}
+      <button class="btn ghost" data-act="popClose">Schliessen</button>
+    </div>
+  </div>`;
+  $('#pop-score').focus();
+}
+
+/* ---------- Editor ---------- */
+function viewEditor(){
+  const E = S.editor, d = E.draft;
+  if (E.tab >= d.cols) E.tab = d.cols - 1;
+  const c = E.tab, cat = d.categories[c];
+  const opts = (max, cur) => Array.from({length:max}, (_, i) => `<option value="${i + 1}"${i + 1 === cur ? ' selected' : ''}>${i + 1}</option>`).join('');
+  const inUse = S.game && !S.game.over && S.game.setId === E.id;
+  return `<div class="ed">
+    <header class="ed-head">
+      <h2>${E.isNew ? 'Neues Spiel erstellen' : 'Spiel bearbeiten'}</h2>
+      <span class="ed-status${E.dirty ? ' dirty' : ''}" id="ed-status">${E.dirty ? 'Ungespeicherte Änderungen' : 'Alles gespeichert'}</span>
+      <button class="btn primary" data-act="edSave">Speichern</button>
+      <button class="btn ghost" data-act="edClose">Schliessen</button>
+    </header>
+    <section>
+      <label class="lbl" for="ed-title">Titel des Spiels<input class="field title-field" id="ed-title" data-ed="title" value="${esc(d.title)}" maxlength="80" placeholder="z. B. Brüche – Repetition 1. Sek"></label>
+      <div class="size-row">
+        <label class="lbl" for="ed-cols">Spalten (Themen)<select class="field sm" id="ed-cols" data-ed-size="cols">${opts(MAX_C, d.cols)}</select></label>
+        <label class="lbl" for="ed-rows">Zeilen (Schwierigkeitsstufen)<select class="field sm" id="ed-rows" data-ed-size="rows">${opts(MAX_R, d.rows)}</select></label>
+        <span class="size-total">= ${d.cols * d.rows} Aufgaben</span>
+      </div>
+      <p class="hint">Beim Verkleinern bleiben ausgeblendete Aufgaben erhalten und kommen beim Vergrössern wieder zum Vorschein.</p>
+      ${inUse ? '<p class="hint" style="color:var(--amber)">Die laufende Runde verwendet dieses Spiel. Änderungen gelten erst ab der nächsten Runde.</p>' : ''}
+    </section>
+    <section class="ai" aria-labelledby="ai-h">
+      <h3 id="ai-h">Mit KI erstellen</h3>
+      <p class="hint">Beschreibe, was du brauchst. Die KI füllt Titel, Themen und alle ${d.cols * d.rows} Aufgaben (${d.cols} × ${d.rows}) aus – danach kannst du alles prüfen und anpassen. Wähle vorher oben die Grösse.</p>
+      <div class="ai-grid">
+        <label class="lbl" for="ai-topic">Fach / Thema<input class="field" id="ai-topic" data-ai="topic" value="${esc(E.ai.topic)}" placeholder="z. B. Prozentrechnen, Französisch Vocabulaire, NMG Wasser"></label>
+        <label class="lbl" for="ai-level">Stufe<input class="field" id="ai-level" data-ai="level" value="${esc(E.ai.level)}" placeholder="z. B. 1. Sek, Niveau A"></label>
+      </div>
+      <label class="lbl" for="ai-wishes">Weitere Wünsche <span class="hint">optional</span><textarea class="field" id="ai-wishes" data-ai="wishes" rows="2" placeholder="z. B. Spalten: Grundwert, Prozentwert, Prozentsatz, Textaufgaben. Ohne Taschenrechner lösbar.">${esc(E.ai.wishes)}</textarea></label>
+      <div class="q-actions">
+        ${S.sample ? `<button class="btn primary" data-act="aiClaude" ${E.aiBusy ? 'disabled' : ''}>Direkt mit Claude erstellen</button>` : ''}
+        ${E.aiBusy ? '<button class="btn" data-act="aiStop">Stopp</button>' : ''}
+        <button class="btn${S.sample ? '' : ' primary'}" data-act="aiCopy">Auftrag für eine KI kopieren</button>
+      </div>
+      <p class="ai-status" id="ai-status" ${E.aiStatus ? '' : 'hidden'}>${esc(E.aiStatus || '')}</p>
+      <details class="ai-paste" id="ai-paste" ${E.aiOpen ? 'open' : ''}>
+        <summary>Antwort der KI einfügen</summary>
+        <p class="hint">Füge den Auftrag in Copilot, ChatGPT oder Claude ein, kopiere die ganze Antwort und füge sie hier ein. Auch eine heruntergeladene Spiel-Datei (Text) funktioniert.</p>
+        <textarea class="field" id="ai-answer" data-ai="answer" rows="5" placeholder="Antwort der KI hier einfügen …" spellcheck="false">${esc(E.ai.answer)}</textarea>
+        <div><button class="btn" data-act="aiApply">Antwort übernehmen</button></div>
+      </details>
+    </section>
+    <section>
+      <h3>Punkte und Denkzeit pro Zeile</h3>
+      <p class="hint">Nach unten schwieriger: mehr Punkte, mehr Denkzeit.</p>
+      <div class="rowset">${Array.from({length:d.rows}, (_, r) => `<div class="rowset-item">
+        <span class="rs-label">Zeile ${r + 1}</span>
+        <label class="lbl" for="ed-val-${r}">Punkte<input class="field sm" type="number" min="1" step="5" id="ed-val-${r}" data-ed="value" data-r="${r}" value="${d.values[r]}"></label>
+        <label class="lbl" for="ed-time-${r}">Zeit (s)<input class="field sm" type="number" min="5" max="900" step="5" id="ed-time-${r}" data-ed="time" data-r="${r}" value="${d.times[r]}"></label>
+      </div>`).join('')}</div>
+      <div><button class="btn ghost sm" data-act="edAutoTimes">Denkzeit = Punkte setzen (60 Punkte = 60 s)</button></div>
+      <div class="settings-row">
+        <label class="lbl" for="ed-answer">Abgabezeit (s)<input class="field sm" type="number" min="3" max="300" id="ed-answer" data-ed="answerSecs" value="${d.answerSecs}"></label>
+        <label class="lbl" for="ed-inherit">Erbzeit (s)<input class="field sm" type="number" min="3" max="300" id="ed-inherit" data-ed="inheritSecs" value="${d.inheritSecs}"></label>
+        <label class="lbl" for="ed-capital">Startkapital (Punkte)<input class="field sm" type="number" min="10" step="10" id="ed-capital" data-ed="startCapital" value="${d.startCapital}"></label>
+      </div>
+    </section>
+    <section>
+      <h3>Aufgaben</h3>
+      <div class="ed-tabs" role="tablist" aria-label="Spalten">${d.categories.slice(0, d.cols).map((k, i) => `<button class="ed-tab" role="tab" aria-selected="${i === c}" data-act="edTab" data-i="${i}"><b>${LETTERS[i]}</b><span id="ed-tabname-${i}">${esc(k.name)}</span></button>`).join('')}</div>
+      <label class="lbl cat-lbl" for="ed-cat-${c}">Thema der Spalte ${LETTERS[c]}<input class="field" id="ed-cat-${c}" data-ed="cat" data-c="${c}" value="${esc(cat.name)}" maxlength="40"></label>
+      <div class="ed-rows">${cat.qs.slice(0, d.rows).map((q, r) => `<div class="ed-row">
+        <div class="ed-val">${LETTERS[c]} <span data-rowval="${r}">${d.values[r]}</span></div>
+        <label class="lbl" for="ed-q-${c}-${r}">Aufgabe<textarea class="field" id="ed-q-${c}-${r}" data-ed="q" data-c="${c}" data-r="${r}" rows="3">${esc(q.q)}</textarea></label>
+        <label class="lbl" for="ed-a-${c}-${r}">Lösung<input class="field sm" id="ed-a-${c}-${r}" data-ed="a" data-c="${c}" data-r="${r}" value="${esc(q.a)}"></label>
+        <label class="lbl" for="ed-alt-${c}-${r}">Weitere richtige Antworten <span class="hint">mit ; trennen</span><input class="field sm" id="ed-alt-${c}-${r}" data-ed="alt" data-c="${c}" data-r="${r}" value="${esc(q.alt)}"></label>
+      </div>`).join('')}</div>
+      <p class="hint">Tipp: Zahlen werden automatisch verglichen (0,5 = 0.5 = ½, 10'000 = 10000). Einheiten dürfen fehlen, falsche Einheiten zählen aber als falsch. Ist die Lösung ein Bruch, muss die Schreibweise genau stimmen. Für Antworten in Worten trägst du alle Varianten unter «Weitere richtige Antworten» ein. Jede Bewertung lässt sich im Spiel umkehren.</p>
+    </section>
+    <section>
+      <p class="hint">Zum Weitergeben: Nach dem Speichern findest du bei jedem Spiel in «Meine Spiele» den Knopf «Herunterladen». Die Datei lässt sich mit «Spiel-Datei laden» wieder öffnen.</p>
+    </section>
+  </div>`;
+}
+function renderEditor(){
+  const e = $('#editor');
+  if (!S.editor){ e.hidden = true; e.innerHTML = ''; if (!S.round) document.body.classList.remove('lock'); return; }
+  const top = e.scrollTop;
+  const det = $('#ai-paste'); if (det) S.editor.aiOpen = det.open;
+  e.hidden = false; document.body.classList.add('lock');
+  e.innerHTML = viewEditor();
+  e.scrollTop = top;
+}
+function markDirty(){
+  S.editor.dirty = true;
+  const s = $('#ed-status'); if (s){ s.textContent = 'Ungespeicherte Änderungen'; s.classList.add('dirty'); }
+}
+/* ---------- KI ---------- */
+function hasContent(d){
+  for (let c = 0; c < d.cols; c++) for (let r = 0; r < d.rows; r++){ const q = d.categories[c].qs[r]; if (q.q.trim() || q.a.trim()) return true; }
+  return false;
+}
+function buildAiPrompt(){
+  const E = S.editor, d = E.draft, ai = E.ai;
+  const rowsInfo = Array.from({length:d.rows}, (_, r) => `Zeile ${r + 1}: ${d.values[r]} Punkte, ${d.times[r]} Sekunden Denkzeit`).join('\n');
+  const custom = d.categories.slice(0, d.cols).map((c, i) => c.name).filter((n, i) => n && n !== 'Thema ' + LETTERS[i]);
+  const themes = custom.length === d.cols
+    ? 'Verwende genau diese Themen für die Spalten (in dieser Reihenfolge): ' + custom.join(' | ') + '.'
+    : 'Wähle ' + d.cols + ' passende, klar unterscheidbare Themen für die Spalten.';
+  return [
+    'Du bist eine erfahrene Lehrperson in der Deutschschweiz (Lehrplan 21). Erstelle die Aufgaben für ein Quizspiel im Stil von Jeopardy, das in der Klasse am Beamer gespielt wird. Gruppen wählen ein Feld, lösen die Aufgabe in der Denkzeit und sagen der Lehrperson die Lösung; die Lehrperson tippt sie ein und das Spiel vergleicht sie automatisch.',
+    '',
+    'Fach / Thema: ' + (ai.topic.trim() || '(frei wählbar)'),
+    'Stufe: ' + (ai.level.trim() || '(nicht angegeben)'),
+    'Tafel: ' + d.cols + ' Spalten × ' + d.rows + ' Zeilen = ' + (d.cols * d.rows) + ' Aufgaben.',
+    themes,
+    'Die Zeilen werden von oben nach unten schwieriger:',
+    rowsInfo,
+    ai.wishes.trim() ? '\nWeitere Wünsche der Lehrperson:\n' + ai.wishes.trim() : '',
+    '',
+    'Regeln:',
+    '- Jede Aufgabe ist in der angegebenen Denkzeit im Kopf oder mit Notizpapier lösbar und als reiner Text verständlich (keine Bilder, Tabellen oder Grafiken).',
+    '- Die Lösung ist kurz und eindeutig: eine Zahl (mit Einheit, wenn nötig), ein Wort oder ein kurzer Ausdruck. Keine ganzen Sätze.',
+    '- Unter "alternativen" stehen weitere Schreibweisen, die ebenfalls richtig sind (z. B. mit/ohne Artikel, Synonyme, andere Zahlschreibweise). Leere Liste, wenn es keine gibt.',
+    '- Schweizer Rechtschreibung (ss statt ß). Zahlen mit Dezimalpunkt, Geldbeträge als «Fr. 12.50».',
+    '- Die Aufgaben innerhalb einer Spalte sind von leicht nach schwer sortiert; keine Aufgabe kommt doppelt vor.',
+    '- Zeilenumbrüche in einer Frage als \\n.',
+    '',
+    'Antworte ausschliesslich mit JSON in genau diesem Format, ohne Erklärungen davor oder danach:',
+    '{"titel": "kurzer, sprechender Titel", "spalten": [{"thema": "Thema der Spalte", "aufgaben": [{"frage": "…", "loesung": "…", "alternativen": ["…"]}]}]}',
+    '"spalten" enthält genau ' + d.cols + ' Einträge, jede Spalte genau ' + d.rows + ' Aufgaben.'
+  ].filter(x => x !== '').join('\n').replace(/\nRegeln:/, '\n\nRegeln:').replace(/\nAntworte/, '\n\nAntworte');
+}
+function applyAiResult(set){
+  const E = S.editor, d = E.draft;
+  if (!set){ toast('In der Antwort wurde kein Spiel im erwarteten Format gefunden. Kopiere die ganze Antwort der KI.', 6000); return false; }
+  d.cols = set.cols; d.rows = set.rows;
+  for (let c = 0; c < set.cols; c++){
+    d.categories[c].name = set.categories[c].name;
+    for (let r = 0; r < set.rows; r++) d.categories[c].qs[r] = clone(set.categories[c].qs[r]);
+  }
+  if (set.title && set.title !== 'Ohne Titel' && (!d.title.trim() || E.isNew)) d.title = set.title;
+  E.tab = 0; E.ai.answer = ''; E.aiStatus = ''; E.aiOpen = false;
+  markDirty(); renderEditor();
+  toast(set.cols * set.rows + ' Aufgaben übernommen – bitte prüfen und speichern.', 5000);
+  return true;
+}
+function setAiStatus(txt){
+  S.editor.aiStatus = txt;
+  const el = $('#ai-status'); if (el){ el.textContent = txt; el.hidden = !txt; }
+}
+
+function openEditor(id, draft, isNew){
+  S.editor = { id, draft, tab: 0, dirty: !!isNew, isNew: !!isNew, ai: Object.assign({ topic: '', level: '', wishes: '', answer: '' }, S.aiLast || {}, { answer: '' }), aiBusy: false, aiStatus: '', aiOpen: false, aiCtl: null };
+  renderEditor(); $('#editor').scrollTop = 0;
+  if (isNew){ const t = $('#ed-title'); if (t) t.focus(); }
+}
+
+/* =========================================================
+   Aktionen
+   ========================================================= */
+const ACT = {
+  toggleSound(){ S.sound = !S.sound; try { localStorage.setItem('mj-sound', S.sound ? '1' : '0'); } catch(e){} render(); },
+  fullscreen(){
+    const d = document, msg = 'Vollbild ist hier nicht möglich – nutze die Vollbild-Funktion deines Browsers.';
+    try {
+      if (d.fullscreenElement){ d.exitFullscreen(); return; }
+      const p = d.documentElement.requestFullscreen && d.documentElement.requestFullscreen();
+      if (p && p.catch) p.catch(() => toast(msg)); else if (!p) toast(msg);
+    } catch(e){ toast(msg); }
+  },
+  toLibrary(){
+    S.view = 'library'; render(); window.scrollTo(0, 0);
+    refreshSets().then(ok => { if (ok && S.view === 'library' && !S.editor && !S.round) render(); });
+  },
+
+  /* Bibliothek */
+  newSet(){ openEditor(newId(), normalizeSet({ title: '', cols: 4, rows: 5, createdBy: Store.uid }), true); },
+  newSetAi(){
+    ACT.newSet();
+    const t = $('#ai-topic'); if (t){ t.scrollIntoView({ block: 'center' }); t.focus(); }
+  },
+  downloadSet(b){
+    const s = S.sets[b.dataset.id]; if (!s) return;
+    offerFile(safeFileName(s.title) + '.json', JSON.stringify(exportSet(s), null, 2), 'application/json');
+  },
+  editSet(b){ const s = S.sets[b.dataset.id]; if (!s) return; openEditor(s.id, clone(s), false); },
+  playSet(b){
+    const s = S.sets[b.dataset.id]; if (!s) return;
+    const last = Object.values(S.rounds).sort((x, y) => (y.updatedAt || 0) - (x.updatedAt || 0))[0];
+    S.setup = {
+      mode: 'new', setId: s.id, name: s.title, nameTouched: false, classId: '', present: {},
+      teams: last ? last.teams.map(t => ({ name: t.name, color: t.color, members: '' })) : defaultTeams(4)
+    };
+    S.view = 'setup'; render(); window.scrollTo(0, 0);
+  },
+
+  /* Runden */
+  resumeGame(b){
+    const g = S.rounds[b.dataset.id]; if (!g) return;
+    S.game = g; S.view = g.over ? 'end' : 'board'; S.prevScores = null; S.fbTeam = 0;
+    render(); keepAwake();
+  },
+  showFeedback(b){ const g = S.rounds[b.dataset.id]; if (!g) return; S.game = g; S.fbTeam = 0; S.view = 'end'; render(); window.scrollTo(0, 0); },
+  editRound(b){
+    const g = S.rounds[b.dataset.id]; if (!g) return;
+    S.setup = {
+      mode: 'edit', roundId: g.id, setId: g.setId, name: g.name, nameTouched: true, classId: g.classId || '', present: {},
+      teams: g.teams.map(t => ({ name: t.name, color: t.color, members: t.members.join(', ') }))
+    };
+    S.view = 'setup'; render(); window.scrollTo(0, 0);
+  },
+  applyEdit(){
+    const U = S.setup, g = S.rounds[U.roundId]; if (!g) return;
+    g.name = U.name.trim() || g.board.title; g.classId = U.classId || '';
+    U.teams.forEach((tm, i) => {
+      const t = g.teams[i]; if (!t) return;
+      const members = splitNames(tm.members);
+      if (members.join('|') !== t.members.join('|')) t.next = 0;
+      t.name = tm.name.trim() || t.name; t.color = tm.color; t.members = members;
+    });
+    S.game = g; saveGame();
+    S.view = g.over ? 'end' : 'board'; S.prevScores = null; render(); keepAwake();
+    toast('Gruppen angepasst');
+  },
+  delRound(b){
+    const g = S.rounds[b.dataset.id]; if (!g) return;
+    if (!armed('delr-' + g.id, b, 'Wirklich löschen?')) return;
+    deleteRound(g.id); render(); toast('Runde «' + g.name + '» gelöscht');
+  },
+  fbTab(b){ S.fbTeam = +b.dataset.i; render(); },
+  downloadFeedback(){
+    const g = S.game; if (!g) return;
+    offerFile('Rückmeldung – ' + safeFileName(g.name) + '.html', feedbackDocument(g), 'text/html');
+  },
+
+  /* Klassen */
+  manageClasses(){
+    S.classEd = { list: clone(S.classes), sel: 0 };
+    if (!S.classEd.list.length) S.classEd.list.push({ id: 'k-' + Math.random().toString(36).slice(2, 9), name: '', students: [] });
+    renderPop();
+  },
+  clsSelect(b){ S.classEd.sel = +b.dataset.i; renderPop(); },
+  clsNew(){
+    S.classEd.list.push({ id: 'k-' + Math.random().toString(36).slice(2, 9), name: '', students: [] });
+    S.classEd.sel = S.classEd.list.length - 1; renderPop();
+    const n = $('#cls-name'); if (n) n.focus();
+  },
+  clsDelete(b){
+    if (!armed('clsdel', b, 'Klasse wirklich löschen?')) return;
+    S.classEd.list.splice(S.classEd.sel, 1); S.classEd.sel = 0; renderPop();
+  },
+  clsSave(){
+    const list = S.classEd.list
+      .map(k => ({ id: k.id, name: String(k.name || '').trim(), students: Array.isArray(k.students) ? k.students : splitNames(k.students) }))
+      .filter(k => k.name || k.students.length)
+      .map(k => Object.assign(k, { name: k.name || 'Klasse' }));
+    S.classes = normalizeClasses(list); saveClasses();
+    S.classEd = null; renderPop(); render(); toast('Klassen gespeichert');
+  },
+  togglePresent(b){
+    const n = b.dataset.n, U = S.setup;
+    U.present[n] = U.present[n] === false ? true : false;
+    render();
+  },
+  shuffleGroups(){
+    const U = S.setup, cls = S.classes.find(k => k.id === U.classId); if (!cls) return;
+    const names = cls.students.filter(n => U.present[n] !== false);
+    for (let i = names.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [names[i], names[j]] = [names[j], names[i]]; }
+    const groups = U.teams.map(() => []);
+    names.forEach((n, i) => groups[i % groups.length].push(n));
+    U.teams.forEach((t, i) => { t.members = groups[i].join(', '); });
+    render(); toast(names.length + ' Personen auf ' + U.teams.length + ' Gruppen verteilt');
+  },
+  dupSet(b){
+    const s = S.sets[b.dataset.id]; if (!s) return;
+    const copy = clone(s); copy.id = newId(); copy.updatedAt = Date.now(); copy.createdBy = Store.uid;
+    copy.title = isMine(s) ? (s.title || 'Ohne Titel') + ' (Kopie)' : (s.title || 'Ohne Titel');
+    saveSet(copy); render(); toast('Kopie erstellt: ' + copy.title);
+  },
+  delSet(b){
+    const s = S.sets[b.dataset.id]; if (!s) return;
+    if (!armed('del-' + s.id, b, 'Wirklich löschen?')) return;
+    deleteSet(s.id); render(); toast('«' + (s.title || 'Ohne Titel') + '» gelöscht');
+  },
+  addExample(){ const s = makeExampleSet(); saveSet(s); render(); toast('Mathe-Beispiel hinzugefügt'); },
+
+  /* Vorbereitung */
+  addTeam(){
+    const T = S.setup.teams;
+    if (T.length >= 6) return;
+    const used = T.map(t => t.color);
+    const color = COLORS.findIndex((_, i) => !used.includes(i));
+    T.push({ name: 'Team ' + COLORS[color].name, color, members: '' });
+    render();
+    const inp = $('#team-name-' + (T.length - 1)); if (inp) inp.select();
+  },
+  removeTeam(b){ const T = S.setup.teams; if (T.length <= 2) return; T.splice(+b.dataset.i, 1); render(); },
+  cycleColor(b){
+    const T = S.setup.teams, i = +b.dataset.i, t = T[i];
+    const used = T.filter((_, k) => k !== i).map(x => x.color);
+    let c = t.color;
+    for (let k = 1; k <= COLORS.length; k++){ const n = (t.color + k) % COLORS.length; if (!used.includes(n)){ c = n; break; } }
+    if (t.name === 'Team ' + COLORS[t.color].name) t.name = 'Team ' + COLORS[c].name;
+    t.color = c; render();
+    const nb = document.querySelector('[data-act="cycleColor"][data-i="' + i + '"]'); if (nb) nb.focus();
+  },
+  startGame(){
+    const U = S.setup, s = S.sets[U.setId]; if (!s) return;
+    const teams = U.teams.map((t, i) => ({ name: (t.name || '').trim() || 'Gruppe ' + (i + 1), color: t.color, score: s.startCapital, out: false, members: splitNames(t.members), next: 0 }));
+    const now = Date.now();
+    S.game = { id: 'r-' + now.toString(36) + '-' + Math.random().toString(36).slice(2, 6), name: U.name.trim() || s.title, classId: U.classId || '',
+      setId: s.id, board: clone(s), teams, used: {}, turn: 0, over: false, started: now, updatedAt: now };
+    S.prevScores = null; S.view = 'board';
+    saveGame(); render(); keepAwake();
+  },
+  playAgain(){
+    const g = S.game;
+    if (!S.sets[g.setId]){ S.view = 'library'; render(); return; }
+    S.setup = { mode: 'new', setId: g.setId, name: g.name, nameTouched: true, classId: g.classId || '', present: {},
+      teams: g.teams.map(t => ({ name: t.name, color: t.color, members: t.members.join(', ') })) };
+    S.view = 'setup'; render(); window.scrollTo(0, 0);
+  },
+  showEnd(){ S.view = 'end'; S.fbTeam = 0; render(); window.scrollTo(0, 0); },
+  showBoard(){ S.view = 'board'; render(); },
+
+  /* Tafel */
+  pick(b){
+    const g = S.game;
+    if (S.round || !g || g.over) return;
+    const c = +b.dataset.c, r = +b.dataset.r;
+    if (g.used[c + '-' + r]) return;
+    if (g.teams[g.turn].out) g.turn = nextTurn(g.turn);
+    S.round = { c, r, team: g.turn, speaker: speakerOf(g.teams[g.turn]), phase: 'think', answer: '', verdict: null, heirs: {}, heirOk: {}, heirList: [], applied: false, timeUp: false, paused: false };
+    startPhase('think', g.board.times[r], thinkEnded);
+  },
+  teamPop(b){ if (S.round) return; S.teamPop = +b.dataset.i; renderPop(); },
+  review(b){ if (S.round) return; S.review = { c: +b.dataset.c, r: +b.dataset.r }; renderPop(); },
+  popClose(){ S.teamPop = null; S.review = null; S.classEd = null; renderPop(); },
+  popSave(){
+    const g = S.game, i = S.teamPop, t = g.teams[i];
+    const name = $('#pop-name').value.trim(), score = Math.round(Number($('#pop-score').value));
+    if (name) t.name = name;
+    if (Number.isFinite(score)) t.score = score;
+    t.out = t.score <= 0;
+    if (g.teams[g.turn].out) g.turn = nextTurn(g.turn);
+    if (g.over && g.teams.filter(x => !x.out).length > 1 && usedCount() < totalFields()) g.over = false;
+    S.teamPop = null; saveGame(); renderPop(); render();
+  },
+  popTurn(){ S.game.turn = S.teamPop; S.teamPop = null; saveGame(); renderPop(); render(); },
+
+  /* Aufgabe */
+  pause(){
+    const R = S.round; if (!R || R.timeUp) return;
+    if (Timer.running){ Timer.pause(); R.paused = true; } else { R.paused = false; Timer.resume(); }
+    document.querySelectorAll('[data-act="pause"]').forEach(x => { x.textContent = R.paused ? 'Weiter' : 'Pause'; });
+    Timer.draw();
+  },
+  endThink(){ if (!S.round || S.round.phase !== 'think') return; Timer.stop(); thinkEnded(); },
+  abortRound(b){
+    if (!armed('abort', b, 'Wirklich abbrechen?')) return;
+    Timer.stop(); S.round = null; renderRound(); render();
+  },
+  flipVerdict(){ const R = S.round; R.verdict = !R.verdict; R.verdict ? Sound.right() : Sound.wrong(); renderRound(); },
+  continueMain(){
+    const R = S.round, g = S.game;
+    if (!R || R.phase !== 'judged') return;
+    applyMain();
+    if (R.verdict){ finishRound(); return; }
+    R.heirList = g.teams.map((_, i) => i).filter(i => i !== R.team && !g.teams[i].out);
+    if (R.heirList.length){
+      startPhase('inherit', g.board.inheritSecs, timeUp);
+      const f = $('[data-heir]'); if (f) f.focus();
+    } else { R.phase = 'done'; renderRound(); }
+  },
+  toggleHeir(b){ const R = S.round, i = +b.dataset.i; R.heirOk[i] = !R.heirOk[i]; renderRound(); },
+  finishInherit(){
+    const R = S.round, g = S.game, val = g.board.values[R.r];
+    const winners = R.heirList.filter(i => R.heirOk[i]);
+    winners.forEach(i => { g.teams[i].score += val; });
+    const u = g.used[R.c + '-' + R.r];
+    if (u){
+      u.heirs = winners;
+      u.att = {};   // Erben-Versuche für die Rückmeldung (nur Gruppen, die geantwortet haben)
+      R.heirList.forEach(i => { if (String(R.heirs[i] || '').trim() || R.heirOk[i]) u.att[i] = !!R.heirOk[i]; });
+    }
+    finishRound();
+  },
+  closeRound(){ finishRound(); },
+
+  /* Editor */
+  edTab(b){ S.editor.tab = +b.dataset.i; renderEditor(); },
+  edAutoTimes(){
+    const d = S.editor.draft;
+    for (let r = 0; r < d.rows; r++) d.times[r] = autoTime(d.values[r]);
+    markDirty(); renderEditor(); toast('Denkzeit = Punkte gesetzt');
+  },
+  edSave(){
+    const E = S.editor, d = E.draft;
+    if (!String(d.title).trim()) d.title = 'Ohne Titel';
+    const s = normalizeSet(d); s.id = E.id; s.updatedAt = Date.now();
+    s.title = s.title.trim();
+    saveSet(s);
+    E.draft = clone(s); E.dirty = false; E.isNew = false;
+    renderEditor(); toast('Gespeichert: ' + s.title);
+  },
+  edClose(b){
+    if (S.editor.dirty && !armed('edClose', b, 'Änderungen verwerfen?')) return;
+    if (S.editor.aiCtl) S.editor.aiCtl.abort();
+    S.editor = null; renderEditor(); render();
+  },
+  aiCopy(){
+    const text = buildAiPrompt();
+    S.editor.aiOpen = true;
+    const det = $('#ai-paste'); if (det) det.open = true;
+    const done = () => toast('Auftrag kopiert – in Copilot, ChatGPT oder Claude einfügen und die Antwort unten einfügen.', 6000);
+    const fallback = () => {
+      const ta = $('#ai-answer');
+      if (ta){ ta.value = text; ta.focus(); ta.select(); }
+      toast('Der Auftrag steht markiert im Feld – mit Cmd/Ctrl + C kopieren, dann das Feld leeren und die Antwort einfügen.', 8000);
+    };
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback);
+      else fallback();
+    } catch(e){ fallback(); }
+  },
+  aiApply(b){
+    const E = S.editor, raw = ($('#ai-answer') || {}).value || '';
+    if (!raw.trim()){ toast('Füge zuerst die Antwort der KI in das Feld ein.'); return; }
+    const set = parseGameText(raw);
+    if (set && hasContent(E.draft) && !armed('aiApply', b, 'Vorhandene Aufgaben ersetzen?')) return;
+    applyAiResult(set);
+  },
+  async aiClaude(b){
+    const E = S.editor;
+    if (!S.sample || E.aiBusy) return;
+    if (!E.ai.topic.trim()){ toast('Gib zuerst Fach oder Thema ein.'); const t = $('#ai-topic'); if (t) t.focus(); return; }
+    if (hasContent(E.draft) && !armed('aiClaude', b, 'Vorhandene Aufgaben ersetzen?')) return;
+    const ed = E;
+    E.aiBusy = true; E.aiCtl = new AbortController(); E.aiStatus = 'Claude denkt nach … (das kann bis zu einer Minute dauern)';
+    renderEditor();
+    try {
+      const obj = await S.sample.json(buildAiPrompt(), {
+        signal: E.aiCtl.signal, modelTier: 'default', cache: false,
+        onText: ({ text }) => { if (S.editor === ed) setAiStatus('Claude schreibt … ' + text.length + ' Zeichen'); }
+      });
+      if (S.editor !== ed) return;
+      E.aiBusy = false;
+      if (!applyAiResult(gameFromObject(obj))){ E.aiStatus = ''; renderEditor(); }
+    } catch(e){
+      if (S.editor !== ed) return;
+      E.aiBusy = false;
+      const c = e && e.code;
+      const msg = c === 'cancelled' ? ''
+        : c === 'not_granted' || c === 'sampling_disabled' || c === 'not_declared' || c === 'capability_disabled' || c === 'capability_removed'
+          ? 'Claude ist hier nicht freigegeben. Nutze «Auftrag für eine KI kopieren».'
+        : c === 'rate_limited' ? 'Gerade zu viele Anfragen oder dein Nutzungslimit ist erreicht. Versuche es später nochmals.'
+        : c === 'invalid_json' ? 'Die Antwort war unvollständig. Versuche es nochmals oder wähle eine kleinere Tafel.'
+        : c === 'refused' ? 'Claude hat diese Anfrage abgelehnt. Formuliere Thema oder Wünsche anders.'
+        : 'Es hat nicht geklappt. Versuche es nochmals.';
+      if (c === 'not_granted' || c === 'sampling_disabled' || c === 'not_declared' || c === 'capability_disabled' || c === 'capability_removed') S.sample = null;
+      E.aiStatus = msg; renderEditor();
+    }
+  },
+  aiStop(){ const E = S.editor; if (E && E.aiCtl) E.aiCtl.abort(); }
+};
+
+/* =========================================================
+   Ereignisse
+   ========================================================= */
+document.addEventListener('click', e => {
+  if (e.target.id === 'pop' && !S.classEd){ ACT.popClose(); return; }
+  const b = e.target.closest('[data-act]');
+  if (!b || b.disabled) return;
+  if (S.sound) Sound.unlock();
+  if (S.confirm && S.confirmBtn !== b) resetArmed();
+  const fn = ACT[b.dataset.act];
+  if (fn) fn(b, e);
+});
+document.addEventListener('submit', e => {
+  e.preventDefault();
+  const f = e.target.dataset.form;
+  if (f === 'main') checkMain();
+  else if (f === 'inherit') evalInherit();
+});
+async function importFiles(files){
+  let ok = 0, bad = [];
+  for (const f of Array.from(files || [])){
+    try {
+      const s = parseGameText(await f.text());
+      if (!s){ bad.push(f.name); continue; }
+      s.id = newId(); s.updatedAt = Date.now() + ok; s.createdBy = Store.uid;
+      if (!s.title.trim() || s.title === 'Ohne Titel') s.title = f.name.replace(/\.(json|txt)$/i, '');
+      saveSet(s); ok++;
+    } catch(e){ bad.push(f.name); }
+  }
+  render();
+  if (ok && !bad.length) toast(ok === 1 ? 'Spiel geladen' : ok + ' Spiele geladen');
+  else if (ok) toast(ok + ' geladen – nicht lesbar: ' + bad.join(', '), 6000);
+  else toast('Die Datei enthält kein Spiel. Nutze eine Datei aus «Herunterladen».', 5000);
+}
+/* Namen anderer Personen erst beim Anzeigen auflösen (gespeichert wird nur die id). */
+async function resolveAuthors(){
+  const els = Array.from(document.querySelectorAll('[data-author]'));
+  if (!els.length || !Store.user) return;
+  const ids = Array.from(new Set(els.map(el => el.dataset.author)));
+  const ps = await Store.user.profiles(ids);
+  els.forEach(el => { const p = ps[el.dataset.author]; if (p && p.name) el.textContent = p.name; });
+}
+
+document.addEventListener('change', e => {
+  if (e.target.id === 'file-in'){ importFiles(e.target.files); e.target.value = ''; return; }
+  if (e.target.dataset && e.target.dataset.setupClass !== undefined && S.setup){
+    const U = S.setup, set = U.mode === 'edit' ? S.rounds[U.roundId].board : S.sets[U.setId];
+    U.classId = e.target.value; U.present = {};
+    const k = S.classes.find(x => x.id === U.classId);
+    if (!U.nameTouched && set) U.name = (k ? k.name + ' – ' : '') + set.title;
+    render();
+    const again = $('#setup-class'); if (again) again.focus();
+    return;
+  }
+  const t = e.target, k = t.dataset && t.dataset.edSize;
+  if (!k || !S.editor) return;
+  S.editor.draft[k] = +t.value;
+  markDirty(); renderEditor();
+  const again = $('#ed-' + k); if (again) again.focus();
+});
+document.addEventListener('input', e => {
+  const t = e.target;
+  if (t.dataset.setupName !== undefined && S.setup){ S.setup.teams[+t.dataset.setupName].name = t.value; return; }
+  if (t.dataset.setupMembers !== undefined && S.setup){ S.setup.teams[+t.dataset.setupMembers].members = t.value; return; }
+  if (t.dataset.setupField === 'name' && S.setup){ S.setup.name = t.value; S.setup.nameTouched = true; return; }
+  if (t.dataset.cls && S.classEd){
+    const k = S.classEd.list[S.classEd.sel]; if (!k) return;
+    if (t.dataset.cls === 'name'){
+      k.name = t.value;
+      const b = document.querySelector('.cls-item[aria-current="true"] b'); if (b) b.textContent = t.value || 'Neue Klasse';
+    } else {
+      k.students = t.value;
+      const sm = document.querySelector('.cls-item[aria-current="true"] small'); if (sm) sm.textContent = splitNames(t.value).length + ' Namen';
+    }
+    return;
+  }
+  if (t.id === 'answer-main' && S.round){ S.round.answer = t.value; return; }
+  if (t.dataset.ai && S.editor){
+    S.editor.ai[t.dataset.ai] = t.value;
+    if (t.dataset.ai !== 'answer'){ S.aiLast = S.aiLast || {}; S.aiLast[t.dataset.ai] = t.value; }
+    return;
+  }
+  if (t.dataset.heir !== undefined && S.round){ S.round.heirs[t.dataset.heir] = t.value; return; }
+  const k = t.dataset.ed;
+  if (k && S.editor){
+    const d = S.editor.draft;
+    if (k === 'title') d.title = t.value;
+    else if (k === 'time') d.times[+t.dataset.r] = t.value;
+    else if (k === 'value'){ d.values[+t.dataset.r] = t.value; const s = document.querySelector('[data-rowval="' + t.dataset.r + '"]'); if (s) s.textContent = t.value; }
+    else if (k === 'answerSecs' || k === 'inheritSecs' || k === 'startCapital') d[k] = t.value;
+    else if (k === 'cat'){ d.categories[+t.dataset.c].name = t.value; const n = $('#ed-tabname-' + t.dataset.c); if (n) n.textContent = t.value; }
+    else d.categories[+t.dataset.c].qs[+t.dataset.r][k] = t.value;
+    markDirty();
+  }
+});
+document.addEventListener('keydown', e => {
+  const t = e.target;
+  if (e.key === 'Enter' && t.dataset && t.dataset.heir !== undefined){
+    e.preventDefault();
+    const all = Array.from(document.querySelectorAll('[data-heir]'));
+    const i = all.indexOf(t);
+    if (i < all.length - 1) all[i + 1].focus(); else evalInherit();
+    return;
+  }
+  if (e.key === 'Enter' && t.id === 'pop-score'){ e.preventDefault(); ACT.popSave(); return; }
+  if (e.key === 'Escape' && (S.teamPop != null || S.review) && !S.classEd){ ACT.popClose(); }
+});
+
+/* =========================================================
+   Start
+   ========================================================= */
+function boot(){
+  try { if (localStorage.getItem('mj-sound') === '0') S.sound = false; } catch(e){}
+  const legacyLocal = Local.get('board');
+  S.sets = normalizeSets(Local.get('sets'));
+  if (!Object.keys(S.sets).length){ const s = makeExampleSet(legacyLocal); S.sets[s.id] = s; Local.set('sets', S.sets); }
+  S.rounds = normalizeRounds(Local.get('rounds'));
+  if (!Object.keys(S.rounds).length){   // frühere Einzel-Runde übernehmen
+    const old = fixGame(Local.get('game'), legacyLocal);
+    if (old){ S.rounds[old.id] = old; Local.set('rounds', S.rounds); }
+  }
+  S.classes = normalizeClasses(Local.get('classes'));
+  render();
+
+  if (window.claude && window.claude.use){
+    window.claude.use('sample').then(fn => { S.sample = fn || null; if (S.editor && S.sample) renderEditor(); }).catch(() => {});
+  }
+
+  Store.init().then(async () => {
+    if (!Store.db) return;
+    const [sets, rounds, classes, legacy] = await Promise.all([
+      Store.listSets(),
+      Store.listCol(Store.roundsCol),
+      Store.classesPath ? Store.getDoc(Store.classesPath) : Promise.resolve(null),
+      Store.getDoc('app/board')
+    ]);
+    if (sets === null) return; // Lesen fehlgeschlagen: lokale Daten behalten
+    const m = normalizeSets(sets);
+    if (Object.keys(m).length){ S.sets = m; Local.set('sets', S.sets); }
+    else { S.sets = {}; saveSet(makeExampleSet(legacy)); }   // erstes Öffnen: bisherige Tafel übernehmen
+    if (!Store.uid) return;   // ohne Benutzer-Id bleiben Runden und Klassen nur im Browser
+    const busy = S.view !== 'library' || S.round || S.editor || S.classEd;
+    if (rounds !== null && !busy){
+      const rm = normalizeRounds(rounds);
+      if (!Object.keys(rm).length){
+        // Umstieg auf mehrere Runden: frühere Einzel-Runde übernehmen (eigene, sonst die alte gemeinsame der Besitzerin/des Besitzers)
+        let old = await Store.getDoc(Store.gamePath);
+        if (!old && Store.isOwner) old = await Store.getDoc('app/game');
+        const g = fixGame(old, legacy);
+        if (g){ rm[g.id] = g; Store.write(Store.roundsCol + '/' + g.id, g); }
+      }
+      S.rounds = rm; Local.set('rounds', S.rounds);
+    }
+    if (classes && Array.isArray(classes.list) && !S.classEd){ S.classes = normalizeClasses(classes.list); Local.set('classes', S.classes); }
+    if (!S.round && !S.editor && !S.classEd && S.view === 'library') render();
+  });
+}
+boot();
+})();
+</script>
