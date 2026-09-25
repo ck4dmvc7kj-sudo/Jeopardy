@@ -1,0 +1,45 @@
+[
+  {
+    "id": "s-mufjubr1-mc5oj",
+    "file": "s-mufjubr1-mc5oj.json",
+    "title": "Geometrie-Jeopardy: Vierecke",
+    "cols": 4,
+    "rows": 6,
+    "topics": [
+      "Quadrat",
+      "Rechteck",
+      "Rhombus",
+      "Rhomboid"
+    ],
+    "stand": "2026-09-24T20:51"
+  },
+  {
+    "id": "s-mufbpv5x-cep7o",
+    "file": "s-mufbpv5x-cep7o.json",
+    "title": "Mathe 1. Sek – Grundlagen",
+    "cols": 5,
+    "rows": 10,
+    "topics": [
+      "Zahlen & Rechnen",
+      "Brüche & Dezimalzahlen",
+      "Geometrie",
+      "Grössen & Einheiten",
+      "Sachrechnen"
+    ],
+    "stand": "2026-09-24T11:53"
+  },
+  {
+    "id": "s-mufw4gwm-zm3es",
+    "file": "s-mufw4gwm-zm3es.json",
+    "title": "Satzglieder-Jeopardy 2. Sek",
+    "cols": 4,
+    "rows": 5,
+    "topics": [
+      "Nominalgruppen: Kasus bestimmen",
+      "Präpositional- und Partikelgruppe",
+      "Adjektivgruppe und verbale Teile",
+      "Hauptsatz und Nebensatz"
+    ],
+    "stand": "2026-09-24T20:57"
+  }
+]

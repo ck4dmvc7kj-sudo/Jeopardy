@@ -1,0 +1,370 @@
+{
+  "format": "mathe-jeopardy",
+  "version": 1,
+  "answerSecs": 10,
+  "categories": [
+    {
+      "name": "Quadrat",
+      "qs": [
+        {
+          "a": "25 cm²",
+          "alt": "25cm²; 25 cm2; 25cm2",
+          "q": "Ein Quadrat hat die Seitenlänge 5 cm.\nBerechne die Fläche."
+        },
+        {
+          "a": "36 cm",
+          "alt": "36cm",
+          "q": "Ein Quadrat hat die Seitenlänge 9 cm.\nBerechne den Umfang."
+        },
+        {
+          "a": "8 cm",
+          "alt": "8cm",
+          "q": "Ein Quadrat hat die Fläche 64 cm².\nBerechne die Seitenlänge."
+        },
+        {
+          "a": "121 cm²",
+          "alt": "121cm²; 121cm2",
+          "q": "Ein Quadrat hat den Umfang 44 cm.\nBerechne die Fläche."
+        },
+        {
+          "a": "48 cm",
+          "alt": "48cm",
+          "q": "Ein Quadrat hat die Fläche 144 cm² und eine Diagonale von 16.97 cm.\nBerechne den Umfang."
+        },
+        {
+          "a": "44 cm",
+          "alt": "44cm",
+          "q": "Ein Quadrat hat die Fläche 121 cm² und eine Diagonale von 14.14 cm.\nBerechne den Umfang."
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        }
+      ]
+    },
+    {
+      "name": "Rechteck",
+      "qs": [
+        {
+          "a": "24 cm²",
+          "alt": "24cm²; 24cm2",
+          "q": "Ein Rechteck hat die Länge 8 cm und die Breite 3 cm.\nBerechne die Fläche."
+        },
+        {
+          "a": "28 cm",
+          "alt": "28cm",
+          "q": "Ein Rechteck hat die Länge 10 cm und die Breite 4 cm.\nBerechne den Umfang."
+        },
+        {
+          "a": "9 cm",
+          "alt": "9cm",
+          "q": "Ein Rechteck hat die Fläche 45 cm² und die Breite 5 cm.\nBerechne die Länge."
+        },
+        {
+          "a": "6 cm",
+          "alt": "6cm",
+          "q": "Ein Rechteck hat den Umfang 30 cm und die Länge 9 cm.\nBerechne die Breite."
+        },
+        {
+          "a": "9 cm",
+          "alt": "9cm",
+          "q": "Ein Rechteck hat die Fläche 72 cm², die Breite 8 cm und eine Diagonale von 12 cm.\nBerechne die Länge."
+        },
+        {
+          "a": "10 cm",
+          "alt": "10cm",
+          "q": "Ein Rechteck hat den Umfang 50 cm und die Länge 15 cm. Ein flächengleiches Quadrat hätte eine Fläche von 156.25 cm².\nBerechne die Breite des Rechtecks."
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        }
+      ]
+    },
+    {
+      "name": "Rhombus",
+      "qs": [
+        {
+          "a": "24 cm²",
+          "alt": "24cm²; 24cm2",
+          "q": "Ein Rhombus hat die Seitenlänge 6 cm und  die Höhe 4 cm.\nBerechne die Fläche."
+        },
+        {
+          "a": "20 cm",
+          "alt": "20cm",
+          "q": "Ein Rhombus hat die Seitenlänge 5 cm.\nBerechne den Umfang."
+        },
+        {
+          "a": "7.5 cm",
+          "alt": "7,5cm",
+          "q": "Ein Rhombus hat die Fläche 60 cm² und eine Seite von 8 cm.\nBerechne die Höhe."
+        },
+        {
+          "a": "26 cm",
+          "alt": "26cm",
+          "q": "Ein Rhombus hat die Seitenlänge 6.5 cm und die Höhe 5 cm.\nBerechne den Umfang."
+        },
+        {
+          "a": "31.24 cm",
+          "alt": "",
+          "q": "Ein Rhombus hat die Fläche 60 cm², eine Höhe von 12 cm und eine Seitenlänge von 7.81 cm.\nBerechne den Umfang."
+        },
+        {
+          "a": "130 cm²",
+          "alt": "130cm²; 130cm2",
+          "q": "Ein Rhombus hat den Umfang 52 cm, die Höhe 10 cm und eine Diagonale von 13 cm.\nBerechne die Fläche."
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        }
+      ]
+    },
+    {
+      "name": "Rhomboid",
+      "qs": [
+        {
+          "a": "36 cm²",
+          "alt": "36cm²; 36cm2",
+          "q": "Ein Rhomboid hat die Seite 9 cm und die zugehörige Höhe 4 cm.\nBerechne die Fläche."
+        },
+        {
+          "a": "24 cm",
+          "alt": "24cm",
+          "q": "Ein Rhomboid hat die Seiten 7 cm und 5 cm.\nBerechne den Umfang."
+        },
+        {
+          "a": "8 cm",
+          "alt": "8cm",
+          "q": "Ein Rhomboid hat die Fläche 48 cm² und die Höhe 6 cm.\nBerechne die zugehörige Seite."
+        },
+        {
+          "a": "7 cm",
+          "alt": "7cm",
+          "q": "Ein Rhomboid hat den Umfang 36 cm und eine Seite von 11 cm.\nBerechne die andere Seite."
+        },
+        {
+          "a": "7 cm",
+          "alt": "7cm",
+          "q": "Ein Rhomboid hat die Fläche 84 cm², eine Seite von 12 cm und eine Diagonale von 15 cm.\nBerechne die zugehörige Höhe."
+        },
+        {
+          "a": "10 cm",
+          "alt": "10cm",
+          "q": "Ein Rhomboid hat den Umfang 58 cm, eine Seite von 19 cm, eine Höhe von 8 cm und eine Diagonale von 22 cm.\nBerechne die andere Seite."
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        }
+      ]
+    },
+    {
+      "name": "Thema E",
+      "qs": [
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        }
+      ]
+    },
+    {
+      "name": "Thema F",
+      "qs": [
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        }
+      ]
+    }
+  ],
+  "cols": 4,
+  "inheritSecs": 10,
+  "rows": 6,
+  "startCapital": 200,
+  "times": [
+    10,
+    20,
+    30,
+    40,
+    50,
+    60,
+    70,
+    80,
+    90,
+    100
+  ],
+  "title": "Geometrie-Jeopardy: Vierecke",
+  "values": [
+    10,
+    20,
+    30,
+    40,
+    50,
+    60,
+    70,
+    80,
+    90,
+    100
+  ],
+  "sammlung": {
+    "id": "s-mufjubr1-mc5oj",
+    "stand": "2026-09-24T20:51"
+  }
+}

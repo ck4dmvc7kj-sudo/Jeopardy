@@ -1,0 +1,370 @@
+{
+  "format": "mathe-jeopardy",
+  "version": 1,
+  "answerSecs": 10,
+  "categories": [
+    {
+      "name": "Nominalgruppen: Kasus bestimmen",
+      "qs": [
+        {
+          "a": "Nominativ",
+          "alt": "1. Fall; erster Fall",
+          "q": "'Der Hund bellt laut.'\nWelchen Kasus hat die Nominalgruppe 'Der Hund'?"
+        },
+        {
+          "a": "Akkusativ",
+          "alt": "4. Fall; vierter Fall",
+          "q": "'Ich sehe den Hund.'\nWelchen Kasus hat die Nominalgruppe 'den Hund'?"
+        },
+        {
+          "a": "Dativ",
+          "alt": "3. Fall; dritter Fall",
+          "q": "'Ich gebe dem Hund einen Knochen.'\nWelchen Kasus hat die Nominalgruppe 'dem Hund'?"
+        },
+        {
+          "a": "Genitiv",
+          "alt": "2. Fall; zweiter Fall",
+          "q": "'Das Fell des Hundes ist braun.'\nWelchen Kasus hat die Nominalgruppe 'des Hundes'?"
+        },
+        {
+          "a": "Nominativ, Dativ, Akkusativ, Genitiv",
+          "alt": "Nominativ - Dativ - Akkusativ - Genitiv; 1. Fall, 3. Fall, 4. Fall, 2. Fall",
+          "q": "'Die Mutter schenkt dem Kind das Buch des Lehrers.'\nNenne die Kasus der vier Nominalgruppen in der Reihenfolge, wie sie im Satz vorkommen."
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        }
+      ]
+    },
+    {
+      "name": "Präpositional- und Partikelgruppe",
+      "qs": [
+        {
+          "a": "Präpositionalgruppe",
+          "alt": "",
+          "q": "Wie heisst der Fachbegriff für eine Wortgruppe, die mit einer Präposition beginnt, z.B. 'auf dem Tisch'?"
+        },
+        {
+          "a": "vor der Schule",
+          "alt": "",
+          "q": "Bestimme die Präpositionalgruppe im Satz:\n'Er wartet vor der Schule.'"
+        },
+        {
+          "a": "Partikelgruppe",
+          "alt": "Adverbialgruppe",
+          "q": "Wie heisst der Fachbegriff für ein einzelnes Adverb oder eine kurze Wortgruppe wie 'heute' oder 'sehr schnell', die als Satzglied auftritt?"
+        },
+        {
+          "a": "morgen früh",
+          "alt": "",
+          "q": "Bestimme die Partikelgruppe im Satz:\n'Sie kommt morgen früh an.'"
+        },
+        {
+          "a": "Trotz des Sturms; draussen",
+          "alt": "Trotz des Sturms, draussen; draussen; Trotz des Sturms",
+          "q": "'Trotz des Sturms bleibt sie draussen.'\nNenne die Präpositionalgruppe und die Partikelgruppe in diesem Satz."
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        }
+      ]
+    },
+    {
+      "name": "Adjektivgruppe und verbale Teile",
+      "qs": [
+        {
+          "a": "Adjektivgruppe",
+          "alt": "",
+          "q": "Wie heisst der Fachbegriff für eine Wortgruppe wie 'sehr müde' oder 'ziemlich gross', die als Satzglied auftreten kann?"
+        },
+        {
+          "a": "sehr klug",
+          "alt": "",
+          "q": "Bestimme die Adjektivgruppe im Satz:\n'Das Mädchen ist sehr klug.'"
+        },
+        {
+          "a": "finites Verb",
+          "alt": "finite Verbform",
+          "q": "Wie heisst der Fachbegriff für das Verb, das im Satz an zweiter Stelle steht und mit dem Subjekt übereinstimmt, z.B. 'hat' in 'Er hat gegessen'?"
+        },
+        {
+          "a": "gelesen",
+          "alt": "",
+          "q": "Bestimme den infiniten Verbteil im Satz:\n'Sie hat das Buch gelesen.'"
+        },
+        {
+          "a": "werden, gehen",
+          "alt": "werden und gehen",
+          "q": "'Wir werden morgen ins Kino gehen.'\nNenne alle verbalen Teile (finit und infinit) dieses Satzes."
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        }
+      ]
+    },
+    {
+      "name": "Hauptsatz und Nebensatz",
+      "qs": [
+        {
+          "a": "Hauptsatz",
+          "alt": "",
+          "q": "Wie heisst der Fachbegriff für einen Satz, der alleine stehen kann und eine eigenständige Aussage macht?"
+        },
+        {
+          "a": "Nebensatz",
+          "alt": "",
+          "q": "'Weil es regnet, bleiben wir zu Hause.'\nIst der Teil 'Weil es regnet' ein Hauptsatz oder ein Nebensatz?"
+        },
+        {
+          "a": "am Ende",
+          "alt": "Satzende",
+          "q": "Wie steht das finite Verb in einem deutschen Nebensatz normalerweise: am Anfang, in der Mitte oder am Ende?"
+        },
+        {
+          "a": "Ich weiss",
+          "alt": "",
+          "q": "'Ich weiss, dass er kommt.'\nBestimme den Hauptsatz dieses Satzgefüges."
+        },
+        {
+          "a": "der immer pünktlich ist",
+          "alt": "",
+          "q": "'Der Schüler, der immer pünktlich ist, hat heute verschlafen.'\nBestimme den Nebensatz dieses Satzes."
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        }
+      ]
+    },
+    {
+      "name": "Thema E",
+      "qs": [
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        }
+      ]
+    },
+    {
+      "name": "Thema F",
+      "qs": [
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        }
+      ]
+    }
+  ],
+  "cols": 4,
+  "inheritSecs": 10,
+  "rows": 5,
+  "startCapital": 200,
+  "times": [
+    10,
+    20,
+    30,
+    40,
+    50,
+    60,
+    70,
+    80,
+    90,
+    100
+  ],
+  "title": "Satzglieder-Jeopardy 2. Sek",
+  "values": [
+    10,
+    20,
+    30,
+    40,
+    50,
+    60,
+    70,
+    80,
+    90,
+    100
+  ],
+  "sammlung": {
+    "id": "s-mufw4gwm-zm3es",
+    "stand": "2026-09-24T20:57"
+  }
+}

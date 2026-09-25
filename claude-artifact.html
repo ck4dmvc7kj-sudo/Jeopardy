@@ -89,6 +89,11 @@ textarea.field{resize:vertical;min-height:64px;font-size:15px;line-height:1.35}
 .set-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:6px}
 .lib-sub{font-family:var(--display);font-weight:800;font-size:28px;text-transform:uppercase;margin:10px 0 0;color:var(--chalk-dim)}
 label.btn{display:inline-block}
+.set.coll{background:transparent;border-style:dashed;border-color:var(--line-strong)}
+.set-new{margin:0;color:var(--amber);font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.set-have{margin:0;color:var(--ok);font-size:14px;font-weight:700}
+.share-toggle{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--chalk-dim);cursor:pointer}
+.share-toggle input{width:18px;height:18px;accent-color:var(--amber)}
 .empty{padding:28px;border:1px dashed var(--line-strong);border-radius:12px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
 .empty p{margin:0}
 
@@ -466,6 +471,9 @@ function normalizeSet(b){
     inheritSecs:  n(b.inheritSecs, 10, 3, 300),
     updatedAt: Number(b.updatedAt) || 0,
     createdBy: typeof b.createdBy === 'string' ? b.createdBy : null,
+    shared: b.shared === true,                                                    // in der öffentlichen Sammlung (GitHub) teilen
+    fromCollection: typeof b.fromCollection === 'string' ? b.fromCollection : null, // aus der Sammlung übernommen: deren id
+    collectionStand: typeof b.collectionStand === 'string' ? b.collectionStand : null,
     categories: Array.from({length:MAX_C}, (_, c) => {
       const bc = (b.categories && b.categories[c]) || {};
       return {
@@ -489,9 +497,28 @@ const isMine = s => s.createdBy ? s.createdBy === Store.uid : Store.isOwner;
 /* Spiel für Datei / Weitergabe (ohne interne Angaben) */
 function exportSet(s){
   const o = normalizeSet(s);
-  delete o.id; delete o.updatedAt; delete o.createdBy;
+  delete o.id; delete o.updatedAt; delete o.createdBy; delete o.shared; delete o.fromCollection; delete o.collectionStand;
   return Object.assign({ format: 'mathe-jeopardy', version: 1 }, o);
 }
+
+/* ---------- Sammlung (Ordner spiele/ neben der Seite, z. B. auf GitHub Pages) ----------
+   spiele/index.json: [{id, file, title, cols, rows, topics, stand}] – wird von build.sh erzeugt. */
+async function loadCollection(){
+  try {
+    const res = await fetch('spiele/index.json', { cache: 'no-cache' });
+    if (!res.ok) return null;
+    const list = await res.json();
+    return Array.isArray(list) ? list.filter(x => x && x.id && x.file) : null;
+  } catch(e){ return null; }
+}
+const copiesOf = id => Object.values(S.sets).filter(s => s.fromCollection === id);
+const newerInCollection = s => {
+  if (!s.fromCollection || !S.collection) return null;
+  const c = S.collection.find(x => x.id === s.fromCollection);
+  return c && c.stand && (!s.collectionStand || c.stand > s.collectionStand) ? c : null;
+};
+// stand: «JJJJ-MM-TTTHH:MM» – als Text vergleichbar (neuer = grösser)
+const fmtStand = iso => { try { const d = new Date(String(iso).length > 10 ? iso : iso + 'T12:00'); return isNaN(d) ? String(iso) : d.toLocaleDateString('de-CH', { day: 'numeric', month: 'short', year: 'numeric' }); } catch(e){ return String(iso); } };
 /* Text aus Datei oder KI-Antwort in ein Spiel umwandeln. Versteht das
    Export-Format und das kompakte KI-Format {titel, spalten:[{thema, aufgaben:[{frage, loesung, alternativen}]}]}. */
 function parseGameText(text){
@@ -813,6 +840,7 @@ const Timer = {
    ========================================================= */
 const S = {
   sets: {},
+  collection: null,    // Spiele aus spiele/index.json (null = keine Sammlung erreichbar)
   rounds: {},
   classes: [],
   game: null,          // die gerade gespielte Runde (Verweis in S.rounds)
@@ -919,6 +947,8 @@ function viewLibrary(){
       <p class="set-meta">${s.cols} × ${s.rows} · ${s.cols * s.rows} Aufgaben · ${lo}–${hi} Punkte${!mine && s.createdBy ? ` · von <span data-author="${esc(s.createdBy)}">jemand anderem</span>` : ''}</p>
       <p class="set-topics">${s.categories.slice(0, s.cols).map((c, i) => `<span><b>${LETTERS[i]}</b>${esc(c.name)}</span>`).join('')}</p>
       ${miss ? `<p class="set-warn">${miss} ${miss === 1 ? 'Feld' : 'Felder'} noch ohne Aufgabe</p>` : ''}
+      ${(n => n ? `<p class="set-new">Neuere Fassung in der Sammlung (${fmtStand(n.stand)}) <button class="btn sm" data-act="takeCollection" data-cid="${esc(n.id)}">Neue Fassung übernehmen</button></p>` : '')(newerInCollection(s))}
+      ${mine && Store.db ? `<label class="share-toggle"><input type="checkbox" data-share="${id}" ${s.shared ? 'checked' : ''}> In der öffentlichen Sammlung teilen</label>` : ''}
       <div class="set-actions">
         <button class="btn primary" data-act="playSet" data-id="${id}">Spielen</button>
         ${mine ? `<button class="btn" data-act="editSet" data-id="${id}">Bearbeiten</button>` : ''}
@@ -946,9 +976,23 @@ function viewLibrary(){
     ${others.length ? `<h2 class="lib-sub">Geteilt von anderen</h2><ul class="sets">${others.map(card).join('')}</ul>` : ''}
     ${list.length ? '' : `<div class="empty">
       <p><b>Noch keine Spiele gespeichert.</b></p>
-      <p class="muted">Erstelle ein eigenes Spiel oder hole das Beispiel mit 50 Matheaufgaben für die 1. Sek zurück.</p>
+      <p class="muted">${S.collection && S.collection.length ? 'Übernimm ein Spiel aus der Sammlung weiter unten, erstelle ein eigenes' : 'Erstelle ein eigenes Spiel'} oder hole das Beispiel mit 50 Matheaufgaben für die 1. Sek zurück.</p>
       <div class="q-actions"><button class="btn primary" data-act="newSet">Neues Spiel erstellen</button><button class="btn" data-act="addExample">Mathe-Beispiel hinzufügen</button></div>
     </div>`}
+    ${S.collection && S.collection.length ? `<h2 class="lib-sub">Aus der Sammlung</h2>
+      <p class="hint">Spiele zum Übernehmen. Nach dem Übernehmen gehört die Kopie dir – du kannst sie spielen und anpassen.</p>
+      <ul class="sets">${S.collection.map(c => {
+        const copies = copiesOf(c.id), newest = copies.reduce((m, s) => (!m || (s.collectionStand || '') > (m.collectionStand || '') ? s : m), null);
+        const status = !copies.length ? '' : newest && newest.collectionStand && c.stand > newest.collectionStand ? '<p class="set-new">Neuere Fassung als deine Kopie</p>' : '<p class="set-have">✓ In deinen Spielen</p>';
+        return `<li class="set coll">
+          <h2>${esc(c.title)}</h2>
+          <p class="set-meta">${c.cols} × ${c.rows} · ${c.cols * c.rows} Aufgaben · Stand ${esc(fmtStand(c.stand))}</p>
+          <p class="set-topics">${(c.topics || []).map((t, i) => `<span><b>${LETTERS[i]}</b>${esc(t)}</span>`).join('')}</p>
+          ${status}
+          <div class="set-actions"><button class="btn${copies.length ? '' : ' primary'}" data-act="takeCollection" data-cid="${esc(c.id)}">${copies.length ? 'Nochmals übernehmen' : 'Übernehmen'}</button></div>
+        </li>`;
+      }).join('')}</ul>` : ''}
+
   </main>`;
 }
 
@@ -1685,6 +1729,25 @@ const ACT = {
     if (!armed('del-' + s.id, b, 'Wirklich löschen?')) return;
     deleteSet(s.id); render(); toast('«' + (s.title || 'Ohne Titel') + '» gelöscht');
   },
+  async takeCollection(b){
+    const c = (S.collection || []).find(x => x.id === b.dataset.cid); if (!c) return;
+    b.disabled = true;
+    try {
+      const res = await fetch('spiele/' + c.file, { cache: 'no-cache' });
+      if (!res.ok) throw new Error('http ' + res.status);
+      const s = gameFromObject(await res.json());
+      if (!s) throw new Error('format');
+      const older = copiesOf(c.id).length > 0;
+      s.id = newId(); s.updatedAt = Date.now(); s.createdBy = Store.uid;
+      s.fromCollection = c.id; s.collectionStand = c.stand || null; s.shared = false;
+      if (older) s.title = s.title + ' (Fassung ' + fmtStand(c.stand) + ')';
+      saveSet(s); render(); window.scrollTo(0, 0);
+      toast('«' + s.title + '» ist jetzt in deinen Spielen');
+    } catch(e){
+      b.disabled = false;
+      toast('Das Spiel konnte nicht geladen werden. Prüfe die Internetverbindung und versuche es nochmals.', 5000);
+    }
+  },
   addExample(){ const s = makeExampleSet(); saveSet(s); render(); toast('Mathe-Beispiel hinzugefügt'); },
 
   /* Vorbereitung */
@@ -1912,6 +1975,12 @@ async function resolveAuthors(){
 
 document.addEventListener('change', e => {
   if (e.target.id === 'file-in'){ importFiles(e.target.files); e.target.value = ''; return; }
+  if (e.target.dataset && e.target.dataset.share){
+    const s = S.sets[e.target.dataset.share]; if (!s) return;
+    s.shared = e.target.checked; s.updatedAt = Date.now(); saveSet(s);
+    toast(s.shared ? '«' + s.title + '» ist für die Sammlung vorgemerkt. Sag Claude «Aktualisiere die Sammlung».' : '«' + s.title + '» wird nicht mehr geteilt (beim nächsten Aktualisieren der Sammlung entfernt).', 6000);
+    return;
+  }
   if (e.target.dataset && e.target.dataset.setupClass !== undefined && S.setup){
     const U = S.setup, set = U.mode === 'edit' ? S.rounds[U.roundId].board : S.sets[U.setId];
     U.classId = e.target.value; U.present = {};
@@ -1982,7 +2051,12 @@ function boot(){
   try { if (localStorage.getItem('mj-sound') === '0') S.sound = false; } catch(e){}
   const legacyLocal = Local.get('board');
   S.sets = normalizeSets(Local.get('sets'));
-  if (!Object.keys(S.sets).length){ const s = makeExampleSet(legacyLocal); S.sets[s.id] = s; Local.set('sets', S.sets); }
+  // Sammlung laden. Gibt es keine (z. B. Datei direkt geöffnet) und noch keine Spiele, das Mathe-Beispiel anlegen.
+  loadCollection().then(list => {
+    S.collection = list;
+    if (!list && !Store.db && !Object.keys(S.sets).length){ const s = makeExampleSet(legacyLocal); S.sets[s.id] = s; Local.set('sets', S.sets); }
+    if (S.view === 'library' && !S.editor && !S.round && !S.classEd) render();
+  });
   S.rounds = normalizeRounds(Local.get('rounds'));
   if (!Object.keys(S.rounds).length){   // frühere Einzel-Runde übernehmen
     const old = fixGame(Local.get('game'), legacyLocal);

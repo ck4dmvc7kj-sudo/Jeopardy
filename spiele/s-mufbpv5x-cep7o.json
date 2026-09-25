@@ -1,0 +1,370 @@
+{
+  "format": "mathe-jeopardy",
+  "version": 1,
+  "answerSecs": 10,
+  "categories": [
+    {
+      "name": "Zahlen & Rechnen",
+      "qs": [
+        {
+          "a": "56",
+          "alt": "",
+          "q": "7 · 8 = ?"
+        },
+        {
+          "a": "12",
+          "alt": "",
+          "q": "144 : 12 = ?"
+        },
+        {
+          "a": "1700",
+          "alt": "",
+          "q": "Rechne geschickt:\n25 · 17 · 4 = ?"
+        },
+        {
+          "a": "31",
+          "alt": "",
+          "q": "Welches ist die kleinste Primzahl, die grösser als 30 ist?"
+        },
+        {
+          "a": "23",
+          "alt": "",
+          "q": "3 + 4 · (12 − 7) = ?"
+        },
+        {
+          "a": "59",
+          "alt": "",
+          "q": "2⁵ + 3³ = ?"
+        },
+        {
+          "a": "36",
+          "alt": "",
+          "q": "Bestimme das kleinste gemeinsame Vielfache (kgV) von 12 und 18."
+        },
+        {
+          "a": "42",
+          "alt": "",
+          "q": "Bestimme den grössten gemeinsamen Teiler (ggT) von 84 und 126."
+        },
+        {
+          "a": "−21",
+          "alt": "",
+          "q": "(−8) · 3 − (−15) : 5 = ?"
+        },
+        {
+          "a": "12",
+          "alt": "",
+          "q": "Wie viele Teiler hat die Zahl 72?\n(1 und 72 zählen mit.)"
+        }
+      ]
+    },
+    {
+      "name": "Brüche & Dezimalzahlen",
+      "qs": [
+        {
+          "a": "0.75",
+          "alt": "3/4",
+          "q": "0.5 + 0.25 = ?"
+        },
+        {
+          "a": "3/4",
+          "alt": "",
+          "q": "Kürze den Bruch 18/24 so weit wie möglich."
+        },
+        {
+          "a": "7.2",
+          "alt": "",
+          "q": "2.4 · 3 = ?"
+        },
+        {
+          "a": "7/12",
+          "alt": "",
+          "q": "1/3 + 1/4 = ?"
+        },
+        {
+          "a": "0.24",
+          "alt": "",
+          "q": "0.6 · 0.4 = ?"
+        },
+        {
+          "a": "30",
+          "alt": "",
+          "q": "Wie viel sind 2/3 von 45?"
+        },
+        {
+          "a": "11/24",
+          "alt": "",
+          "q": "5/6 − 3/8 = ?"
+        },
+        {
+          "a": "2",
+          "alt": "",
+          "q": "3/4 : 3/8 = ?"
+        },
+        {
+          "a": "2/3",
+          "alt": "",
+          "q": "Welche Zahl ist am grössten?\n5/8   |   0.6   |   2/3   |   0.66"
+        },
+        {
+          "a": "2",
+          "alt": "",
+          "q": "1⅔ · 1⅕ = ?"
+        }
+      ]
+    },
+    {
+      "name": "Geometrie",
+      "qs": [
+        {
+          "a": "90°",
+          "alt": "",
+          "q": "Wie viele Grad hat ein rechter Winkel?"
+        },
+        {
+          "a": "28 cm",
+          "alt": "",
+          "q": "Ein Quadrat hat die Seitenlänge 7 cm.\nWie gross ist sein Umfang?"
+        },
+        {
+          "a": "48 cm²",
+          "alt": "",
+          "q": "Wie gross ist die Fläche eines Rechtecks mit den Seiten 8 cm und 6 cm?"
+        },
+        {
+          "a": "60°",
+          "alt": "",
+          "q": "In einem Dreieck ist α = 50° und β = 70°.\nWie gross ist γ?"
+        },
+        {
+          "a": "27 cm²",
+          "alt": "",
+          "q": "Ein rechtwinkliges Dreieck hat die Katheten 6 cm und 9 cm.\nWie gross ist seine Fläche?"
+        },
+        {
+          "a": "6",
+          "alt": "",
+          "q": "Wie viele Symmetrieachsen hat ein regelmässiges Sechseck?"
+        },
+        {
+          "a": "60 cm³",
+          "alt": "",
+          "q": "Wie gross ist das Volumen eines Quaders mit den Kanten 5 cm, 4 cm und 3 cm?"
+        },
+        {
+          "a": "54 cm²",
+          "alt": "",
+          "q": "Ein Rechteck hat den Umfang 30 cm. Eine Seite ist 9 cm lang.\nWie gross ist die Fläche?"
+        },
+        {
+          "a": "540°",
+          "alt": "",
+          "q": "Wie gross ist die Summe der Innenwinkel in einem Fünfeck?"
+        },
+        {
+          "a": "96 cm²",
+          "alt": "",
+          "q": "Ein Würfel hat das Volumen 64 cm³.\nWie gross ist seine Oberfläche?"
+        }
+      ]
+    },
+    {
+      "name": "Grössen & Einheiten",
+      "qs": [
+        {
+          "a": "300 cm",
+          "alt": "",
+          "q": "3 m = ? cm"
+        },
+        {
+          "a": "2500 g",
+          "alt": "",
+          "q": "2.5 kg = ? g"
+        },
+        {
+          "a": "1.5 h",
+          "alt": "",
+          "q": "90 min = ? h"
+        },
+        {
+          "a": "4200 m",
+          "alt": "",
+          "q": "4.2 km = ? m"
+        },
+        {
+          "a": "225 min",
+          "alt": "",
+          "q": "3 h 45 min = ? min"
+        },
+        {
+          "a": "10000 cm²",
+          "alt": "",
+          "q": "1 m² = ? cm²"
+        },
+        {
+          "a": "6.5 dl",
+          "alt": "",
+          "q": "2.5 dl + 0.4 l = ? dl"
+        },
+        {
+          "a": "1000 cm³",
+          "alt": "",
+          "q": "1 Liter = ? cm³"
+        },
+        {
+          "a": "20 m/s",
+          "alt": "",
+          "q": "72 km/h = ? m/s"
+        },
+        {
+          "a": "3500 m²",
+          "alt": "",
+          "q": "0.35 ha = ? m²"
+        }
+      ]
+    },
+    {
+      "name": "Sachrechnen",
+      "qs": [
+        {
+          "a": "Fr. 6.00",
+          "alt": "",
+          "q": "Ein Gipfeli kostet Fr. 1.20.\nWie viel kosten 5 Gipfeli?"
+        },
+        {
+          "a": "45 min",
+          "alt": "",
+          "q": "Der Zug fährt um 14:37 Uhr ab und kommt um 15:22 Uhr an.\nWie viele Minuten dauert die Fahrt?"
+        },
+        {
+          "a": "Fr. 17.50",
+          "alt": "",
+          "q": "3 Hefte kosten Fr. 7.50.\nWie viel kosten 7 Hefte?"
+        },
+        {
+          "a": "90",
+          "alt": "",
+          "q": "Wie viel sind 25 % von 360?"
+        },
+        {
+          "a": "15 Jahre",
+          "alt": "",
+          "q": "Lara ist 3 Jahre älter als ihr Bruder. Zusammen sind sie 27 Jahre alt.\nWie alt ist Lara?"
+        },
+        {
+          "a": "Fr. 408.–",
+          "alt": "",
+          "q": "Ein Velo kostet Fr. 480.–. Im Ausverkauf gibt es 15 % Rabatt.\nWie viel kostet das Velo jetzt?"
+        },
+        {
+          "a": "8 Tage",
+          "alt": "",
+          "q": "4 Maler brauchen für eine Arbeit 6 Tage.\nWie viele Tage brauchen 3 gleich schnelle Maler?"
+        },
+        {
+          "a": "2 km",
+          "alt": "",
+          "q": "Auf einer Karte im Massstab 1 : 25 000 misst eine Strecke 8 cm.\nWie lang ist sie in Wirklichkeit (in km)?"
+        },
+        {
+          "a": "5.5",
+          "alt": "",
+          "q": "Mia hat nach 4 Prüfungen den Notenschnitt 4.5.\nWelche Note braucht sie in der 5. Prüfung für einen Schnitt von 4.7?"
+        },
+        {
+          "a": "2 h",
+          "alt": "",
+          "q": "Pumpe A füllt ein Becken allein in 6 Stunden, Pumpe B allein in 3 Stunden.\nWie lange brauchen beide zusammen?"
+        }
+      ]
+    },
+    {
+      "name": "Thema F",
+      "qs": [
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        },
+        {
+          "a": "",
+          "alt": "",
+          "q": ""
+        }
+      ]
+    }
+  ],
+  "cols": 5,
+  "inheritSecs": 10,
+  "rows": 10,
+  "startCapital": 200,
+  "times": [
+    10,
+    20,
+    30,
+    40,
+    50,
+    60,
+    70,
+    80,
+    90,
+    100
+  ],
+  "title": "Mathe 1. Sek – Grundlagen",
+  "values": [
+    10,
+    20,
+    30,
+    40,
+    50,
+    60,
+    70,
+    80,
+    90,
+    100
+  ],
+  "sammlung": {
+    "id": "s-mufbpv5x-cep7o",
+    "stand": "2026-09-24T11:53"
+  }
+}
