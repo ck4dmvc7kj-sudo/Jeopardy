@@ -1,0 +1,140 @@
+{
+  "format": "mathe-jeopardy",
+  "version": 1,
+  "answerSecs": 5,
+  "categories": [
+    {
+      "name": "Lehrplan trifft Lohnausweis",
+      "qs": [
+        {
+          "a": "B · Wirtschaft, Arbeit, Haushalt",
+          "alt": "B; Wirtschaft, Arbeit, Haushalt",
+          "q": "Wofür steht das Schulfach «WAH»?\n\nA   Wissen, Alltag, Handwerk\nB   Wirtschaft, Arbeit, Haushalt\nC   Wohnen, Arbeiten, Haushalten"
+        },
+        {
+          "a": "C · Ab dem Kindergarten",
+          "alt": "C; Ab dem Kindergarten",
+          "q": "Ab wann steht Wirtschaft im Lehrplan 21?\n\nA   Erst in der Sek\nB   Ab der 5. Klasse\nC   Ab dem Kindergarten"
+        },
+        {
+          "a": "B · Etwas verkaufen und die Gewinnmarge planen",
+          "alt": "B; Etwas verkaufen und die Gewinnmarge planen",
+          "q": "Was sollen Kinder laut Lehrplan 21 schon in der Primarschule können?\n\nA   Eine Bilanz lesen\nB   Etwas verkaufen und die Gewinnmarge planen\nC   Aktienkurse deuten"
+        },
+        {
+          "a": "C · Vom Erdöl zum Legostein",
+          "alt": "C; Vom Erdöl zum Legostein",
+          "q": "Welchen Produktionsweg nennt der Lehrplan 21 wörtlich als Beispiel?\n\nA   Vom Kakao zur Toblerone\nB   Vom Sand zum iPhone\nC   Vom Erdöl zum Legostein"
+        }
+      ]
+    },
+    {
+      "name": "Stutz & Stolpersteine",
+      "qs": [
+        {
+          "a": "C · Über 6 Millionen",
+          "alt": "C; Über 6 Millionen",
+          "q": "Wie viele Menschen in der Schweiz nutzen Twint?\n\nA   Rund 2 Millionen\nB   Rund 4 Millionen\nC   Über 6 Millionen"
+        },
+        {
+          "a": "A · Steuern",
+          "alt": "A; Steuern",
+          "q": "Bei welchen Rechnungen sind Menschen in der Schweiz am häufigsten im Rückstand?\n\nA   Steuern\nB   Handyabo\nC   Online-Shopping"
+        },
+        {
+          "a": "B · Nach 14 Jahren",
+          "alt": "B; Nach 14 Jahren",
+          "q": "Du legst 1000 Franken zu 5 % Zins an. Nach etwa wie vielen Jahren hat sich der Betrag verdoppelt?\n\nA   Nach 10 Jahren\nB   Nach 14 Jahren\nC   Nach 20 Jahren"
+        },
+        {
+          "a": "B · 5 Jahre",
+          "alt": "B; 5 Jahre",
+          "q": "Wie lange sehen Dritte, zum Beispiel Vermieter, eine Betreibung im Registerauszug?\n\nA   1 Jahr\nB   5 Jahre\nC   20 Jahre"
+        }
+      ]
+    },
+    {
+      "name": "Vom Schnuppern zum Chef",
+      "qs": [
+        {
+          "a": "B · Seilbahn-Mechatroniker/in EFZ",
+          "alt": "B; Seilbahn-Mechatroniker/in EFZ",
+          "q": "Welchen Lehrberuf gibt es wirklich?\n\nA   Alphornstimmer/in EFZ\nB   Seilbahn-Mechatroniker/in EFZ\nC   Fondue-Sommelier EFZ"
+        },
+        {
+          "a": "C · Etwa zwei Drittel",
+          "alt": "C; Etwa zwei Drittel",
+          "q": "Wie viele Jugendliche in der Schweiz entscheiden sich für eine Berufslehre?\n\nA   Etwa ein Drittel\nB   Etwa die Hälfte\nC   Etwa zwei Drittel"
+        },
+        {
+          "a": "B · Rund 240",
+          "alt": "B; Rund 240",
+          "q": "Zwischen wie vielen Lehrberufen können Jugendliche in der Schweiz wählen?\n\nA   Rund 80\nB   Rund 240\nC   Rund 600"
+        },
+        {
+          "a": "A · Sportlehrer",
+          "alt": "A; Sportlehrer",
+          "q": "Was wollte Sergio Ermotti werden, bevor er mit 15 eine Banklehre begann und später die UBS leitete?\n\nA   Sportlehrer\nB   Pilot\nC   Koch"
+        }
+      ]
+    },
+    {
+      "name": "Wer hat's erfunden?",
+      "qs": [
+        {
+          "a": "A · Ricola",
+          "alt": "A; Ricola",
+          "q": "Aus welcher Werbung stammt der Satz «Wer hat's erfunden?»\n\nA   Ricola\nB   Rivella\nC   Toblerone"
+        },
+        {
+          "a": "B · Kletten im Fell seines Hundes",
+          "alt": "B; Kletten im Fell seines Hundes",
+          "q": "Was brachte Georges de Mestral auf die Idee für den Klettverschluss?\n\nA   Geckofüsse an der Fensterscheibe\nB   Kletten im Fell seines Hundes\nC   Ein Tannzapfen im Rucksack"
+        },
+        {
+          "a": "C · Über 99 %",
+          "alt": "C; Über 99 %",
+          "q": "Wie viele Schweizer Unternehmen sind KMU, haben also weniger als 250 Beschäftigte?\n\nA   Rund 60 %\nB   Rund 85 %\nC   Über 99 %"
+        },
+        {
+          "a": "B · Reissverschluss",
+          "alt": "B; Reissverschluss",
+          "q": "Welche Erfindung stammt NICHT von einem Schweizer?\n\nA   WC-Ente\nB   Reissverschluss\nC   Cellophan"
+        }
+      ]
+    }
+  ],
+  "cols": 4,
+  "inheritSecs": 10,
+  "rows": 4,
+  "startCapital": 100,
+  "times": [
+    20,
+    20,
+    20,
+    20,
+    50,
+    60,
+    70,
+    80,
+    90,
+    100
+  ],
+  "title": "Wirtschaftsbildung – Langer Tag des Lernens",
+  "values": [
+    10,
+    20,
+    30,
+    40,
+    50,
+    60,
+    70,
+    80,
+    90,
+    100
+  ],
+  "sammlung": {
+    "id": "s-mv0w8jwk-5a09k",
+    "stand": "2026-10-09T13:40"
+  }
+}
