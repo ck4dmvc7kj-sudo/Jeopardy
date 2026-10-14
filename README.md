@@ -1,4 +1,4 @@
-# Mathe-Jeopardy
+# Jeopardy
 
 Quiz-Tafel im Stil von Jeopardy für den Unterricht am Beamer – bis 6 Gruppen, Countdown mit Signaltönen, «Erben» bei falschen Antworten, Rückmeldung pro Gruppe.
 

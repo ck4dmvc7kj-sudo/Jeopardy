@@ -1,4 +1,4 @@
-<title>Mathe-Jeopardy</title>
+<title>Jeopardy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Big+Shoulders+Display:wght@700;800;900&display=swap">
@@ -904,7 +904,7 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
    ========================================================= */
 function topbar(mid, sub){
   return `<header class="top">
-    <div class="brand"><span class="brand-mark">Mathe-<em>Jeopardy</em></span><span class="brand-sub">${esc(sub || 'Quiz-Tafel für die Klasse')}</span></div>
+    <div class="brand"><span class="brand-mark"><em>Jeopardy</em></span><span class="brand-sub">${esc(sub || 'Quiz-Tafel für die Klasse')}</span></div>
     <div class="top-mid">${mid || ''}</div>
     <div class="top-actions">
       <button class="btn ghost sm" data-act="toggleSound" aria-pressed="${S.sound}">${S.sound ? 'Ton an' : 'Ton aus'}</button>
