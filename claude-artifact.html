@@ -2051,6 +2051,19 @@ function boot(){
   try { if (localStorage.getItem('mj-sound') === '0') S.sound = false; } catch(e){}
   const legacyLocal = Local.get('board');
   S.sets = normalizeSets(Local.get('sets'));
+  // Vorinstallierte Spiele (Offline-Fassung für Anlässe): window.MJ_PRESET = [Spiel, …].
+  // Jedes Spiel wird nur einmal angelegt; auch nach dem Neuladen entsteht kein Doppel.
+  if (Array.isArray(window.MJ_PRESET)){
+    window.MJ_PRESET.forEach(p => {
+      const s = gameFromObject(p); if (!s) return;
+      const key = (p.sammlung && p.sammlung.id) || 'preset-' + s.title;
+      if (Object.values(S.sets).some(x => x.fromCollection === key)) return;
+      s.id = newId(); s.updatedAt = Date.now(); s.createdBy = null;
+      s.fromCollection = key; s.collectionStand = (p.sammlung && p.sammlung.stand) || null;
+      S.sets[s.id] = s;
+    });
+    Local.set('sets', S.sets);
+  }
   // Sammlung laden. Gibt es keine (z. B. Datei direkt geöffnet) und noch keine Spiele, das Mathe-Beispiel anlegen.
   loadCollection().then(list => {
     S.collection = list;
