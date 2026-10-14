@@ -2059,11 +2059,18 @@ function boot(){
   S.sets = normalizeSets(Local.get('sets'));
   // Vorinstallierte Spiele (Offline-Fassung für Anlässe): window.MJ_PRESET = [Spiel, …].
   // Jedes Spiel wird nur einmal angelegt; auch nach dem Neuladen entsteht kein Doppel.
+  // Bringt die Datei eine neuere Fassung mit (sammlung.stand), ersetzt sie die ältere im Browser.
   if (Array.isArray(window.MJ_PRESET)){
     window.MJ_PRESET.forEach(p => {
       const s = gameFromObject(p); if (!s) return;
       const key = (p.sammlung && p.sammlung.id) || 'preset-' + s.title;
-      if (Object.values(S.sets).some(x => x.fromCollection === key)) return;
+      const stand = (p.sammlung && p.sammlung.stand) || null;
+      const existing = Object.values(S.sets).filter(x => x.fromCollection === key);
+      if (existing.length){
+        const newer = stand && existing.every(x => !x.collectionStand || x.collectionStand < stand);
+        if (!newer) return;
+        existing.forEach(x => { delete S.sets[x.id]; });
+      }
       s.id = newId(); s.updatedAt = Date.now(); s.createdBy = null;
       s.fromCollection = key; s.collectionStand = (p.sammlung && p.sammlung.stand) || null;
       S.sets[s.id] = s;

@@ -24,7 +24,7 @@
         {
           "a": "C · Vom Erdöl zum Legostein",
           "alt": "C; Vom Erdöl zum Legostein",
-          "q": "Welchen Produktionsweg nennt der Lehrplan 21 wörtlich als Beispiel?\n\nA   Vom Kakao zur Toblerone\nB   Vom Sand zum iPhone\nC   Vom Erdöl zum Legostein"
+          "q": "Welchen Produktionsweg nennt der Lehrplan 21 als Beispiel?\n\nA   Vom Kakao zur Toblerone\nB   Vom Sand zum iPhone\nC   Vom Erdöl zum Legostein"
         }
       ]
     },
@@ -67,9 +67,9 @@
           "q": "Wie viele Jugendliche in der Schweiz entscheiden sich für eine Berufslehre?\n\nA   Etwa ein Drittel\nB   Etwa die Hälfte\nC   Etwa zwei Drittel"
         },
         {
-          "a": "B · Rund 240",
-          "alt": "B; Rund 240",
-          "q": "Zwischen wie vielen Lehrberufen können Jugendliche in der Schweiz wählen?\n\nA   Rund 80\nB   Rund 240\nC   Rund 600"
+          "a": "C · 300 Franken",
+          "alt": "C; 300 Franken",
+          "q": "Ein Team verkauft 50 Armbänder für je 6 Franken. Das Material hat 120 Franken gekostet. Wie hoch ist der Umsatz?\n\nA   120 Franken\nB   180 Franken\nC   300 Franken"
         },
         {
           "a": "A · Sportlehrer",
@@ -82,9 +82,9 @@
       "name": "Wer hat's erfunden?",
       "qs": [
         {
-          "a": "A · Ricola",
-          "alt": "A; Ricola",
-          "q": "Aus welcher Werbung stammt der Satz «Wer hat's erfunden?»\n\nA   Ricola\nB   Rivella\nC   Toblerone"
+          "a": "A · 3 Minuten",
+          "alt": "A; 3 Minuten",
+          "q": "Wie lange dauert der Pitch der Lernenden am Freitag der Sonderwoche Startup?\n\nA   3 Minuten\nB   10 Minuten\nC   30 Minuten"
         },
         {
           "a": "B · Kletten im Fell seines Hundes",
@@ -135,6 +135,6 @@
   ],
   "sammlung": {
     "id": "s-mv0w8jwk-5a09k",
-    "stand": "2026-10-09T13:40"
+    "stand": "2026-10-14T08:50"
   }
 }
