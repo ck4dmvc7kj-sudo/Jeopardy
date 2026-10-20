@@ -1320,7 +1320,54 @@ function startPhase(phase, secs, onEnd){
   Timer.total = secs * 1000; Timer.left = Timer.total;
   renderRound();
   Timer.start(secs, onEnd);
+  saveOpen();
 }
+
+/* ---------- Offene Aufgabe merken (z. B. Wechsel zu GoodNotes) ----------
+   Die gerade geöffnete Aufgabe wird mit der Runde gespeichert. Schliesst das iPad die App
+   im Hintergrund, öffnet «Fortsetzen» die Aufgabe wieder – pausiert, mit der Restzeit. */
+function saveOpen(){
+  if (!S.round || !S.game) return;
+  S.game.open = { R: clone(S.round), left: Math.round(Timer.left), total: Math.round(Timer.total) };
+  saveGame();
+}
+function clearOpen(){ if (S.game && S.game.open){ delete S.game.open; } }
+function onEndFor(R){
+  if (R.phase === 'think') return thinkEnded;
+  if (R.phase === 'submit' || R.phase === 'inherit') return timeUp;
+  return null;
+}
+function restoreOpen(g){
+  const o = g.open; if (!o || !o.R || g.over) return;
+  const R = o.R;
+  if (g.used[R.c + '-' + R.r] && !R.applied){ clearOpen(); return; }   // Feld wurde inzwischen anders gespielt
+  S.round = R;
+  Timer.stop();
+  const timed = R.phase === 'think' || R.phase === 'submit' || R.phase === 'inherit';
+  if (timed){
+    if (R.phase === 'submit' && R.timeUp) R.timeUp = false;           // Nachfrist lief: Abgabe-Ende wiederholen
+    Timer.total = o.total || 10000;
+    Timer.left = Math.max(1000, Math.min(o.left || 0, Timer.total));
+    Timer.lastSec = null;
+    if (!(R.phase === 'inherit' && R.timeUp)){ R.paused = true; Timer.onEnd = onEndFor(R); }
+  }
+  renderRound();
+  if (timed) Timer.draw();
+  toast('Aufgabe wiederhergestellt' + (timed && R.paused ? ' – mit «Weiter» läuft die Zeit weiter.' : '.'), 4500);
+}
+/* Wechsel in eine andere App: Countdown anhalten und Stand sichern */
+document.addEventListener('visibilitychange', () => {
+  const R = S.round; if (!R) return;
+  if (document.visibilityState === 'hidden'){
+    if (Timer.running && !R.timeUp){ Timer.pause(); R.paused = true; R.autoPaused = true; }
+    saveOpen();
+  } else if (R.autoPaused){
+    R.autoPaused = false;
+    document.querySelectorAll('[data-act="pause"]').forEach(x => { x.textContent = 'Weiter'; });
+    Timer.draw();
+    toast('Pausiert, während du weg warst – mit «Weiter» läuft die Zeit weiter.', 4500);
+  }
+});
 /* Abgabe- bzw. Erbzeit vorbei: Signal.
    Bei der Abgabe folgt 3 – 2 – 1 Nachfrist, danach wird automatisch geprüft (leeres Feld = falsch).
    Beim Erben wartet das Spiel, bis die Lehrperson alle Antworten eingetippt hat. */
@@ -1346,6 +1393,7 @@ function checkMain(){
   R.phase = 'judged';
   R.verdict ? Sound.right() : Sound.wrong();
   renderRound();
+  saveOpen();
 }
 function applyMain(){
   const R = S.round, g = S.game, t = g.teams[R.team], val = g.board.values[R.r];
@@ -1366,12 +1414,14 @@ function evalInherit(){
   R.phase = 'inheritJudged';
   if (R.heirList.some(i => R.heirOk[i])) Sound.right();
   renderRound();
+  saveOpen();
 }
 function finishRound(){
   const R = S.round, g = S.game;
   Timer.stop();
   g.turn = nextTurn(R.team);
   S.round = null;
+  clearOpen();
   checkOver();
   saveGame();
   renderRound();
@@ -1646,6 +1696,7 @@ const ACT = {
     const g = S.rounds[b.dataset.id]; if (!g) return;
     S.game = g; S.view = g.over ? 'end' : 'board'; S.prevScores = null; S.fbTeam = 0;
     render(); keepAwake();
+    if (g.open && !g.over) restoreOpen(g);
   },
   showFeedback(b){ const g = S.rounds[b.dataset.id]; if (!g) return; S.game = g; S.fbTeam = 0; S.view = 'end'; render(); window.scrollTo(0, 0); },
   editRound(b){
@@ -1817,16 +1868,17 @@ const ACT = {
   /* Aufgabe */
   pause(){
     const R = S.round; if (!R || R.timeUp) return;
-    if (Timer.running){ Timer.pause(); R.paused = true; } else { R.paused = false; Timer.resume(); }
+    if (Timer.running){ Timer.pause(); R.paused = true; } else { R.paused = false; R.autoPaused = false; Timer.resume(); }
     document.querySelectorAll('[data-act="pause"]').forEach(x => { x.textContent = R.paused ? 'Weiter' : 'Pause'; });
     Timer.draw();
+    if (R.paused) saveOpen();
   },
   endThink(){ if (!S.round || S.round.phase !== 'think') return; Timer.stop(); thinkEnded(); },
   abortRound(b){
     if (!armed('abort', b, 'Wirklich abbrechen?')) return;
-    Timer.stop(); S.round = null; renderRound(); render();
+    Timer.stop(); S.round = null; clearOpen(); saveGame(); renderRound(); render();
   },
-  flipVerdict(){ const R = S.round; R.verdict = !R.verdict; R.verdict ? Sound.right() : Sound.wrong(); renderRound(); },
+  flipVerdict(){ const R = S.round; R.verdict = !R.verdict; R.verdict ? Sound.right() : Sound.wrong(); renderRound(); saveOpen(); },
   continueMain(){
     const R = S.round, g = S.game;
     if (!R || R.phase !== 'judged') return;
@@ -1836,9 +1888,9 @@ const ACT = {
     if (R.heirList.length){
       startPhase('inherit', g.board.inheritSecs, timeUp);
       const f = $('[data-heir]'); if (f) f.focus();
-    } else { R.phase = 'done'; renderRound(); }
+    } else { R.phase = 'done'; renderRound(); saveOpen(); }
   },
-  toggleHeir(b){ const R = S.round, i = +b.dataset.i; R.heirOk[i] = !R.heirOk[i]; renderRound(); },
+  toggleHeir(b){ const R = S.round, i = +b.dataset.i; R.heirOk[i] = !R.heirOk[i]; renderRound(); saveOpen(); },
   finishInherit(){
     const R = S.round, g = S.game, val = g.board.values[R.r];
     const winners = R.heirList.filter(i => R.heirOk[i]);

@@ -11,6 +11,13 @@ Quiz-Tafel im Stil von Jeopardy für den Unterricht am Beamer – bis 6 Gruppen,
 
 Bitte bei Klassenlisten nur Vornamen oder Kürzel verwenden.
 
+## Als App auf dem iPad
+
+Link in Safari öffnen → Teilen → «Zum Home-Bildschirm». Die App startet im Vollbild und nach dem
+ersten Öffnen auch ohne WLAN. Sie speichert getrennt von Safari.
+Wechselt man während einer Aufgabe in eine andere App (z. B. GoodNotes), hält der Countdown an;
+wurde die App im Hintergrund geschlossen, öffnet «Fortsetzen» die Aufgabe wieder.
+
 ## Sammlung
 
 Im Ordner `spiele/` liegen Spiele zum Übernehmen. Auf der Seite erscheinen sie unter «Aus der Sammlung»
