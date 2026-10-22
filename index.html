@@ -282,6 +282,10 @@ button.cell:hover{background:var(--cell-hi);color:var(--amber);transform:transla
 .heir-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
 .heir{display:flex;flex-direction:column;gap:8px;padding:12px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
 .heir-name{display:flex;align-items:center;gap:8px;font-weight:700}
+.heir-members{font-size:clamp(14px,1.2vw,17px);color:var(--chalk-dim);line-height:1.3}
+.heir-banner{margin:0;padding:12px 18px;border-radius:var(--r);border:2px dashed var(--amber);color:var(--amber);font-weight:700;font-size:clamp(18px,1.8vw,28px);text-align:center}
+.heir-banner.show{border-style:solid;background:var(--amber);color:var(--amber-ink);font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(34px,4.5vw,72px);line-height:1;animation:showPulse .9s ease-out 2}
+@keyframes showPulse{0%{transform:scale(.94)}60%{transform:scale(1.03)}100%{transform:none}}
 .heir .field{font-size:24px;font-weight:700}
 .heir-res{display:flex;flex-direction:column;gap:6px;text-align:left;padding:12px 14px;border-radius:var(--r);background:var(--panel);border:2px solid var(--line);color:var(--chalk);cursor:pointer}
 .heir-res .ans{font-size:24px;font-weight:700}
@@ -1068,7 +1072,7 @@ function viewSetup(){
         <li><span>Denkzeit: je schwieriger, desto länger – ${lo === hi ? fmtLong(tLo) : `von ${fmtLong(tLo)} (${lo} Punkte) bis ${fmtLong(tHi)} (${hi} Punkte)`}.</span></li>
         <li><span>Nach dem Signal: ${s.answerSecs} Sekunden, um der Lehrperson die Lösung zu sagen – dann noch 3 – 2 – 1. Liegt bis dahin keine Lösung vor, gilt sie als falsch.</span></li>
         <li><span>Richtig: Punkte dazu. Falsch: Punkte weg.</span></li>
-        <li><span>Bei falscher Lösung haben alle anderen Gruppen ${s.inheritSecs} Sekunden – wer richtig liegt, <b>erbt</b> die Punkte. Also immer mitrechnen!</span></li>
+        <li><span>Bei falscher Lösung schreiben alle anderen Gruppen ihre Lösung in ${s.inheritSecs} Sekunden <b>verdeckt</b> auf und zeigen sie beim Signal gleichzeitig – wer richtig liegt, <b>erbt</b> die Punkte. Also immer mitrechnen!</span></li>
         <li><span>Wer keinen Kredit mehr hat, scheidet aus.</span></li>
       </ol>
       <h2>Themen</h2>
@@ -1244,7 +1248,11 @@ function render(){
 function timerLabel(R){
   if (R.phase === 'think') return 'Denkzeit';
   if (R.phase === 'submit') return R.timeUp ? 'Nachfrist – dann wird geprüft' : 'Jetzt Lösung abgeben!';
-  return R.timeUp ? 'Zeit um – Antworten eintippen' : 'Erben: alle anderen Gruppen';
+  return R.timeUp ? 'Zeigen – dann eintippen' : 'Erben: verdeckt aufschreiben';
+}
+/* Mitglieder einer Gruppe als Gedächtnisstütze beim Erben (Gruppen heissen oft nur «Team Gelb») */
+function heirMembers(t){
+  return t.members && t.members.length ? `<span class="heir-members">${t.members.map(esc).join(', ')}</span>` : '';
 }
 
 function panel(R, q, team, val){
@@ -1268,7 +1276,7 @@ function panel(R, q, team, val){
         <p class="v-answer">Antwort von ${esc(team.name)}: <b>${esc(R.answer) || '(keine Antwort)'}</b></p>
         ${ok ? sol : ''}
         ${!ok && after <= 0 ? `<p class="warn">${esc(team.name)} hat danach keinen Kredit mehr und scheidet aus.</p>` : ''}
-        ${!ok && heirsAvail ? `<p class="lead">Jetzt können alle anderen Gruppen die ${val} Punkte erben – sie haben ${b.inheritSecs} Sekunden.</p>` : ''}
+        ${!ok && heirsAvail ? `<p class="lead">Jetzt können alle anderen Gruppen die ${val} Punkte erben: ${b.inheritSecs} Sekunden, um die Lösung verdeckt aufzuschreiben.</p>` : ''}
         <div class="q-actions">
           ${ok
             ? `<button class="btn primary lg" data-act="continueMain">+${val} vergeben – zurück zur Tafel</button>`
@@ -1277,9 +1285,13 @@ function panel(R, q, team, val){
         </div>`;
     }
     case 'inherit':
-      return `<form class="heir-form" data-form="inherit" autocomplete="off">
+      return `<p class="heir-banner${R.timeUp ? ' show' : ''}" id="heir-banner">${R.timeUp
+          ? 'Alle gleichzeitig zeigen!'
+          : 'Schreibt eure Lösung <b>verdeckt</b> auf – noch nichts sagen! Beim Signal zeigen alle gleichzeitig.'}</p>
+        <form class="heir-form" data-form="inherit" autocomplete="off">
         <div class="heir-grid">${R.heirList.map(i => { const t = g.teams[i]; return `<label class="heir" for="heir-${i}">
           <span class="heir-name"><span class="dot" style="--tc:${colorOf(t)}"></span>${esc(t.name)}</span>
+          ${heirMembers(t)}
           <input class="field" id="heir-${i}" data-heir="${i}" value="${esc(R.heirs[i] || '')}" placeholder="Lösung" autocomplete="off" spellcheck="false">
         </label>`; }).join('')}</div>
         <div class="q-actions"><button class="btn primary lg" type="submit">Auswerten</button>${pauseBtn}</div>
@@ -1289,6 +1301,7 @@ function panel(R, q, team, val){
       return `${sol}
         <div class="heir-grid">${R.heirList.map(i => { const t = g.teams[i], ok = !!R.heirOk[i]; return `<button type="button" class="heir-res ${ok ? 'ok' : 'bad'}" data-act="toggleHeir" data-i="${i}" aria-pressed="${ok}">
           <span class="heir-name"><span class="dot" style="--tc:${colorOf(t)}"></span>${esc(t.name)}</span>
+          ${heirMembers(t)}
           <span class="ans">${esc(R.heirs[i] || '') || '—'}</span>
           <span class="res">${ok ? '✓ erbt +' + val : '✗ nichts geerbt'}</span>
         </button>`; }).join('')}</div>
@@ -1391,6 +1404,13 @@ function timeUp(){
   R.timeUp = true;
   const l = $('.t-label'); if (l) l.textContent = timerLabel(R);
   document.querySelectorAll('[data-act="pause"]').forEach(b => { b.disabled = true; });
+  if (R.phase === 'inherit'){
+    const bn = $('#heir-banner');
+    if (bn){ bn.textContent = 'Alle gleichzeitig zeigen!'; bn.classList.add('show'); }
+    const f = $('[data-heir]'); if (f) f.focus();
+    saveOpen();
+    return;
+  }
   if (R.phase !== 'submit') return;
   Timer.start(GRACE, () => { if (S.round === R && R.phase === 'submit') checkMain(); });
 }
@@ -1900,8 +1920,7 @@ const ACT = {
     if (R.verdict){ finishRound(); return; }
     R.heirList = g.teams.map((_, i) => i).filter(i => i !== R.team && !g.teams[i].out);
     if (R.heirList.length){
-      startPhase('inherit', g.board.inheritSecs, timeUp);
-      const f = $('[data-heir]'); if (f) f.focus();
+      startPhase('inherit', g.board.inheritSecs, timeUp);   // Tastatur erst beim Signal (siehe timeUp)
     } else { R.phase = 'done'; renderRound(); saveOpen(); }
   },
   toggleHeir(b){ const R = S.round, i = +b.dataset.i; R.heirOk[i] = !R.heirOk[i]; renderRound(); saveOpen(); },
