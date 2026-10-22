@@ -34,7 +34,7 @@
         {
           "a": "44 cm",
           "alt": "44cm",
-          "q": "Ein Quadrat hat die Fläche 121 cm² und eine Diagonale von 14.14 cm.\nBerechne den Umfang."
+          "q": "Ein Quadrat hat die Fläche 121 cm² und eine Diagonale von 15.56 cm.\nBerechne den Umfang."
         },
         {
           "a": "",
@@ -87,9 +87,9 @@
           "q": "Ein Rechteck hat die Fläche 72 cm², die Breite 8 cm und eine Diagonale von 12 cm.\nBerechne die Länge."
         },
         {
-          "a": "10 cm",
-          "alt": "10cm",
-          "q": "Ein Rechteck hat den Umfang 50 cm und die Länge 15 cm. Ein flächengleiches Quadrat hätte eine Fläche von 156.25 cm².\nBerechne die Breite des Rechtecks."
+          "a": "150 cm²",
+          "alt": "150cm²; 150 cm2; 150cm2",
+          "q": "Ein Rechteck hat den Umfang 50 cm, die Länge 15 cm und eine Diagonale von 18.03 cm.\nBerechne die Fläche."
         },
         {
           "a": "",
@@ -137,14 +137,14 @@
           "q": "Ein Rhombus hat die Seitenlänge 6.5 cm und die Höhe 5 cm.\nBerechne den Umfang."
         },
         {
-          "a": "31.24 cm",
-          "alt": "",
-          "q": "Ein Rhombus hat die Fläche 60 cm², eine Höhe von 12 cm und eine Seitenlänge von 7.81 cm.\nBerechne den Umfang."
+          "a": "32 cm",
+          "alt": "32cm",
+          "q": "Ein Rhombus hat die Fläche 48 cm², die Höhe 6 cm und eine Diagonale von 14.58 cm.\nBerechne den Umfang."
         },
         {
           "a": "130 cm²",
           "alt": "130cm²; 130cm2",
-          "q": "Ein Rhombus hat den Umfang 52 cm, die Höhe 10 cm und eine Diagonale von 13 cm.\nBerechne die Fläche."
+          "q": "Ein Rhombus hat den Umfang 52 cm, die Höhe 10 cm und eine Diagonale von 23.54 cm.\nBerechne die Fläche."
         },
         {
           "a": "",
@@ -199,7 +199,7 @@
         {
           "a": "10 cm",
           "alt": "10cm",
-          "q": "Ein Rhomboid hat den Umfang 58 cm, eine Seite von 19 cm, eine Höhe von 8 cm und eine Diagonale von 22 cm.\nBerechne die andere Seite."
+          "q": "Ein Rhomboid hat den Umfang 58 cm, eine Seite von 19 cm, eine Höhe von 8 cm und eine Diagonale von 26.25 cm.\nBerechne die andere Seite."
         },
         {
           "a": "",
@@ -350,7 +350,7 @@
     90,
     100
   ],
-  "title": "Geometrie-Jeopardy: Vierecke",
+  "title": "Parallelogramme Kapitel 7ab",
   "values": [
     10,
     20,
@@ -365,6 +365,6 @@
   ],
   "sammlung": {
     "id": "s-mufjubr1-mc5oj",
-    "stand": "2026-09-24T20:51"
+    "stand": "2026-10-22T12:35"
   }
 }
