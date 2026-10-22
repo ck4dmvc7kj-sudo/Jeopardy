@@ -293,7 +293,9 @@ button.cell:hover{background:var(--cell-hi);color:var(--amber);transform:transla
 .heir-res.ok{border-color:var(--ok)}
 .heir-res.ok .res{color:var(--ok)}
 .heir-res.bad .res{color:var(--bad)}
-.heir-res.bad{opacity:.75}
+.heir-res.bad{opacity:.85}
+.heir-res .flip{align-self:flex-start;margin-top:4px;font-size:13px;font-weight:700;padding:6px 12px;border-radius:var(--r);border:1px solid var(--line-strong);color:var(--chalk);background:var(--ground-2)}
+.heir-res:hover .flip{background:var(--cell-hi)}
 
 /* ---------- popover ---------- */
 #pop{position:fixed;inset:0;z-index:40;background:rgba(8,12,10,.65);display:grid;place-items:center;padding:16px}
@@ -1304,8 +1306,9 @@ function panel(R, q, team, val){
           ${heirMembers(t)}
           <span class="ans">${esc(R.heirs[i] || '') || '—'}</span>
           <span class="res">${ok ? '✓ erbt +' + val : '✗ nichts geerbt'}</span>
+          <span class="flip">${ok ? 'Doch falsch' : 'Doch richtig'}</span>
         </button>`; }).join('')}</div>
-        <p class="hint">Tippe auf eine Gruppe, um die Bewertung zu ändern.</p>
+        <p class="hint">Antwort falsch bewertet? Tippe bei der Gruppe auf «Doch richtig» bzw. «Doch falsch».</p>
         <div class="q-actions"><button class="btn primary lg" data-act="finishInherit">${winners ? 'Punkte vergeben – zurück zur Tafel' : 'Zurück zur Tafel'}</button></div>`;
     }
     case 'done':
