@@ -1,0 +1,265 @@
+{
+  "format": "mathe-jeopardy",
+  "version": 1,
+  "answerSecs": 10,
+  "categories": [
+    {
+      "name": "Eiskalte Zahlen",
+      "qs": [
+        {
+          "a": "5",
+          "alt": "",
+          "q": "−3 + 8 = ?"
+        },
+        {
+          "a": "−7 °C",
+          "alt": "-7; −7; -7°C; minus 7",
+          "q": "Am Säntis ist es morgens −12 °C, am Mittag 5 °C wärmer.\nWie warm ist es am Mittag?"
+        },
+        {
+          "a": "10 °C",
+          "alt": "10; 10°C; 10 Grad",
+          "q": "In der Nacht waren es −6 °C, am Tag 4 °C.\nUm wie viele Grad ist es am Tag wärmer?"
+        },
+        {
+          "a": "−20",
+          "alt": "-20",
+          "q": "(−4) · 5 = ?"
+        },
+        {
+          "a": "10",
+          "alt": "",
+          "q": "(−3) · (−4) − 2 = ?"
+        },
+        {
+          "a": "B · (3 | −5)",
+          "alt": "B; (3 | −5)",
+          "q": "Der Stern auf der Christbaumspitze liegt bei P(3 | 5). Er wird an der x-Achse gespiegelt.\nWo liegt er jetzt?\n\nA   (−3 | 5)\nB   (3 | −5)\nC   (−3 | −5)"
+        },
+        {
+          "a": "11",
+          "alt": "",
+          "q": "Ein Lift fährt vom 3. Untergeschoss (−3) in den 8. Stock.\nWie viele Stockwerke fährt er?"
+        },
+        {
+          "a": "−10",
+          "alt": "-10",
+          "q": "−2 + 3 · (−4) + (−2)² = ?"
+        }
+      ]
+    },
+    {
+      "name": "Geschenkpapier & Christbaum",
+      "qs": [
+        {
+          "a": "36 dm²",
+          "alt": "36; 36dm²; 36 dm2",
+          "q": "Ein quadratisches Geschenkpapier hat die Seitenlänge 6 dm.\nWie gross ist seine Fläche?"
+        },
+        {
+          "a": "26 cm",
+          "alt": "26; 26cm",
+          "q": "Eine rechteckige Weihnachtskarte ist 8 cm × 5 cm gross.\nWie gross ist ihr Umfang?"
+        },
+        {
+          "a": "70°",
+          "alt": "70; 70 Grad",
+          "q": "Ein Christbaum als gleichschenkliges Dreieck hat oben einen Winkel von 40°.\nWie gross ist jeder der beiden Winkel unten?"
+        },
+        {
+          "a": "54 cm²",
+          "alt": "54; 54cm²; 54 cm2",
+          "q": "Ein dreieckiger Wimpel hat die Grundseite 12 cm und die Höhe 9 cm.\nWie gross ist seine Fläche?"
+        },
+        {
+          "a": "B · Rhombus",
+          "alt": "B; Rhombus",
+          "q": "Welches Viereck hat vier gleich lange Seiten, aber nicht unbedingt rechte Winkel?\n\nA   Rechteck\nB   Rhombus\nC   Trapez"
+        },
+        {
+          "a": "120 cm²",
+          "alt": "120; 120cm²; 120 cm2",
+          "q": "Ein Lebkuchen in Form eines Parallelogramms hat die Seite 15 cm und die zugehörige Höhe 8 cm.\nWie gross ist seine Fläche?"
+        },
+        {
+          "a": "56 cm²",
+          "alt": "56; 56cm²; 56 cm2",
+          "q": "Ein Geschenkanhänger ist ein Rechteck von 10 cm × 6 cm. In einer Ecke wird ein Quadrat von 2 cm × 2 cm ausgeschnitten.\nWie gross ist die Fläche des Anhängers?"
+        },
+        {
+          "a": "8 cm",
+          "alt": "8; 8cm",
+          "q": "Ein Quadrat hat dieselbe Fläche wie ein Rechteck von 4 cm × 16 cm.\nUm wie viele cm ist der Umfang des Rechtecks grösser als der des Quadrats?"
+        }
+      ]
+    },
+    {
+      "name": "Päckli-Packstation",
+      "qs": [
+        {
+          "a": "8",
+          "alt": "",
+          "q": "Wie viele Ecken hat ein Würfel?"
+        },
+        {
+          "a": "12",
+          "alt": "",
+          "q": "Wie viele Kanten hat ein Quader?"
+        },
+        {
+          "a": "5",
+          "alt": "",
+          "q": "Wie viele Flächen hat eine Pyramide mit quadratischer Grundfläche?"
+        },
+        {
+          "a": "7",
+          "alt": "",
+          "q": "Wie viele Laschen braucht man, um ein Würfelnetz zusammenzukleben?"
+        },
+        {
+          "a": "1 l",
+          "alt": "1; 1 Liter; 1000 cm³; 1 dm³",
+          "q": "Eine Guetzlidose ist 20 cm × 10 cm × 5 cm gross.\nWie viele Liter passen hinein?"
+        },
+        {
+          "a": "350 dm²",
+          "alt": "350; 350dm²; 350 dm2",
+          "q": "3.5 m² Geschenkpapier = ? dm²"
+        },
+        {
+          "a": "B · 9",
+          "alt": "B; 9",
+          "q": "Wie viele Kanten hat ein Prisma mit einem Dreieck als Grundfläche?\n\nA   6\nB   9\nC   12"
+        },
+        {
+          "a": "54 dm²",
+          "alt": "54; 54dm²; 54 dm2",
+          "q": "Ein Geschenk in Würfelform hat die Kantenlänge 3 dm. Es wird ohne Überlappung ganz eingepackt.\nWie viel Geschenkpapier braucht man?"
+        }
+      ]
+    },
+    {
+      "name": "Wichtel-Terme",
+      "qs": [
+        {
+          "a": "19",
+          "alt": "",
+          "q": "x = 6\nBerechne 4 · x − 5."
+        },
+        {
+          "a": "15",
+          "alt": "",
+          "q": "a = 3\nBerechne a² + 2 · a."
+        },
+        {
+          "a": "B · 5 · p + 3",
+          "alt": "B; 5 · p + 3; 5p + 3; 5p+3",
+          "q": "Ein Päckli kostet p Franken.\nWelcher Term passt zu 5 Päckli und einer Karte für 3 Franken?\n\nA   5 + p + 3\nB   5 · p + 3\nC   5 · (p + 3)"
+        },
+        {
+          "a": "B · 2 · (n + 3)",
+          "alt": "B; 2 · (n + 3); 2(n+3)",
+          "q": "Ein Wichtel hat n Geschenke, der zweite 3 mehr, der dritte doppelt so viele wie der zweite.\nWelcher Term passt zum dritten Wichtel?\n\nA   2 · n + 3\nB   2 · (n + 3)\nC   n + 6"
+        },
+        {
+          "a": "16",
+          "alt": "",
+          "q": "Setze n = 5 in den Term  2 · (n + 3)  ein."
+        },
+        {
+          "a": "A · Lea hat 24 Guetzli und schenkt k Freunden je 3 Guetzli",
+          "alt": "A; Lea hat 24 Guetzli und schenkt k Freunden je 3 Guetzli",
+          "q": "Welche Geschichte passt zum Term  24 − 3 · k?\n\nA   Lea hat 24 Guetzli und schenkt k Freunden je 3 Guetzli\nB   Lea hat 24 Guetzli und bekommt 3 dazu\nC   3 Freunde teilen sich 24 Guetzli"
+        },
+        {
+          "a": "8",
+          "alt": "",
+          "q": "Ich denke mir eine Zahl, addiere 4, multipliziere mit 3 und erhalte 36.\nWelche Zahl habe ich mir gedacht?"
+        },
+        {
+          "a": "10 h",
+          "alt": "10; 10 Stunden",
+          "q": "Eine Kerze ist 20 cm lang und brennt pro Stunde 1.5 cm ab.\nNach wie vielen Stunden ist sie nur noch 5 cm lang?"
+        }
+      ]
+    },
+    {
+      "name": "Weihnachtsmarkt-Knobeleien",
+      "qs": [
+        {
+          "a": "Fr. 25.–",
+          "alt": "25; 25 Franken; 25 Fr.",
+          "q": "Wie viel sind 10 % von Fr. 250.–?"
+        },
+        {
+          "a": "Fr. 60.–",
+          "alt": "60; 60 Franken; 60 Fr.",
+          "q": "Ein Schlitten kostet Fr. 80.–, im Ausverkauf gibt es 25 % Rabatt.\nWie viel kostet er jetzt?"
+        },
+        {
+          "a": "37",
+          "alt": "",
+          "q": "Welche Zahl kommt als nächste?\n2,  5,  10,  17,  26,  …"
+        },
+        {
+          "a": "300",
+          "alt": "",
+          "q": "Hinter Türchen 1 liegt 1 Schoggi, hinter Türchen 2 liegen 2 … bis Türchen 24.\nWie viele Schoggis sind es total?"
+        },
+        {
+          "a": "Fr. 0.05",
+          "alt": "0.05; 5 Rappen; 5 Rp.; 5 Rp",
+          "q": "Ein Grittibänz und eine Mandarine kosten zusammen Fr. 3.10. Der Grittibänz kostet Fr. 3.– mehr als die Mandarine.\nWas kostet die Mandarine?"
+        },
+        {
+          "a": "562",
+          "alt": "562 h; 562 Stunden",
+          "q": "Am 1. Dezember um 8 Uhr startet ein Countdown.\nWie viele Stunden sind es bis zum 24. Dezember um 18 Uhr?"
+        },
+        {
+          "a": "Fr. 4.–",
+          "alt": "4; 4 Franken; 4 Fr.",
+          "q": "Ein Punsch kostet Fr. 4.–. Der Preis steigt um 25 %, danach gibt es 20 % Rabatt.\nWas kostet der Punsch jetzt?"
+        },
+        {
+          "a": "6 h",
+          "alt": "6; 6 Stunden",
+          "q": "Kerze A ist 24 cm lang und brennt 2 cm pro Stunde ab. Kerze B ist 18 cm lang und brennt 1 cm pro Stunde ab.\nNach wie vielen Stunden sind beide gleich lang?"
+        }
+      ]
+    }
+  ],
+  "cols": 5,
+  "inheritSecs": 10,
+  "rows": 8,
+  "startCapital": 200,
+  "times": [
+    20,
+    30,
+    40,
+    50,
+    60,
+    70,
+    80,
+    90,
+    90,
+    100
+  ],
+  "title": "Advent 2. Sek",
+  "values": [
+    10,
+    20,
+    30,
+    40,
+    50,
+    60,
+    70,
+    80,
+    90,
+    100
+  ],
+  "sammlung": {
+    "id": "s-mwutnxa6-2nc7r",
+    "stand": "2026-11-24T16:00"
+  }
+}
