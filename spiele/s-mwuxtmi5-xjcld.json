@@ -186,9 +186,9 @@
           "alt": "Frage; eine Frage; Fragestellung; mit einer Fragestellung; Forschungsfrage"
         },
         {
-          "q": "Du willst testen, ob Guetzli mit Butter oder mit Margarine besser gelingen.\nWas musst du gleich lassen?\n\nA   nur die Backzeit\nB   alles ausser dem Fett: Teigmenge, Ofentemperatur, Backzeit\nC   nichts, Hauptsache viele Guetzli",
-          "a": "B · alles ausser dem Fett: Teigmenge, Ofentemperatur, Backzeit",
-          "alt": "B; alles ausser dem Fett: Teigmenge, Ofentemperatur, Backzeit"
+          "q": "Du willst testen, ob Guetzli mit Butter oder mit Margarine besser gelingen.\nWas musst du gleich lassen?\n\nA   nur die Backzeit\nB   alles ausser dem Fett\nC   nichts, Hauptsache viele Guetzli",
+          "a": "B · alles ausser dem Fett",
+          "alt": "B; alles ausser dem Fett"
         },
         {
           "q": "Wie heisst die begründete Vermutung, die man vor dem Experiment aufstellt?",
@@ -245,6 +245,6 @@
   ],
   "sammlung": {
     "id": "s-mwuxtmi5-xjcld",
-    "stand": "2026-11-24T17:57"
+    "stand": "2026-11-24T21:41"
   }
 }
