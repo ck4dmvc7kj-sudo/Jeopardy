@@ -1,8 +1,8 @@
 /* Offline-Start für die App auf dem Home-Bildschirm.
    - Programm und Sammlung: zuerst aus dem Netz (immer die neueste Fassung), ohne Netz aus dem Speicher.
-   - Schriften von Google: einmal laden, danach aus dem Speicher.
+   - Die Schriften sind im Programm eingebettet, es gibt keine Verbindung zu Google.
    Bei grösseren Änderungen an dieser Datei die Versionsnummer erhöhen. */
-const CACHE = 'jeopardy-v1';
+const CACHE = 'jeopardy-v2';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icons/icon-180.png', './icons/icon-192.png', './icons/icon-512.png'];
 
 self.addEventListener('install', event => {
@@ -30,10 +30,6 @@ self.addEventListener('fetch', event => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
 
-  if (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com'){
-    event.respondWith(caches.match(req).then(hit => hit || fetch(req).then(res => remember(req, res))));
-    return;
-  }
   if (url.origin !== self.location.origin) return;
 
   event.respondWith(
