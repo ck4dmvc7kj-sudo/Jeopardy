@@ -1,0 +1,265 @@
+{
+  "format": "mathe-jeopardy",
+  "version": 1,
+  "answerSecs": 10,
+  "categories": [
+    {
+      "name": "Samichlaus' Rechenwerkstatt",
+      "qs": [
+        {
+          "a": "17",
+          "alt": "",
+          "q": "5 + 3 · 4 = ?"
+        },
+        {
+          "a": "32",
+          "alt": "",
+          "q": "(5 + 3) · 4 = ?"
+        },
+        {
+          "a": "16",
+          "alt": "",
+          "q": "Im Sack des Samichlaus sind 2⁴ Nüsse.\nWie viele sind das?"
+        },
+        {
+          "a": "B · Divisor",
+          "alt": "B; Divisor",
+          "q": "In  24 : 6 = 4  – wie heisst die 6?\n\nA   Dividend\nB   Divisor\nC   Quotient"
+        },
+        {
+          "a": "80",
+          "alt": "",
+          "q": "Zum Produkt von 7 und 9 wird die Summe von 15 und 2 addiert."
+        },
+        {
+          "a": "A · (3 + 5) · 2 + 4",
+          "alt": "A; (3 + 5) · 2 + 4",
+          "q": "Wo müssen die Klammern hin, damit\n3 + 5 · 2 + 4 = 20 stimmt?\n\nA   (3 + 5) · 2 + 4\nB   3 + 5 · (2 + 4)\nC   (3 + 5) · (2 + 4)"
+        },
+        {
+          "a": "81",
+          "alt": "3^4",
+          "q": "Der Samichlaus hat 3 Säcke. In jedem Sack sind 3 Päckli, in jedem Päckli 3 Schachteln, in jeder Schachtel 3 Mandarinen.\nWie viele Mandarinen sind es?"
+        },
+        {
+          "a": "100",
+          "alt": "",
+          "q": "2 + 3 · (4 + 2)² − 10 = ?"
+        }
+      ]
+    },
+    {
+      "name": "Grittibänz & Co.",
+      "qs": [
+        {
+          "a": "350 mm",
+          "alt": "350mm",
+          "q": "Ein Grittibänz ist 35 cm lang.\nWie viele mm sind das?"
+        },
+        {
+          "a": "15 dl",
+          "alt": "15dl",
+          "q": "1.5 l Punsch = ? dl"
+        },
+        {
+          "a": "B · 250 g",
+          "alt": "B; 250 g",
+          "q": "Wie schwer ist ein Grittibänz etwa?\n\nA   25 g\nB   250 g\nC   2.5 kg"
+        },
+        {
+          "a": "A · Hundert",
+          "alt": "A; Hundert",
+          "q": "Was bedeutet die Vorsilbe «hekto»?\n\nA   Hundert\nB   Tausend\nC   Hundertstel"
+        },
+        {
+          "a": "31",
+          "alt": "",
+          "q": "Eine Lichterkette ist 12 m lang. Alle 40 cm hängt ein Lämpchen – auch ganz am Anfang und ganz am Ende.\nWie viele Lämpchen sind es?"
+        },
+        {
+          "a": "1250 g",
+          "alt": "1250g; 1.25 kg; 1,25 kg; 1.25kg",
+          "q": "Für 4 Grittibänze braucht man 500 g Mehl.\nWie viel Mehl braucht man für 10 Grittibänze?"
+        },
+        {
+          "a": "18:15 Uhr",
+          "alt": "18:15; 18.15; 18.15 Uhr; 1815",
+          "q": "Der Guetzliteig muss 2 h 45 min in den Kühlschrank. Er kommt um 15:30 Uhr hinein.\nWann ist er fertig?"
+        },
+        {
+          "a": "6 kg",
+          "alt": "6kg; 6000 g; 6000g",
+          "q": "Der Sack des Samichlaus wiegt 12 kg. Darin sind 40 Mandarinen zu je 150 g, der Rest sind Nüsse.\nWie schwer sind die Nüsse?"
+        }
+      ]
+    },
+    {
+      "name": "Wichtel-Variablen",
+      "qs": [
+        {
+          "a": "12",
+          "alt": "",
+          "q": "x = 4\nBerechne 3 · x."
+        },
+        {
+          "a": "17",
+          "alt": "",
+          "q": "a = 5\nBerechne 2 · a + 7."
+        },
+        {
+          "a": "B · 2 · x",
+          "alt": "B; 2 · x; 2x; 2·x",
+          "q": "Ein Wichtel hat x Guetzli, sein Freund doppelt so viele.\nWelcher Term passt zum Freund?\n\nA   x + 2\nB   2 · x\nC   x · x"
+        },
+        {
+          "a": "12",
+          "alt": "",
+          "q": "Ich denke mir eine Zahl, verdopple sie und zähle 5 dazu. Ich erhalte 29.\nWelche Zahl habe ich mir gedacht?"
+        },
+        {
+          "a": "Fr. 5.–",
+          "alt": "5; 5 Franken; 5 Fr.",
+          "q": "Ein Päckli kostet x Franken. Lena kauft 3 Päckli und eine Karte für 2 Franken. Sie bezahlt 17 Franken.\nWie viel kostet ein Päckli?"
+        },
+        {
+          "a": "Fr. 9.95",
+          "alt": "9.95; 9,95",
+          "q": "Ein Anruf kostet  y = 0.49 · x + 0.15  Franken (x = Minuten).\nDer Weihnachtsanruf bei Grosi dauert 20 Minuten. Wie viel kostet er?"
+        },
+        {
+          "a": "3",
+          "alt": "",
+          "q": "Gesucht ist die Zahl, die 5-mal kleiner ist als die Zahl, die um 3 grösser ist als r.\nRechne mit r = 12."
+        },
+        {
+          "a": "24",
+          "alt": "",
+          "q": "Drei Wichtel haben zusammen 48 Geschenke. Der zweite hat doppelt so viele wie der erste, der dritte dreimal so viele wie der erste.\nWie viele Geschenke hat der dritte?"
+        }
+      ]
+    },
+    {
+      "name": "Päckli & Bruchteile",
+      "qs": [
+        {
+          "a": "24",
+          "alt": "",
+          "q": "Wie viel ist die Hälfte von 48 Guetzli?"
+        },
+        {
+          "a": "7",
+          "alt": "",
+          "q": "Wie viel ist ¼ von 28 Mandarinen?"
+        },
+        {
+          "a": "9",
+          "alt": "",
+          "q": "Von 36 Guetzli isst der Samichlaus heimlich ¾.\nWie viele bleiben übrig?"
+        },
+        {
+          "a": "1",
+          "alt": "",
+          "q": "25 Schoggitaler werden gleichmässig auf 4 Gruppen verteilt.\nWie viele bleiben übrig?"
+        },
+        {
+          "a": "B · 2/3",
+          "alt": "B; 2/3",
+          "q": "8 von 12 Lernenden haben schon einen Adventskalender.\nWelcher Bruch ist vollständig gekürzt?\n\nA   8/12\nB   2/3\nC   3/4"
+        },
+        {
+          "a": "12",
+          "alt": "",
+          "q": "Guetzli-Verkauf der Klasse:\nMo 12  ·  Di 18  ·  Mi 9  ·  Do 21\nWie viele Guetzli wurden am besten Tag mehr verkauft als am schlechtesten?"
+        },
+        {
+          "a": "Fr. 15.–",
+          "alt": "15; 15 Franken; 15 Fr.",
+          "q": "Von Fr. 45.– in der Klassenkasse werden ⅔ für Punsch ausgegeben.\nWie viel Geld bleibt?"
+        },
+        {
+          "a": "24",
+          "alt": "",
+          "q": "Der Samichlaus verteilt Nüsse: Das erste Kind bekommt die Hälfte, das zweite die Hälfte vom Rest, das dritte die restlichen 6.\nWie viele Nüsse waren es am Anfang?"
+        }
+      ]
+    },
+    {
+      "name": "Adventskalender-Knobeleien",
+      "qs": [
+        {
+          "a": "48",
+          "alt": "",
+          "q": "Welche Zahl kommt als nächste?\n3,  6,  12,  24,  …"
+        },
+        {
+          "a": "21",
+          "alt": "",
+          "q": "Ein Christbaum aus Kugeln: oben 1, darunter 2, dann 3 …\nWie viele Kugeln hat er mit 6 Reihen?"
+        },
+        {
+          "a": "Mittwoch",
+          "alt": "Mi; Mi.",
+          "q": "Der 1. Dezember ist ein Montag.\nWelcher Wochentag ist der 24. Dezember?"
+        },
+        {
+          "a": "300",
+          "alt": "",
+          "q": "Hinter Türchen 1 liegt 1 Schoggi, hinter Türchen 2 liegen 2 … bis Türchen 24.\nWie viele Schoggis sind es total?"
+        },
+        {
+          "a": "256",
+          "alt": "",
+          "q": "Ein Wichtel backt jeden Tag doppelt so viele Guetzli wie am Tag davor. Am 24. Dezember backt er 512 Guetzli.\nWie viele hat er am 23. Dezember gebacken?"
+        },
+        {
+          "a": "562",
+          "alt": "562 h; 562 Stunden",
+          "q": "Am 1. Dezember um 8 Uhr startet ein Countdown.\nWie viele Stunden sind es bis zum 24. Dezember um 18 Uhr?"
+        },
+        {
+          "a": "55",
+          "alt": "",
+          "q": "Alle 11 Lernenden wünschen sich frohe Weihnachten – jede Person gibt jeder anderen einmal die Hand.\nWie viele Händedrücke sind das?"
+        },
+        {
+          "a": "Fr. 0.05",
+          "alt": "0.05; 5 Rappen; 5 Rp.; 5 Rp; 5 Rappen",
+          "q": "Ein Grittibänz und eine Mandarine kosten zusammen Fr. 3.10. Der Grittibänz kostet Fr. 3.– mehr als die Mandarine.\nWas kostet die Mandarine?"
+        }
+      ]
+    }
+  ],
+  "cols": 5,
+  "inheritSecs": 10,
+  "rows": 8,
+  "startCapital": 200,
+  "times": [
+    20,
+    30,
+    40,
+    50,
+    60,
+    70,
+    80,
+    90,
+    90,
+    100
+  ],
+  "title": "Advent 1. Sek",
+  "values": [
+    10,
+    20,
+    30,
+    40,
+    50,
+    60,
+    70,
+    80,
+    90,
+    100
+  ],
+  "sammlung": {
+    "id": "s-mwut7nr2-82dq4",
+    "stand": "2026-11-24T15:48"
+  }
+}
