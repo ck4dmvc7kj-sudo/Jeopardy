@@ -1,0 +1,250 @@
+{
+  "format": "mathe-jeopardy",
+  "version": 1,
+  "title": "Advent NT 3. Sek",
+  "cols": 6,
+  "rows": 6,
+  "values": [
+    10,
+    20,
+    30,
+    40,
+    50,
+    60,
+    70,
+    80,
+    90,
+    100
+  ],
+  "times": [
+    20,
+    30,
+    40,
+    50,
+    60,
+    60,
+    70,
+    80,
+    90,
+    100
+  ],
+  "startCapital": 200,
+  "answerSecs": 10,
+  "inheritSecs": 10,
+  "categories": [
+    {
+      "name": "Samichlaus' Körperwerkstatt",
+      "qs": [
+        {
+          "q": "Wir haben 206 Knochen. Wo steckt mehr als die Hälfte davon?\n\nA   in der Wirbelsäule\nB   im Schädel\nC   in Händen und Füssen",
+          "a": "C · in Händen und Füssen",
+          "alt": "C; in Händen und Füssen"
+        },
+        {
+          "q": "Nach dem Schlitteln zitterst du vor Kälte. Warum?\n\nA   Die Knochen reiben aneinander\nB   Das Blut wird dickflüssig\nC   Die Muskeln ziehen sich schnell zusammen und erzeugen Wärme",
+          "a": "C · Die Muskeln ziehen sich schnell zusammen und erzeugen Wärme",
+          "alt": "C; Die Muskeln ziehen sich schnell zusammen und erzeugen Wärme"
+        },
+        {
+          "q": "Du winkst dem Samichlaus mit dem ganzen Arm im Kreis.\nWelches Gelenk macht das möglich?\n\nA   Scharniergelenk\nB   Sattelgelenk\nC   Kugelgelenk",
+          "a": "C · Kugelgelenk",
+          "alt": "C; Kugelgelenk"
+        },
+        {
+          "q": "Rudolphs Nase leuchtet rot.\nWelcher Blutbestandteil macht unser Blut rot?",
+          "a": "rote Blutkörperchen",
+          "alt": "rote Blutkörperchen; Erythrozyten; Hämoglobin; rote Blutzellen; Blutkörperchen"
+        },
+        {
+          "q": "Beim Singen von «Stille Nacht» atmest du tief ein.\nWas macht das Zwerchfell?\n\nA   Es zieht sich zusammen und senkt sich, in der Lunge entsteht Unterdruck\nB   Es hebt sich und drückt die Luft hinein\nC   Es bleibt ruhig, die Arbeit macht die Nase",
+          "a": "A · Es zieht sich zusammen und senkt sich, in der Lunge entsteht Unterdruck",
+          "alt": "A; Es zieht sich zusammen und senkt sich, in der Lunge entsteht Unterdruck"
+        },
+        {
+          "q": "Ein rotes Blutkörperchen entsteht am 1. Dezember.\nBis wann lebt es etwa?\n\nA   bis Silvester\nB   bis Ostern\nC   bis zu den Sommerferien",
+          "a": "B · bis Ostern",
+          "alt": "B; bis Ostern"
+        }
+      ]
+    },
+    {
+      "name": "Weihnachtsbäckerei-Chemie",
+      "qs": [
+        {
+          "q": "Die Schokolade auf dem Grittibänz wird im warmen Ofen flüssig.\nWie heisst dieser Übergang?",
+          "a": "schmelzen",
+          "alt": "schmelzen; Schmelzen; geschmolzen"
+        },
+        {
+          "q": "Welcher Vorgang ist chemisch?\n\nA   Schokolade schmilzt\nB   Zucker löst sich im Tee\nC   Zucker karamellisiert in der Pfanne",
+          "a": "C · Zucker karamellisiert in der Pfanne",
+          "alt": "C; Zucker karamellisiert in der Pfanne"
+        },
+        {
+          "q": "Der Samichlaus kocht Tee auf dem Säntis (2500 m).\nBei welcher Temperatur siedet das Wasser dort?\n\nA   über 100 °C\nB   unter 100 °C\nC   genau bei 100 °C",
+          "a": "B · unter 100 °C",
+          "alt": "B; unter 100 °C"
+        },
+        {
+          "q": "Der Duft frischer Zimtsterne verteilt sich im ganzen Haus, ohne dass jemand umrührt.\nWie heisst dieser Vorgang?\n\nA   Osmose\nB   Kondensation\nC   Diffusion",
+          "a": "C · Diffusion",
+          "alt": "C; Diffusion"
+        },
+        {
+          "q": "An einem kalten Morgen wachsen Eisblumen am Fenster, direkt aus dem Wasserdampf der Luft.\nWie heisst dieser Übergang?\n\nA   kondensieren\nB   erstarren\nC   resublimieren",
+          "a": "C · resublimieren",
+          "alt": "C; resublimieren"
+        },
+        {
+          "q": "Man zieht einem Schneemann einen dicken Wollpullover an.\nWas passiert?\n\nA   Er schmilzt langsamer, die Wolle hält die Wärme von aussen ab\nB   Er schmilzt schneller, der Pullover wärmt\nC   Es macht keinen Unterschied",
+          "a": "A · Er schmilzt langsamer, die Wolle hält die Wärme von aussen ab",
+          "alt": "A; Er schmilzt langsamer, die Wolle hält die Wärme von aussen ab"
+        }
+      ]
+    },
+    {
+      "name": "Punsch & Gemische",
+      "qs": [
+        {
+          "q": "Du schüttelst eine Schneekugel, der Glitzer schwebt im Wasser.\nWelche Gemischart ist das?\n\nA   Lösung\nB   Suspension\nC   Emulsion",
+          "a": "B · Suspension",
+          "alt": "B; Suspension"
+        },
+        {
+          "q": "Milch für die heisse Schoggi: Welche Gemischart ist das?\n\nA   Emulsion\nB   Suspension\nC   Lösung",
+          "a": "A · Emulsion",
+          "alt": "A; Emulsion"
+        },
+        {
+          "q": "Nebel liegt über dem Weihnachtsmarkt.\nEr ist ein Gemisch aus …\n\nA   fest und gasförmig\nB   flüssig und gasförmig\nC   gasförmig und gasförmig",
+          "a": "B · flüssig und gasförmig",
+          "alt": "B; flüssig und gasförmig"
+        },
+        {
+          "q": "Mandelsplitter und Puderzucker sind durcheinandergeraten.\nWelches Trennverfahren mit welcher Stoffeigenschaft passt?\n\nA   Sieben – Partikelgrösse\nB   Sedimentieren – Dichte\nC   Extrahieren – Löslichkeit",
+          "a": "A · Sieben – Partikelgrösse",
+          "alt": "A; Sieben – Partikelgrösse"
+        },
+        {
+          "q": "Mit welchem Trennverfahren gewinnt man aus Meerwasser reines Trinkwasser?\nEs nutzt den Siedepunkt.",
+          "a": "Destillation",
+          "alt": "Destillation; Destillieren; destillieren"
+        },
+        {
+          "q": "Ein Wichtel hat beim Schlittenputzen Streusalz, Sand und Eisenspäne vermischt.\nMit welcher Reihenfolge bekommt er alle drei Stoffe wieder getrennt?\n\nA   Magnet → Wasser dazu und filtrieren → eindampfen\nB   Wasser dazu und eindampfen → Magnet → filtrieren\nC   Filtrieren → Magnet → eindampfen",
+          "a": "A · Magnet → Wasser dazu und filtrieren → eindampfen",
+          "alt": "A; Magnet → Wasser dazu und filtrieren → eindampfen"
+        }
+      ]
+    },
+    {
+      "name": "Winterwald",
+      "qs": [
+        {
+          "q": "Was fressen die Rentiere des Samichlaus im Winter hauptsächlich?\n\nA   Flechten\nB   Tannzapfen\nC   Fische",
+          "a": "A · Flechten",
+          "alt": "A; Flechten"
+        },
+        {
+          "q": "Gras → Reh → Luchs.\nWelche Rolle hat das Gras in dieser Nahrungskette?",
+          "a": "Produzent",
+          "alt": "Produzent; Produzenten; Erzeuger; Hersteller"
+        },
+        {
+          "q": "Unter dem Mistelzweig küsst man sich. Doch was ist die Mistel für den Baum, auf dem sie wächst?\n\nA   ein Teil des Baumes\nB   ein Schutz vor Insekten\nC   ein Halbschmarotzer, der dem Baum Wasser und Salze entzieht",
+          "a": "C · ein Halbschmarotzer, der dem Baum Wasser und Salze entzieht",
+          "alt": "C; ein Halbschmarotzer, der dem Baum Wasser und Salze entzieht"
+        },
+        {
+          "q": "Eichhörnchen vergessen viele ihrer versteckten Nüsse.\nWas bedeutet das für den Wald?\n\nA   Sie verbreiten Samen, aus vergessenen Nüssen können neue Bäume wachsen\nB   Sie schaden dem Wald, weil weniger Nüsse übrig bleiben, aus denen Bäume keimen\nC   Es hat keinen Einfluss, weil Nüsse im Winter nicht keimen",
+          "a": "A · Sie verbreiten Samen, aus vergessenen Nüssen können neue Bäume wachsen",
+          "alt": "A; Sie verbreiten Samen, aus vergessenen Nüssen können neue Bäume wachsen"
+        },
+        {
+          "q": "Fuchs und Waldohreule jagen im verschneiten Wald beide Mäuse.\nWelcher Kreis besteht zwischen Fuchs und Eule?\n\nA   Regelkreis\nB   Aufschaukelkreis\nC   Konkurrenzkreis",
+          "a": "C · Konkurrenzkreis",
+          "alt": "C; Konkurrenzkreis"
+        },
+        {
+          "q": "Im verschneiten Wald leben viel mehr Rehe als Luchse. Warum?\n\nA   Weil Luchse nur alle drei bis vier Jahre Junge bekommen\nB   Weil von Stufe zu Stufe der Nahrungskette viel Energie verloren geht\nC   Weil Luchse im Winter in wärmere Gebiete ziehen",
+          "a": "B · Weil von Stufe zu Stufe der Nahrungskette viel Energie verloren geht",
+          "alt": "B; Weil von Stufe zu Stufe der Nahrungskette viel Energie verloren geht"
+        }
+      ]
+    },
+    {
+      "name": "Forscherlabor",
+      "qs": [
+        {
+          "q": "Welche Flamme des Gasbrenners ist am heissesten?\n\nA   die blaue, rauschende\nB   die gelbe, leuchtende\nC   beide gleich",
+          "a": "A · die blaue, rauschende",
+          "alt": "A; die blaue, rauschende"
+        },
+        {
+          "q": "Womit beginnt jeder Experimentierzyklus?",
+          "a": "mit einer Frage",
+          "alt": "Frage; eine Frage; Fragestellung; mit einer Fragestellung; Forschungsfrage"
+        },
+        {
+          "q": "Du willst testen, ob Guetzli mit Butter oder mit Margarine besser gelingen.\nWas musst du gleich lassen?\n\nA   nur die Backzeit\nB   alles ausser dem Fett: Teigmenge, Ofentemperatur, Backzeit\nC   nichts, Hauptsache viele Guetzli",
+          "a": "B · alles ausser dem Fett: Teigmenge, Ofentemperatur, Backzeit",
+          "alt": "B; alles ausser dem Fett: Teigmenge, Ofentemperatur, Backzeit"
+        },
+        {
+          "q": "Wie heisst die begründete Vermutung, die man vor dem Experiment aufstellt?",
+          "a": "Hypothese",
+          "alt": "Hypothese; Hypothesen; eine Hypothese"
+        },
+        {
+          "q": "Die Wichtel testen Streusalz: Ein Eiswürfel bekommt Salz, ein zweiter liegt ganz ohne Salz daneben.\nWie nennt man diesen zweiten Teil des Versuchs?\n\nA   Wiederholungsversuch\nB   Kontrollversuch\nC   Messfehler",
+          "a": "B · Kontrollversuch",
+          "alt": "B; Kontrollversuch; Kontrolle; Kontrollexperiment"
+        },
+        {
+          "q": "Lea behauptet: «Kerzen brennen in kalten Räumen länger.» Sie zündet eine Kerze im Keller und eine im Wohnzimmer an. Die im Keller brennt länger.\nWas ist das Problem?\n\nA   Keines, das ist bewiesen\nB   Sie hat nur einmal gemessen, und die Kerzen waren vielleicht nicht gleich\nC   Kerzen kann man nicht vergleichen",
+          "a": "B · Sie hat nur einmal gemessen, und die Kerzen waren vielleicht nicht gleich",
+          "alt": "B; Sie hat nur einmal gemessen, und die Kerzen waren vielleicht nicht gleich"
+        }
+      ]
+    },
+    {
+      "name": "Wintergeheimnisse",
+      "qs": [
+        {
+          "q": "Wie viele Arme hat eine Schneeflocke?\n\nA   4\nB   6\nC   8",
+          "a": "B · 6",
+          "alt": "B; 6"
+        },
+        {
+          "q": "Warum ist Schnee weiss, obwohl Eis durchsichtig ist?\n\nA   Schnee enthält weissen Staub\nB   Schnee ist gefrorene Wolkenmilch\nC   Die vielen Eiskristalle streuen das Licht in alle Richtungen",
+          "a": "C · Die vielen Eiskristalle streuen das Licht in alle Richtungen",
+          "alt": "C; Die vielen Eiskristalle streuen das Licht in alle Richtungen"
+        },
+        {
+          "q": "Warum streut man Salz auf die Strassen?\n\nA   Salzwasser gefriert erst bei tieferen Temperaturen\nB   Salzwasser gefriert schon bei höheren Temperaturen\nC   Salz wärmt die Strasse",
+          "a": "A · Salzwasser gefriert erst bei tieferen Temperaturen",
+          "alt": "A; Salzwasser gefriert erst bei tieferen Temperaturen"
+        },
+        {
+          "q": "Rentiere können etwas, das wir nicht können. Was?\n\nA   im Dunkeln leuchten\nB   Wärme hören\nC   UV-Licht sehen",
+          "a": "C · UV-Licht sehen",
+          "alt": "C; UV-Licht sehen"
+        },
+        {
+          "q": "Am 21. Dezember ist der kürzeste Tag. Warum ist es im Januar trotzdem meist noch kälter?\n\nA   Boden und Gewässer kühlen langsam aus, die Kälte kommt verzögert\nB   Im Januar ist die Erde am weitesten von der Sonne entfernt\nC   Im Januar werden die Tage noch kürzer",
+          "a": "A · Boden und Gewässer kühlen langsam aus, die Kälte kommt verzögert",
+          "alt": "A; Boden und Gewässer kühlen langsam aus, die Kälte kommt verzögert"
+        },
+        {
+          "q": "Warum ist es nach frischem Schneefall draussen so still?\n\nA   Frischer Schnee schluckt den Schall wie ein Schwamm\nB   Die Vögel schlafen\nC   Kalte Luft leitet keinen Schall",
+          "a": "A · Frischer Schnee schluckt den Schall wie ein Schwamm",
+          "alt": "A; Frischer Schnee schluckt den Schall wie ein Schwamm"
+        }
+      ]
+    }
+  ],
+  "sammlung": {
+    "id": "s-mwuxtmi5-xjcld",
+    "stand": "2026-11-24T17:57"
+  }
+}
